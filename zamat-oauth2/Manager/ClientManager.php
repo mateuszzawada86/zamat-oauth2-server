@@ -1,9 +1,9 @@
 <?php
 
-namespace Zamat\OAuth2\ServerBundle\Manager;
+namespace Zamat\OAuth2\Manager;
 
 use Doctrine\ORM\EntityManager;
-use OAuth2\ServerBundle\Exception\ScopeNotFoundException;
+use OAuth2\Exception\ScopeNotFoundException;
 
 class ClientManager
 {
@@ -35,7 +35,7 @@ class ClientManager
      */
     public function createClient($identifier, array $redirect_uris = array(), array $grant_types = array(), array $scopes = array())
     {
-        $client = new \OAuth2\ServerBundle\Entity\Client();
+        $client = new \Zamat\Bundle\OAuth2Bundle\Entity\Client();
         $client->setClientId($identifier);
         $client->setClientSecret($this->generateSecret());
         $client->setRedirectUri($redirect_uris);

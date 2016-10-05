@@ -1,6 +1,6 @@
 <?php
 
-namespace Zamat\OAuth2\ServerBundle\Storage;
+namespace Zamat\OAuth2\Storage;
 
 use OAuth2\Storage\UserCredentialsInterface;
 use Doctrine\ORM\EntityManager;

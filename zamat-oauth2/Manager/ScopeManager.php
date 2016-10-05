@@ -1,6 +1,6 @@
 <?php
 
-namespace Zamat\OAuth2\ServerBundle\Manager;
+namespace Zamat\OAuth2\Manager;
 
 use Doctrine\ORM\EntityManager;
 
@@ -24,7 +24,7 @@ class ScopeManager implements ScopeManagerInterface
      */
     public function createScope($scope, $description = null)
     {
-        $scopeObject = new \OAuth2\ServerBundle\Entity\Scope();
+        $scopeObject = new \Zamat\Bundle\OAuth2Bundle\Entity\Scope();
         $scopeObject->setScope($scope);
         $scopeObject->setDescription($description);
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Zamat\OAuth2\HttpFoundationBridge;
+namespace Zamat\OAuth2\HttpFoundation;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use OAuth2\ResponseInterface;

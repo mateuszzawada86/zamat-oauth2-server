@@ -1,6 +1,6 @@
 <?php
 
-namespace Zamat\OAuth2\ServerBundle\Command;
+namespace Zamat\OAuth2\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -13,7 +13,7 @@ class CreateScopeCommand extends ContainerAwareCommand
 
     /**
      * 
-     * @return \Zamat\OAuth2\ServerBundle\Command\CreateScopeCommand
+     * @return \Zamat\OAuth2\Command\CreateScopeCommand
      */   
     protected function configure()
     {

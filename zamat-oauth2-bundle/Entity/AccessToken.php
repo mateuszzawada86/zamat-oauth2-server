@@ -1,6 +1,6 @@
 <?php
 
-namespace Zamat\OAuth2\ServerBundle\Entity;
+namespace Zamat\Bundle\OAuth2Bundle\Entity;
 
 class AccessToken
 {

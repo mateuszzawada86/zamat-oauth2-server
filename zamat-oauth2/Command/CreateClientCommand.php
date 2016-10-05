@@ -1,6 +1,6 @@
 <?php
 
-namespace Zamat\OAuth2\ServerBundle\Command;
+namespace Zamat\OAuth2\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
@@ -13,7 +13,7 @@ class CreateClientCommand extends ContainerAwareCommand
 
     /**
      * 
-     * @return \Zamat\OAuth2\ServerBundle\Command\CreateClientCommand
+     * @return \Zamat\OAuth2\Command\CreateClientCommand
      */
     protected function configure()
     {

@@ -1,9 +1,10 @@
 <?php
 
-namespace Zamat\OAuth2\ServerBundle\Controller;
+namespace Zamat\Bundle\OAuth2Bundle\Controller;
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class VerifyController extends Controller
@@ -12,7 +13,6 @@ class VerifyController extends Controller
      * This is called with an access token, details
      * about the access token are then returned.
      * Used for verification purposes.
-     *
      * @Route("/verify", name="_verify_token")
      */
     public function verifyAction()

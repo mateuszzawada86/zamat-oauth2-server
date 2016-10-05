@@ -1,6 +1,6 @@
 <?php
 
-namespace Zamat\OAuth2\ServerBundle\User;
+namespace Zamat\OAuth2\User;
 
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 

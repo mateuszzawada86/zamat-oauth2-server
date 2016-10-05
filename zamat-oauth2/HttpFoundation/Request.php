@@ -1,6 +1,6 @@
 <?php
 
-namespace Zamat\OAuth2\HttpFoundationBridge;
+namespace Zamat\OAuth2\HttpFoundation;
 
 use Symfony\Component\HttpFoundation\Request as BaseRequest;
 use OAuth2\RequestInterface;

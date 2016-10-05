@@ -1,6 +1,6 @@
 <?php
 
-namespace Zamat\OAuth2\ServerBundle\Manager;
+namespace Zamat\OAuth2\Manager;
 
 use Doctrine\ORM\EntityManager;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Zamat\OAuth2\ServerBundle\Exception;
+namespace Zamat\OAuth2\Exception;
 
 class ScopeNotFoundException extends \Exception
 {
