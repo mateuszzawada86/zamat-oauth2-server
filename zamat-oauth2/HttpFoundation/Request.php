@@ -3,12 +3,11 @@
 namespace Zamat\OAuth2\HttpFoundation;
 
 use Symfony\Component\HttpFoundation\Request as BaseRequest;
-use OAuth2\RequestInterface;
 use Symfony\Component\HttpFoundation\HeaderBag;
+use OAuth2\RequestInterface;
 
 /**
  * Symfony Request Bridge
- * 
  */
  class Request extends BaseRequest implements RequestInterface
  {
@@ -73,7 +72,15 @@ use Symfony\Component\HttpFoundation\HeaderBag;
      */
     public static function createFromRequest(BaseRequest $request)
     {
-        return new static($request->query->all(), $request->request->all(), $request->attributes->all(), $request->cookies->all(), $request->files->all(), $request->server->all(), $request->getContent());
+        return new static(
+                $request->query->all(), 
+                $request->request->all(), 
+                $request->attributes->all(), 
+                $request->cookies->all(), 
+                $request->files->all(), 
+                $request->server->all(), 
+                $request->getContent()
+             );
     }
     
     /**

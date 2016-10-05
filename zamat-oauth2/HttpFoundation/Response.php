@@ -10,7 +10,7 @@ use OAuth2\ResponseInterface;
  */
  class Response extends JsonResponse implements ResponseInterface
  {
-     
+   
      /**
       * 
       * @param array $parameters
@@ -86,12 +86,10 @@ use OAuth2\ResponseInterface;
         ));
 
         if ($params) {
-            // add the params to the URL
             $parts = parse_url($url);
             $sep = isset($parts['query']) && count($parts['query']) > 0 ? '&' : '?';
             $url .= $sep . http_build_query($params);
         }
-
         $this->headers->set('Location', $url);
     }
  }

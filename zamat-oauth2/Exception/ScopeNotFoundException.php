@@ -4,6 +4,7 @@ namespace Zamat\OAuth2\Exception;
 
 class ScopeNotFoundException extends \Exception
 {
+
     /**
      * {@inheritDoc}
      */
@@ -28,7 +29,7 @@ class ScopeNotFoundException extends \Exception
     public function unserialize($str)
     {
         list($parentData) = unserialize($str);
-
         parent::unserialize($parentData);
     }
+
 }
