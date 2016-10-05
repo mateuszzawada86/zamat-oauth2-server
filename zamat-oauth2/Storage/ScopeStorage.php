@@ -3,22 +3,54 @@
 namespace Zamat\OAuth2\Storage;
 
 use OAuth2\Storage\ScopeInterface;
-use OAuth2\ServerBundle\Manager\ScopeManagerInterface;
-use Doctrine\ORM\EntityManager;
+use Zamat\OAuth2\Manager\ScopeManagerInterface;
+use Zamat\OAuth2\Provider\ClientProviderInterface;
 
-class Scope implements ScopeInterface
+
+class ScopeStorage implements ScopeInterface
 {
-    private $em;
 
+    /**
+     *
+     * @var ClientProviderInterface 
+     */
+    protected $clientProvider;
+    
     /**
      * @var ScopeManagerInterface
      */
-    private $sm;
-
-    public function __construct(EntityManager $entityManager, ScopeManagerInterface $scopeManager)
+    private $scopeManager;
+    
+    
+    /**
+     * 
+     * @return type
+     */
+    public function getClientProvider()
     {
-        $this->em = $entityManager;
-        $this->sm = $scopeManager;
+        return $this->clientProvider;
+    }
+
+    /**
+     * 
+     * @param type $clientProvider
+     * @return \Zamat\OAuth2\Storage\ClientCredentialsStorage
+     */
+    public function setClientProvider(ClientProviderInterface $clientProvider)
+    {
+        $this->clientProvider = $clientProvider;
+        return $this;
+    } 
+    
+    /**
+     * 
+     * @param ClientProviderInterface $clientProvider
+     * @param ScopeManagerInterface $manager
+     */
+    public function __construct(ClientProviderInterface $clientProvider, ScopeManagerInterface $manager)
+    {
+        $this->clientProvider = $clientProvider;
+        $this->scopeManager = $manager;
     }
 
     /**
@@ -34,28 +66,23 @@ class Scope implements ScopeInterface
      */
     public function scopeExists($scope, $client_id = null)
     {
+        
         $scopes = explode(' ', $scope);
         if ($client_id) {
-            // Get Client
-            $client = $this->em->getRepository('OAuth2ServerBundle:Client')->find($client_id);
-
+            $client = $this->getClientProvider()->find($client_id);
             if (!$client) {
                 return false;
             }
-
             $valid_scopes = $client->getScopes();
-
             foreach ($scopes as $scope) {
                 if (!in_array($scope, $valid_scopes)) {
                     return false;
                 }
             }
-
             return true;
         }
 
-        $valid_scopes = $this->sm->findScopesByScopes($scopes);
-
+        $valid_scopes = $this->scopeManager->findScopesByScopes($scopes);
         return count($valid_scopes) == count($scopes);
     }
 
@@ -91,12 +118,10 @@ class Scope implements ScopeInterface
     public function getDescriptionForScope($scope)
     {
         // Get Scope
-        $scopeObject = $this->sm->findScopeByScope($scope);
-
+        $scopeObject = $this->scopeManager->findScopeByScope($scope);
         if (!$scopeObject) {
             return $scope;
         }
-
         return $scopeObject->getDescription();
     }
 }

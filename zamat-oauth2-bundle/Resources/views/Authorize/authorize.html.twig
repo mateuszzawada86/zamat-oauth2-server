@@ -1,0 +1,17 @@
+<h1>{{'Authorize'|trans}}</h1>
+
+{% if scopes|length > 0 %}
+<p>{{ request.client_id }}{{'Czy chcesz zautoryzować uzytkownika na podane dane'|trans}}</p>
+<ul>
+    {% for scope in scopes %}
+    <li>{{ scope }}</li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>{{'Klient'|trans}} {{ request.client_id }} {{'żąda dostępu'|trans}}</p>
+{% endif %}
+
+<form action="?{{ qs|url_encode }}" method="post">
+    <input type="hidden" name="authorize" value="1" />
+    <input type="submit" value="Auhtorize" />
+</form>

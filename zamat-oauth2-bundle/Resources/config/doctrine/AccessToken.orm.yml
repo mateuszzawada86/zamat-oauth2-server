@@ -1,6 +1,6 @@
 Zamat\Bundle\OAuth2Bundle\Entity\AccessToken:
     type: entity
-    table: oauth_access_token
+    table: zamat_oauth_access_token
     id:
         token:
             type:       string

@@ -1,6 +1,6 @@
 Zamat\Bundle\OAuth2Bundle\Entity\RefreshToken:
     type: entity
-    table: oauth_refresh_token
+    table: zamat_oauth_refresh_token
     id:
         token:
             type:       string

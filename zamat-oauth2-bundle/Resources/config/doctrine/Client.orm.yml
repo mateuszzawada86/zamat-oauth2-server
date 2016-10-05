@@ -1,6 +1,6 @@
 Zamat\Bundle\OAuth2Bundle\Entity\Client:
     type: entity
-    table: oauth_client
+    table: zamat_oauth_client
     id:
         client_id:
             type:       string

@@ -3,16 +3,78 @@
 namespace Zamat\OAuth2\Storage;
 
 use OAuth2\Storage\AccessTokenInterface;
-use Doctrine\ORM\EntityManager;
-use OAuth2\ServerBundle\Entity\Client;
 
-class AccessToken implements AccessTokenInterface
+use Zamat\OAuth2\Provider\ClientProviderInterface;
+use Zamat\OAuth2\Provider\AccessTokenProviderInterface;
+use Zamat\OAuth2\AccessToken;
+
+
+class AccessTokenStorage implements AccessTokenInterface
 {
-    private $em;
-
-    public function __construct(EntityManager $EntityManager)
+    
+    
+    /**
+     *
+     * @var ClientProviderInterface 
+     */
+    protected $clientProvider;
+    
+    /**
+     *
+     * @var AccessTokenProviderInterface 
+     */
+    protected $accessTokenProvider;
+    
+    
+    /**
+     * 
+     * @return type
+     */
+    public function getClientProvider()
     {
-        $this->em = $EntityManager;
+        return $this->clientProvider;
+    }
+
+    /**
+     * 
+     * @param type $clientProvider
+     * @return \Zamat\OAuth2\Storage\ClientCredentialsStorage
+     */
+    public function setClientProvider(ClientProviderInterface $clientProvider)
+    {
+        $this->clientProvider = $clientProvider;
+        return $this;
+    }
+    
+    /**
+     * 
+     * @return type
+     */
+    public function getAccessTokenProvider()
+    {
+        return $this->accessTokenProvider;
+    }
+
+    /**
+     * 
+     * @param AccessTokenProviderInterface $accessTokenProvider
+     * @return \Zamat\OAuth2\Storage\AccessTokenStorage
+     */
+    public function setAccessTokenProvider(AccessTokenProviderInterface $accessTokenProvider)
+    {
+        $this->accessTokenProvider = $accessTokenProvider;
+        return $this;
+    }
+    
+    /**
+     * 
+     * @param ClientProviderInterface $clientProvider
+     * @param AccessTokenProviderInterface $accessTokenProvider
+     */
+    public function __construct(ClientProviderInterface $clientProvider, AccessTokenProviderInterface $accessTokenProvider)
+    {
+        $this->clientProvider = $clientProvider;
+        $this->accessTokenProvider = $accessTokenProvider;
     }
 
     /**
@@ -34,13 +96,12 @@ class AccessToken implements AccessTokenInterface
      */
     public function getAccessToken($oauth_token)
     {
-        $accessToken = $this->em->getRepository('OAuth2ServerBundle:AccessToken')->find($oauth_token);
+        $accessToken = $this->getAccessTokenProvider()->find($oauth_token);
 
         if (!$accessToken) {
             return null;
         }
 
-        // Get Client
         $client = $accessToken->getClient();
 
         return array(
@@ -72,22 +133,20 @@ class AccessToken implements AccessTokenInterface
     public function setAccessToken($oauth_token, $client_id, $user_id, $expires, $scope = null)
     {
         // Get Client Entity
-        $client = $this->em->getRepository('OAuth2ServerBundle:Client')->find($client_id);
+        $client = $this->getClientProvider()->find($client_id);
 
         if (!$client) {
             return null;
         }
 
         // Create Access Token
-        $accessToken = new \OAuth2\ServerBundle\Entity\AccessToken();
+        $accessToken = new AccessToken();
         $accessToken->setToken($oauth_token);
         $accessToken->setClient($client);
         $accessToken->setUserId($user_id);
         $accessToken->setExpires($expires);
         $accessToken->setScope($scope);
 
-        // Store Access Token
-        $this->em->persist($accessToken);
-        $this->em->flush();
+        $this->getAccessTokenProvider()->save($accessToken);
     }
 }

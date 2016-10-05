@@ -1,6 +1,6 @@
 Zamat\Bundle\OAuth2Bundle\Entity\ClientPublicKey:
     type: entity
-    table: oauth_client_public_key
+    table: zamat_oauth_client_public_key
     id:
         client_id:
             type:       string

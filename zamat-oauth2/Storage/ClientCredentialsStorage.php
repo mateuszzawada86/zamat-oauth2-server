@@ -3,16 +3,45 @@
 namespace Zamat\OAuth2\Storage;
 
 use OAuth2\Storage\ClientCredentialsInterface;
-use Doctrine\ORM\EntityManager;
-use OAuth2\ServerBundle\Entity\Client;
+use Zamat\OAuth2\Provider\ClientProviderInterface;
 
-class ClientCredentials implements ClientCredentialsInterface
+class ClientCredentialsStorage implements ClientCredentialsInterface
 {
-    private $em;
-
-    public function __construct(EntityManager $EntityManager)
+    
+    /**
+     *
+     * @var type 
+     */
+    protected $clientProvider;
+    
+    /**
+     * 
+     * @return type
+     */
+    public function getClientProvider()
     {
-        $this->em = $EntityManager;
+        return $this->clientProvider;
+    }
+
+    /**
+     * 
+     * @param type $clientProvider
+     * @return \Zamat\OAuth2\Storage\ClientCredentialsStorage
+     */
+    public function setClientProvider(ClientProviderInterface $clientProvider)
+    {
+        $this->clientProvider = $clientProvider;
+        return $this;
+    }
+
+
+    /**
+     * 
+     * @param type $clientProvider
+     */
+    public function __construct(ClientProviderInterface $clientProvider)
+    {
+        $this->clientProvider = $clientProvider;
     }
 
     /**
@@ -28,19 +57,14 @@ class ClientCredentials implements ClientCredentialsInterface
      * @endcode
      *
      * @see http://tools.ietf.org/html/rfc6749#section-3.1
-     *
      * @ingroup oauth2_section_3
      */
     public function checkClientCredentials($client_id, $client_secret = null)
     {
-        // Get Client
-        $client = $this->em->getRepository('OAuth2ServerBundle:Client')->find($client_id);
-
-        // If client exists check secret
+        $client = $this->getClientProvider()->find($client_id);
         if ($client) {
             return $client->getClientSecret() === $client_secret;
         }
-
         return false;
     }
 
@@ -69,13 +93,11 @@ class ClientCredentials implements ClientCredentialsInterface
      */
     public function getClientDetails($client_id)
     {
-        // Get Client
-        $client = $this->em->getRepository('OAuth2ServerBundle:Client')->find($client_id);
-
+        $client = $this->getClientProvider()->find($client_id);
         if (!$client) {
             return false;
         }
-
+        
         return array(
             'redirect_uri' => implode(' ', $client->getRedirectUri()),
             'client_id' => $client->getClientId(),
@@ -137,28 +159,22 @@ class ClientCredentials implements ClientCredentialsInterface
      */
     public function isPublicClient($client_id)
     {
-        $client = $this->em->getRepository('OAuth2ServerBundle:Client')->find($client_id);
-
+        $client = $this->getClientProvider()->find($client_id);
         if (!$client) {
             return false;
         }
 
-        $secret = $client->getClientSecret();
-
-        return empty($secret);
+        return empty($client->getClientSecret());
     }
 
     /**
      * Get the scope associated with this client
-     *
      * @return
      * STRING the space-delineated scope list for the specified client_id
      */
     public function getClientScope($client_id)
     {
-        // Get Client
-        $client = $this->em->getRepository('OAuth2ServerBundle:Client')->find($client_id);
-
+        $client = $this->getClientProvider()->find($client_id);
         if (!$client) {
             return false;
         }

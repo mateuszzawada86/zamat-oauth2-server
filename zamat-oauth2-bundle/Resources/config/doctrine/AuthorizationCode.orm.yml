@@ -1,6 +1,6 @@
 Zamat\Bundle\OAuth2Bundle\Entity\AuthorizationCode:
     type: entity
-    table: oauth_authorization_code
+    table: zamat_oauth_authorization_code
     id:
         code:
             type:       string

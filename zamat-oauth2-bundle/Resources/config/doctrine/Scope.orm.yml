@@ -1,6 +1,6 @@
 Zamat\Bundle\OAuth2Bundle\Entity\Scope:
     type: entity
-    table: oauth_scope
+    table: zamat_oauth_scope
     id:
         scope:
             type:       string

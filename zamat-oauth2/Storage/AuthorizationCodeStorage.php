@@ -3,17 +3,79 @@
 namespace Zamat\OAuth2\Storage;
 
 use OAuth2\Storage\AuthorizationCodeInterface;
-use Doctrine\ORM\EntityManager;
-use OAuth2\ServerBundle\Entity\Client;
+use Zamat\OAuth2\Provider\ClientProviderInterface;
+use Zamat\OAuth2\Provider\AuthorizationCodeProviderInterface;
+use Zamat\OAuth2\AuthorizationCode;
 
-class AuthorizationCode implements AuthorizationCodeInterface
+
+class AuthorizationCodeStorage implements AuthorizationCodeInterface
 {
-    private $em;
 
-    public function __construct(EntityManager $EntityManager)
+    /**
+     *
+     * @var ClientProviderInterface 
+     */
+    protected $clientProvider;
+    
+    /**
+     *
+     * @var AuthorizationCodeProviderInterface 
+     */
+    protected $authCodeProvider;
+    
+    
+    /**
+     * 
+     * @return type
+     */
+    public function getClientProvider()
     {
-        $this->em = $EntityManager;
+        return $this->clientProvider;
     }
+
+    /**
+     * 
+     * @param type $clientProvider
+     * @return \Zamat\OAuth2\Storage\ClientCredentialsStorage
+     */
+    public function setClientProvider(ClientProviderInterface $clientProvider)
+    {
+        $this->clientProvider = $clientProvider;
+        return $this;
+    }
+    
+    /**
+     * 
+     * @return type
+     */
+    public function getAuthCodeProvider()
+    {
+        return $this->authCodeProvider;
+    }
+
+    /**
+     * 
+     * @param AuthorizationCodeProviderInterface $authCodeProvider
+     * @return \Zamat\OAuth2\Storage\AuthorizationCodeStorage
+     */
+    public function setAuthCodeProvider(AuthorizationCodeProviderInterface $authCodeProvider)
+    {
+        $this->authCodeProvider = $authCodeProvider;
+        return $this;
+    }
+
+    /**
+     * 
+     * @param ClientProviderInterface $clientProvider
+     * @param AuthorizationCodeProviderInterface $authCodeProvider
+     */
+    public function __construct(ClientProviderInterface $clientProvider,AuthorizationCodeProviderInterface $authCodeProvider)
+    {
+        $this->clientProvider = $clientProvider;
+        $this->authCodeProvider = $authCodeProvider;
+    } 
+    
+
 
     /**
      * Fetch authorization code data (probably the most common grant type).
@@ -43,10 +105,8 @@ class AuthorizationCode implements AuthorizationCodeInterface
      */
     public function getAuthorizationCode($code)
     {
-        // Get Code
-        $code = $this->em->getRepository('OAuth2ServerBundle:AuthorizationCode')->find($code);
-
-        if (!$code) {
+        $authCode = $this->getAuthCodeProvider($code)->find($code);
+        if (!$authCode) {
             return null;
         }
 
@@ -54,8 +114,8 @@ class AuthorizationCode implements AuthorizationCodeInterface
             'client_id' => $code->getClient()->getClientId(),
             'user_id' => $code->getUserId(),
             'expires' => $code->getExpires()->getTimestamp(),
-            'redirect_uri' => implode(' ', $code->getRedirectUri()),
-            'scope' => $code->getScope()
+            'redirect_uri' => implode(' ', $authCode->getRedirectUri()),
+            'scope' => $authCode->getScope()
         );
     }
 
@@ -87,11 +147,13 @@ class AuthorizationCode implements AuthorizationCodeInterface
      */
     public function setAuthorizationCode($code, $client_id, $user_id, $redirect_uri, $expires, $scope = null)
     {
-        $client = $this->em->getRepository('OAuth2ServerBundle:Client')->find($client_id);
+        $client = $this->getClientProvider()->find($client_id);
 
-        if (!$client) throw new \Exception('Unknown client identifier');
+        if (!$client) {
+           throw new \Exception('Unknown client identifier'); 
+        }
 
-        $authorizationCode = new \OAuth2\ServerBundle\Entity\AuthorizationCode();
+        $authorizationCode = new AuthorizationCode();
         $authorizationCode->setCode($code);
         $authorizationCode->setClient($client);
         $authorizationCode->setUserId($user_id);
@@ -99,8 +161,7 @@ class AuthorizationCode implements AuthorizationCodeInterface
         $authorizationCode->setExpires($expires);
         $authorizationCode->setScope($scope);
 
-        $this->em->persist($authorizationCode);
-        $this->em->flush();
+        $this->getAuthCodeProvider()->save($authorizationCode);
     }
 
     /**
@@ -117,8 +178,7 @@ class AuthorizationCode implements AuthorizationCodeInterface
      */
     public function expireAuthorizationCode($code)
     {
-        $code = $this->em->getRepository('OAuth2ServerBundle:AuthorizationCode')->find($code);
-        $this->em->remove($code);
-        $this->em->flush();
+        $code = $this->getAuthCodeProvider()->find($code);
+        $this->getAuthCodeProvider()->remove($code);     
     }
 }

@@ -3,15 +3,74 @@
 namespace Zamat\OAuth2\Storage;
 
 use OAuth2\Storage\RefreshTokenInterface;
-use Doctrine\ORM\EntityManager;
 
-class RefreshToken implements RefreshTokenInterface
+use Zamat\OAuth2\Provider\RefreshTokenProviderInterface;
+use Zamat\OAuth2\Provider\ClientProviderInterface;
+use Zamat\OAuth2\RefreshToken;
+
+
+class RefreshTokenStorage implements RefreshTokenInterface
 {
-    private $em;
-
-    public function __construct(EntityManager $EntityManager)
+    /**
+     *
+     * @var RefreshTokenProviderInterface 
+     */
+    protected $refreshTokenProvider;
+    
+    /**
+     *
+     * @var ClientProviderInterface 
+     */
+    protected $clientProvider;
+    
+    /**
+     * 
+     * @return type
+     */
+    public function getRefreshTokenProvider()
     {
-        $this->em = $EntityManager;
+        return $this->refreshTokenProvider;
+    }
+
+    /**
+     * 
+     * @param RefreshTokenProviderInterface $refreshTokenProvider
+     * @return \Zamat\OAuth2\Storage\RefreshTokenStorage
+     */
+    public function setRefreshTokenProvider(RefreshTokenProviderInterface $refreshTokenProvider)
+    {
+        $this->refreshTokenProvider = $refreshTokenProvider;
+        return $this;
+    }
+       
+    /**
+     * 
+     * @return type
+     */
+    public function getClientProvider()
+    {
+        return $this->clientProvider;
+    }
+
+    /**
+     * 
+     * @param type $clientProvider
+     * @return \Zamat\OAuth2\Storage\ClientCredentialsStorage
+     */
+    public function setClientProvider(ClientProviderInterface $clientProvider)
+    {
+        $this->clientProvider = $clientProvider;
+        return $this;
+    }  
+
+    /**
+     * 
+     * @param RefreshTokenProviderInterface $refreshTokenProvider
+     */
+    public function __construct(RefreshTokenProviderInterface $refreshTokenProvider,ClientProviderInterface $clientProvider)
+    {
+        $this->refreshTokenProvider = $refreshTokenProvider;
+        $this->clientProvider = $clientProvider;
     }
 
     /**
@@ -39,7 +98,7 @@ class RefreshToken implements RefreshTokenInterface
      */
     public function getRefreshToken($refresh_token)
     {
-        $refreshToken = $this->em->getRepository('OAuth2ServerBundle:RefreshToken')->find($refresh_token);
+        $refreshToken = $this->getRefreshTokenProvider()->find($refresh_token);
 
         if (!$refreshToken) {
             return null;
@@ -84,22 +143,20 @@ class RefreshToken implements RefreshTokenInterface
     public function setRefreshToken($refresh_token, $client_id, $user_id, $expires, $scope = null)
     {
         // Get Client Entity
-        $client = $this->em->getRepository('OAuth2ServerBundle:Client')->find($client_id);
+        $client = $this->getClientProvider()->find($client_id);
         if (!$client) {
             return null;
         }
 
         // Create Refresh Token
-        $refreshToken = new \OAuth2\ServerBundle\Entity\RefreshToken();
+        $refreshToken = new RefreshToken();
         $refreshToken->setToken($refresh_token);
         $refreshToken->setClient($client);
         $refreshToken->setUserId($user_id);
         $refreshToken->setExpires($expires);
         $refreshToken->setScope($scope);
 
-        // Store Refresh Token
-        $this->em->persist($refreshToken);
-        $this->em->flush();
+        $this->getRefreshTokenProvider()->save($refreshToken);
     }
 
     /**
@@ -120,8 +177,7 @@ class RefreshToken implements RefreshTokenInterface
      */
     public function unsetRefreshToken($refresh_token)
     {
-        $refreshToken = $this->em->getRepository('OAuth2ServerBundle:RefreshToken')->find($refresh_token);
-        $this->em->remove($refreshToken);
-        $this->em->flush();
+        $refreshToken = $this->getRefreshTokenProvider()->find($refresh_token);
+        $this->getRefreshTokenProvider()->remove($refreshToken);
     }
 }
