@@ -3,7 +3,6 @@
 namespace Zamat\Bundle\OAuth2Bundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -22,7 +21,6 @@ class VerifyController extends Controller
         if (!$server->verifyResourceRequest($this->get('oauth2.request'), $this->get('oauth2.response'))) {
             return $server->getResponse();
         }
-
         $tokenData = $server->getAccessTokenData($this->get('oauth2.request'), $this->get('oauth2.response'));
 
         return new JsonResponse($tokenData);

@@ -12,7 +12,7 @@ class AuthorizeController extends Controller
     /**
      * @Route("/authorize", name="_authorize_validate")
      * @Method({"GET"})
-     * @Template("OAuth2ServerBundle:Authorize:authorize.html.twig")
+     * @Template("ZamatOAuth2Bundle:Authorize:authorize.html.twig")
      */
     public function validateAuthorizeAction()
     {
@@ -39,7 +39,6 @@ class AuthorizeController extends Controller
     public function handleAuthorizeAction()
     {
         $server = $this->get('oauth2.server');
-
         return $server->handleAuthorizeRequest($this->get('oauth2.request'), $this->get('oauth2.response'), true);
     }
 }
