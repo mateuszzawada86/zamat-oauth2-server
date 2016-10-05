@@ -17,7 +17,6 @@
     },
     "autoload": {
         "psr-4": { 
-            "Zamat\\Bundle\\OAuth2Bundle\\": "zamat-oauth2-bundle/",        
             "Zamat\\OAuth2\\": "zamat-oauth2/" 
          }
     }
