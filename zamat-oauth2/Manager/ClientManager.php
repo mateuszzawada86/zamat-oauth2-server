@@ -7,7 +7,8 @@ use OAuth2\Exception\ScopeNotFoundException;
 
 class ClientManager
 {
-    private $em;
+    
+    private $entityManager;
 
     /**
      * @var ScopeManagerInterface
