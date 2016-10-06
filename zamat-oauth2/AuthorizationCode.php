@@ -121,8 +121,11 @@ class AuthorizationCode
      */
     public function setRedirectUri($redirectUri)
     {
-        $this->redirect_uri = explode(' ', $redirectUri);
-
+        if(!is_array($redirectUri)) {
+            $this->redirect_uri = explode(' ', $redirectUri);  
+        }else {
+            $this->redirect_uri = $redirectUri;
+        }
         return $this;
     }
 

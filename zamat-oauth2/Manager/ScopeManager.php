@@ -4,13 +4,54 @@ namespace Zamat\OAuth2\Manager;
 
 use Doctrine\ORM\EntityManager;
 
+use Zamat\OAuth2\Scope;
+use Zamat\OAuth2\Provider\ScopeProviderInterface;
+use Zamat\Bundle\OAuth2Bundle\Entity\Scope as EntityScope;
+
 class ScopeManager implements ScopeManagerInterface
 {
-    private $em;
-
-    public function __construct(EntityManager $entityManager)
+    /**
+     *
+     * @var EntityManager 
+     */
+    protected $entityManager;
+    
+    /**
+     *
+     * @var ScopeProviderInterface 
+     */
+    protected $scopeProvider;
+    
+    /**
+     * 
+     * @return ScopeProviderInterface
+     */
+    public function getScopeProvider()
     {
-        $this->em = $entityManager;
+        return $this->scopeProvider;
+    }
+
+    /**
+     * 
+     * @param ScopeProviderInterface $scopeProvider
+     * @return \Zamat\OAuth2\Manager\ScopeManager
+     */
+    public function setScopeProvider(ScopeProviderInterface $scopeProvider)
+    {
+        $this->scopeProvider = $scopeProvider;
+        return $this;
+    }
+
+    
+    /**
+     * 
+     * @param EntityManager $entityManager
+     */
+    public function __construct(EntityManager $entityManager )
+    {
+        $this->entityManager = $entityManager;
+        
+        $this->setScopeProvider($this->entityManager->getRepository(EntityScope::class));
     }
 
     /**
@@ -24,13 +65,11 @@ class ScopeManager implements ScopeManagerInterface
      */
     public function createScope($scope, $description = null)
     {
-        $scopeObject = new \Zamat\Bundle\OAuth2Bundle\Entity\Scope();
+        $scopeObject = new Scope();
         $scopeObject->setScope($scope);
         $scopeObject->setDescription($description);
 
-        // Store Scope
-        $this->em->persist($scopeObject);
-        $this->em->flush();
+        $this->scopeProvider->save($scopeObject);
 
         return $scopeObject;
     }
@@ -43,9 +82,7 @@ class ScopeManager implements ScopeManagerInterface
      */
     public function findScopeByScope($scope)
     {
-        $scopeObject = $this->em->getRepository('OAuth2ServerBundle:Scope')->find($scope);
-
-        return $scopeObject;
+        return $this->scopeProvider->find($scope);
     }
 
     /**
@@ -56,12 +93,6 @@ class ScopeManager implements ScopeManagerInterface
      */
     public function findScopesByScopes(array $scopes)
     {
-        $scopeObjects = $this->em->getRepository('OAuth2ServerBundle:Scope')
-            ->createQueryBuilder('a')
-            ->where('a.scope in (?1)')
-            ->setParameter(1, implode(',', $scopes))
-            ->getQuery()->getResult();
-
-        return $scopeObjects;
+        return $this->scopeProvider->findScopesByScopes($scopes);
     }
 }

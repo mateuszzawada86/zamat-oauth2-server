@@ -11,7 +11,13 @@
 <p>{{'Klient'|trans}} {{ request.client_id }} {{'żąda dostępu'|trans}}</p>
 {% endif %}
 
-<form action="?{{ qs|url_encode }}" method="post">
+
+<form action="{{path('_oauth_authorize_handle')}}" method="post">
+    
     <input type="hidden" name="authorize" value="1" />
+    <input type="hidden" name="client_id" value="{{ request.client_id }}" />
+    <input type="hidden" name="response_type" value="{{ request.response_type }}" />
+    <input type="hidden" name="scope" value="{{ request.scope }}" />
+    <input type="hidden" name="state" value="{{ request.state }}" />
     <input type="submit" value="Auhtorize" />
 </form>

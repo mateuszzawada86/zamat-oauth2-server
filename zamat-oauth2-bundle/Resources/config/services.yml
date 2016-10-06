@@ -2,7 +2,9 @@ parameters:
     zamat_oauth2.server.class: OAuth2\Server
 services:
     zamat_oauth2.request:
-        class: Zamat\OAuth2\HttpFoundation\Request
+        class:   Zamat\OAuth2\HttpFoundation\Request
+        factory: [Zamat\OAuth2\HttpFoundation\Request, createFromRequest]  
+        scope: request     
     zamat_oauth2.response:
         class: Zamat\OAuth2\HttpFoundation\Response   
     zamat_oauth.access.token.provider:
@@ -56,7 +58,7 @@ services:
         arguments: ["@zamat_oauth.refresh.token.provider","@zamat_oauth.client.provider"]
     zamat_oauth.scope.storage:
         class: Zamat\OAuth2\Storage\ScopeStorage
-        arguments: ["@zamat_oauth.client.provider"] 
+        arguments: ["@zamat_oauth.client.provider","@zamat_oauth2.scope_manager"] 
     zamat_oauth.user.credentials.storage:
         class: Zamat\OAuth2\Storage\UserCredentialsStorage
         arguments: ["@oauth2_application_user_provider","@security.encoder_factory"] 
@@ -83,7 +85,7 @@ services:
     # manager
     zamat_oauth2.scope_manager: 
         class: Zamat\OAuth2\Manager\ScopeManager
-        arguments: []    
+        arguments: ['@doctrine.orm.default_entity_manager']    
         
     zamat_oauth2.client_manager:    
         class: Zamat\OAuth2\Manager\ClientManager

@@ -19,7 +19,7 @@ class AuthorizeController extends Controller
     public function validateAuthorizeAction()
     {
         $server  = $this->get('zamat_oauth2.server');
-        $request = $this->get('zamat_oauth2.request');
+        $request = $this->get('zamat_oauth2.request');                
         $response = $this->get('zamat_oauth2.response');
         if (!$server->validateAuthorizeRequest($request,$response)) {
             return $server->getResponse();
@@ -39,7 +39,7 @@ class AuthorizeController extends Controller
      */
     public function handleAuthorizeAction()
     {
-        $server = $this->get('oauth2.server');
+        $server = $this->get('zamat_oauth2.server');
         $request = $this->get('zamat_oauth2.request');
         $response = $this->get('zamat_oauth2.response');
         

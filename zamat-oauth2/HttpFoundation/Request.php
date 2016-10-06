@@ -70,8 +70,11 @@ use OAuth2\RequestInterface;
      * @param BaseRequest $request
      * @return \static
      */
-    public static function createFromRequest(BaseRequest $request)
+    public static function createFromRequest()
     {
+        
+        $request = BaseRequest::createFromGlobals();
+        
         return new static(
                 $request->query->all(), 
                 $request->request->all(), 

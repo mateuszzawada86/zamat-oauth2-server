@@ -117,11 +117,12 @@ class ScopeStorage implements ScopeInterface
      */
     public function getDescriptionForScope($scope)
     {
-        // Get Scope
         $scopeObject = $this->scopeManager->findScopeByScope($scope);
         if (!$scopeObject) {
             return $scope;
         }
-        return $scopeObject->getDescription();
+        return $scopeObject->getDescription(); 
+              
+
     }
 }
