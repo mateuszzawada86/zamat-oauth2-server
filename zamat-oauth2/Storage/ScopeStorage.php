@@ -16,12 +16,12 @@ class ScopeStorage implements ScopeInterface
      */
     protected $clientProvider;
     
+    
     /**
      * @var ScopeManagerInterface
      */
     private $scopeManager;
-    
-    
+      
     /**
      * 
      * @return type
@@ -47,7 +47,7 @@ class ScopeStorage implements ScopeInterface
      * @param ClientProviderInterface $clientProvider
      * @param ScopeManagerInterface $manager
      */
-    public function __construct(ClientProviderInterface $clientProvider, ScopeManagerInterface $manager)
+    public function __construct(ClientProviderInterface $clientProvider, ScopeManagerInterface $manager = null)
     {
         $this->clientProvider = $clientProvider;
         $this->scopeManager = $manager;

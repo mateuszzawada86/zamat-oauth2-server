@@ -40,7 +40,7 @@ class OAuth2 extends Server
             PublicKeyInterface $publicKey = null, 
             array $config = array(), array $grantTypes = array(), array $responseTypes = array(), \OAuth2\TokenType\TokenTypeInterface $tokenType = null, \OAuth2\ScopeInterface $scopeUtil = null, \OAuth2\ClientAssertionType\ClientAssertionTypeInterface $clientAssertionType = null)
     {
-        parent::__construct(array($credentials, $accessToken, $authorizationCode, $userCredential, $refreshToken, $scope, $publicKey), $config, $grantTypes, $responseTypes, $tokenType, $scopeUtil, $clientAssertionType);
+        parent::__construct(array_filter(array($credentials, $accessToken, $authorizationCode, $userCredential, $refreshToken, $publicKey)), $config, $grantTypes, $responseTypes, $tokenType, $scopeUtil, $clientAssertionType);
     }
 
 }

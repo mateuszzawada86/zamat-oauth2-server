@@ -1,5 +1,6 @@
 Zamat\Bundle\OAuth2Bundle\Entity\Client:
     type: entity
+    repositoryClass: Zamat\Bundle\OAuth2Bundle\Entity\Repository\ClientRepository 
     table: zamat_oauth_client
     id:
         client_id:

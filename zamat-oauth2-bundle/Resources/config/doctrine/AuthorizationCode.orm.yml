@@ -1,5 +1,6 @@
 Zamat\Bundle\OAuth2Bundle\Entity\AuthorizationCode:
     type: entity
+    repositoryClass: Zamat\Bundle\OAuth2Bundle\Entity\Repository\AuthorizationCodeRepository  
     table: zamat_oauth_authorization_code
     id:
         code:

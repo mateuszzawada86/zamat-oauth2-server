@@ -4,11 +4,62 @@ services:
     zamat_oauth2.request:
         class: Zamat\OAuth2\HttpFoundation\Request
     zamat_oauth2.response:
-        class: Zamat\OAuth2\HttpFoundation\Response 
+        class: Zamat\OAuth2\HttpFoundation\Response   
+    zamat_oauth.access.token.provider:
+        class: Doctrine\ORM\EntityRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zamat\Bundle\OAuth2Bundle\Entity\AccessToken     
+    zamat_oauth.refresh.token.provider:
+        class: Doctrine\ORM\EntityRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zamat\Bundle\OAuth2Bundle\Entity\RefreshToken    
+    zamat_oauth.authorization.code.provider:
+        class: Doctrine\ORM\EntityRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zamat\Bundle\OAuth2Bundle\Entity\AuthorizationCode    
+    zamat_oauth.client.provider:
+        class: Doctrine\ORM\EntityRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zamat\Bundle\OAuth2Bundle\Entity\Client          
+    zamat_oauth.scope.provider:
+        class: Doctrine\ORM\EntityRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zamat\Bundle\OAuth2Bundle\Entity\Scope          
+    zamat_oauth.client.publickey.provider:
+        class: Doctrine\ORM\EntityRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zamat\Bundle\OAuth2Bundle\Entity\ClientPublicKey 
+    zamat_oauth.user.provider:
+        class: Doctrine\ORM\EntityRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zamat\Bundle\OAuth2Bundle\Entity\User
+            
+    zamat_oauth.access.token.storage:
+        class: Zamat\OAuth2\Storage\AccessTokenStorage
+        arguments: ["@zamat_oauth.client.provider","@zamat_oauth.access.token.provider"]
+    zamat_oauth.authorization.code.storage:
+        class: Zamat\OAuth2\Storage\AuthorizationCodeStorage
+        arguments: ["@zamat_oauth.client.provider","@zamat_oauth.authorization.code.provider"]
+    zamat_oauth.client.credentials.storage:
+        class: Zamat\OAuth2\Storage\ClientCredentialsStorage
+        arguments: ["@zamat_oauth.client.provider"]
+    zamat_oauth.refresh.token.storage:
+        class: Zamat\OAuth2\Storage\RefreshTokenStorage
+        arguments: ["@zamat_oauth.refresh.token.provider","@zamat_oauth.client.provider"]
+    zamat_oauth.scope.storage:
+        class: Zamat\OAuth2\Storage\ScopeStorage
+        arguments: ["@zamat_oauth.client.provider"] 
+    zamat_oauth.user.credentials.storage:
+        class: Zamat\OAuth2\Storage\UserCredentialsStorage
+        arguments: ["@oauth2_application_user_provider","@security.encoder_factory"] 
+        
     zamat_oauth2.server:
         class: Zamat\OAuth2\Server\OAuth2
-        arguments: []
-
-        
-        
-        
+        arguments: ["@zamat_oauth.client.credentials.storage","@zamat_oauth.access.token.storage","@zamat_oauth.authorization.code.storage","@zamat_oauth.user.credentials.storage","@zamat_oauth.refresh.token.storage","@zamat_oauth.scope.storage"]           
