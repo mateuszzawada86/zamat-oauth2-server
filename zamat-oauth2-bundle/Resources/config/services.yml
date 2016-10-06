@@ -81,7 +81,11 @@ services:
         arguments: ["@zamat_oauth.client.credentials.storage"]      
     
     # manager
+    zamat_oauth2.scope_manager: 
+        class: Zamat\OAuth2\Manager\ScopeManager
+        arguments: []    
+        
     zamat_oauth2.client_manager:    
         class: Zamat\OAuth2\Manager\ClientManager
-        arguments: ["@doctrine.orm.entity_manager","@zamat_oauth2.scope_manager"]    
+        arguments: ["@zamat_oauth.client.provider","@zamat_oauth2.scope_manager"]    
 

@@ -10,13 +10,13 @@ class ClientCredentialsStorage implements ClientCredentialsInterface
     
     /**
      *
-     * @var type 
+     * @var ClientProviderInterface 
      */
     protected $clientProvider;
     
     /**
      * 
-     * @return type
+     * @return ClientProviderInterface
      */
     public function getClientProvider()
     {
@@ -25,7 +25,7 @@ class ClientCredentialsStorage implements ClientCredentialsInterface
 
     /**
      * 
-     * @param type $clientProvider
+     * @param ClientProviderInterface $clientProvider
      * @return \Zamat\OAuth2\Storage\ClientCredentialsStorage
      */
     public function setClientProvider(ClientProviderInterface $clientProvider)
@@ -37,7 +37,7 @@ class ClientCredentialsStorage implements ClientCredentialsInterface
 
     /**
      * 
-     * @param type $clientProvider
+     * @param ClientProviderInterface $clientProvider
      */
     public function __construct(ClientProviderInterface $clientProvider)
     {

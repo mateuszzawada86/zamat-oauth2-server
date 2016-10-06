@@ -2,23 +2,77 @@
 
 namespace Zamat\OAuth2\Manager;
 
-use Doctrine\ORM\EntityManager;
+use Zamat\OAuth2\Provider\ClientProviderInterface;
+use Zamat\OAuth2\Manager\ScopeManagerInterface;
 use OAuth2\Exception\ScopeNotFoundException;
+
+use Zamat\OAuth2\Client;
+
 
 class ClientManager
 {
+    /**
+     *
+     * @var ClientProviderInterface 
+     */
+    protected $clientProvider;
     
-    private $entityManager;
+    /**
+     *
+     * @var ScopeManagerInterface 
+     */
+    protected $scopeManager;
+    
+    /**
+     * 
+     * @return type
+     */
+    public function getClientProvider()
+    {
+        return $this->clientProvider;
+    }
 
     /**
-     * @var ScopeManagerInterface
+     * 
+     * @param ClientProviderInterface $clientProvider
+     * @return \Zamat\OAuth2\Manager\ClientManager
      */
-    private $sm;
-
-    public function __construct(EntityManager $entityManager, ScopeManagerInterface $scopeManager)
+    public function setClientProvider(ClientProviderInterface $clientProvider)
     {
-        $this->em = $entityManager;
-        $this->sm = $scopeManager;
+        $this->clientProvider = $clientProvider;
+        return $this;
+    }
+    
+    /**
+     * 
+     * @return type
+     */
+    public function getScopeManager()
+    {
+        return $this->scopeManager;
+    }
+
+    /**
+     * 
+     * @param ScopeManagerInterface $scopeManager
+     * @return \Zamat\OAuth2\Manager\ClientManager
+     */
+    public function setScopeManager(ScopeManagerInterface $scopeManager)
+    {
+        $this->scopeManager = $scopeManager;
+        return $this;
+    }
+
+    
+    /**
+     * 
+     * @param ClientProviderInterface $clientProvider
+     * @param ScopeManagerInterface $scopeManager
+     */
+    public function __construct(ClientProviderInterface $clientProvider, ScopeManagerInterface $scopeManager)
+    {
+        $this->clientProvider = $clientProvider;
+        $this->scopeManager = $scopeManager;
     }
 
     /**
@@ -28,7 +82,7 @@ class ClientManager
      *
      * @param array $redirect_uris
      *
-     * @param array $grant_type
+     * @param array $grant_types
      *
      * @param array $scopes
      *
@@ -36,27 +90,22 @@ class ClientManager
      */
     public function createClient($identifier, array $redirect_uris = array(), array $grant_types = array(), array $scopes = array())
     {
-        $client = new \Zamat\Bundle\OAuth2Bundle\Entity\Client();
+        $client = new Client();
+        
         $client->setClientId($identifier);
         $client->setClientSecret($this->generateSecret());
         $client->setRedirectUri($redirect_uris);
         $client->setGrantTypes($grant_types);
 
-        // Verify scopes
         foreach ($scopes as $scope) {
-            // Get Scope
-            $scopeObject = $this->sm->findScopeByScope($scope);
+            $scopeObject = $this->scopeManager->findScopeByScope($scope);
             if (!$scopeObject) {
                 throw new ScopeNotFoundException();
             }
         }
-
         $client->setScopes($scopes);
-
-        // Store Client
-        $this->em->persist($client);
-        $this->em->flush();
-
+        
+        $this->clientProvider->save($client);
         return $client;
     }
 
