@@ -41,6 +41,7 @@ services:
         arguments:
             - Zamat\Bundle\OAuth2Bundle\Entity\User
             
+    # storage         
     zamat_oauth.access.token.storage:
         class: Zamat\OAuth2\Storage\AccessTokenStorage
         arguments: ["@zamat_oauth.client.provider","@zamat_oauth.access.token.provider"]
@@ -59,7 +60,28 @@ services:
     zamat_oauth.user.credentials.storage:
         class: Zamat\OAuth2\Storage\UserCredentialsStorage
         arguments: ["@oauth2_application_user_provider","@security.encoder_factory"] 
-        
+     
+    # server
     zamat_oauth2.server:
         class: Zamat\OAuth2\Server\OAuth2
-        arguments: ["@zamat_oauth.client.credentials.storage","@zamat_oauth.access.token.storage","@zamat_oauth.authorization.code.storage","@zamat_oauth.user.credentials.storage","@zamat_oauth.refresh.token.storage","@zamat_oauth.scope.storage"]           
+        arguments: ["@zamat_oauth.client.credentials.storage","@zamat_oauth.access.token.storage","@zamat_oauth.authorization.code.storage","@zamat_oauth.user.credentials.storage","@zamat_oauth.refresh.token.storage","@zamat_oauth.scope.storage"]       
+    
+    # grant type
+    zamat_oauth2.oauth2.grant_type.authorization_code:    
+        class: OAuth2\GrantType\AuthorizationCode
+        arguments: ["@zamat_oauth.authorization.code.storage"]
+    zamat_oauth2.oauth2.grant_type.user_credentials:    
+        class: OAuth2\GrantType\UserCredentials
+        arguments: ["@zamat_oauth.user.credentials.storage"]
+    zamat_oauth2.oauth2.grant_type.refresh_token:    
+        class: OAuth2\GrantType\RefreshToken
+        arguments: ["@zamat_oauth.refresh.token.storage"]  
+    zamat_oauth2.oauth2.grant_type.client_credentials:
+        class: OAuth2\GrantType\ClientCredentials
+        arguments: ["@zamat_oauth.client.credentials.storage"]      
+    
+    # manager
+    zamat_oauth2.client_manager:    
+        class: Zamat\OAuth2\Manager\ClientManager
+        arguments: ["@doctrine.orm.entity_manager","@zamat_oauth2.scope_manager"]    
+

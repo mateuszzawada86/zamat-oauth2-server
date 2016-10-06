@@ -12,19 +12,17 @@ class TokenController extends Controller
      * an authorization code from the Authorize Controller (@see OAuth2\ServerBundle\Controller\AuthorizeController).
      * returns a JSON-encoded Access Token or a JSON object with
      * "error" and "error_description" properties.
-     *
-     * @Route("/token", name="_token")
+     * @Route("/token", name="_oauth_token")
      */
     public function tokenAction()
     {
-        $server = $this->get('oauth2.server');
+        $server = $this->get('zamat_oauth2.server');
 
-        // Add Grant Types
-        $server->addGrantType($this->get('oauth2.grant_type.client_credentials'));
-        $server->addGrantType($this->get('oauth2.grant_type.authorization_code'));
-        $server->addGrantType($this->get('oauth2.grant_type.refresh_token'));
-        $server->addGrantType($this->get('oauth2.grant_type.user_credentials'));
+        $server->addGrantType($this->get('zamat_oauth2.oauth2.grant_type.client_credentials'));
+        $server->addGrantType($this->get('zamat_oauth2.oauth2.grant_type.authorization_code'));
+        $server->addGrantType($this->get('zamat_oauth2.oauth2.grant_type.refresh_token'));
+        $server->addGrantType($this->get('zamat_oauth2.oauth2.grant_type.user_credentials'));
 
-        return $server->handleTokenRequest($this->get('oauth2.request'), $this->get('oauth2.response'));
+        return $server->handleTokenRequest($this->get('zamat_oauth2.request'), $this->get('zamat_oauth2.response'));
     }
 }
