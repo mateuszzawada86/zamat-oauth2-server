@@ -1,6 +1,5 @@
 parameters:
     zamat_oauth2.server.class: OAuth2\Server
-    collectionsd: ["%zamat_oauth2.server.class%", "dfgdfgfd"]
 services:
     zamat_oauth2.request:
         class: Zamat\OAuth2\HttpFoundation\Request

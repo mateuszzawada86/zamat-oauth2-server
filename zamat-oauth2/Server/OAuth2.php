@@ -31,13 +31,13 @@ class OAuth2 extends Server
      * @param \OAuth2\ClientAssertionType\ClientAssertionTypeInterface $clientAssertionType
      */
     public function __construct(
-            ClientCredentialsInterface $credentials, 
-            AccessTokenInterface $accessToken, 
-            AuthorizationCodeInterface $authorizationCode, 
-            UserCredentialsInterface $userCredential, 
-            RefreshTokenInterface $refreshToken, 
-            ScopeInterface $scope, 
-            PublicKeyInterface $publicKey, 
+            ClientCredentialsInterface $credentials = null, 
+            AccessTokenInterface $accessToken = null, 
+            AuthorizationCodeInterface $authorizationCode = null, 
+            UserCredentialsInterface $userCredential = null, 
+            RefreshTokenInterface $refreshToken = null, 
+            ScopeInterface $scope = null, 
+            PublicKeyInterface $publicKey = null, 
             array $config = array(), array $grantTypes = array(), array $responseTypes = array(), \OAuth2\TokenType\TokenTypeInterface $tokenType = null, \OAuth2\ScopeInterface $scopeUtil = null, \OAuth2\ClientAssertionType\ClientAssertionTypeInterface $clientAssertionType = null)
     {
         parent::__construct(array($credentials, $accessToken, $authorizationCode, $userCredential, $refreshToken, $scope, $publicKey), $config, $grantTypes, $responseTypes, $tokenType, $scopeUtil, $clientAssertionType);

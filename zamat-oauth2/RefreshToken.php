@@ -10,27 +10,27 @@ class RefreshToken
     /**
      * @var string
      */
-    private $token;
+    protected $token;
 
     /**
      * @var string
      */
-    private $user_id;
+    protected $user_id;
 
     /**
      * @var \DateTime
      */
-    private $expires;
+    protected $expires;
 
     /**
      * @var string
      */
-    private $scope;
+    protected $scope;
 
     /**
      * @var Client
      */
-    private $client;
+    protected $client;
 
     /**
      * Set token

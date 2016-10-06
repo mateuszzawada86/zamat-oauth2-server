@@ -10,27 +10,27 @@ class User
     /**
      * @var string
      */
-    private $username;
+    protected $username;
 
     /**
      * @var string
      */
-    private $password;
+    protected $password;
 
     /**
      * @var string
      */
-    private $salt;
+    protected $salt;
 
     /**
      * @var array
      */
-    private $roles;
+    protected $roles;
 
     /**
      * @var array
      */
-    private $scopes;
+    protected $scopes;
 
     /**
      * Set username

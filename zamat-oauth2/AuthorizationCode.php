@@ -10,32 +10,32 @@ class AuthorizationCode
     /**
      * @var string
      */
-    private $code;
+    protected $code;
 
     /**
      * @var \DateTime
      */
-    private $expires;
+    protected $expires;
 
     /**
      * @var string
      */
-    private $user_id;
+    protected $user_id;
 
     /**
      * @var array
      */
-    private $redirect_uri;
+    protected $redirect_uri;
 
     /**
      * @var string
      */
-    private $scope;
+    protected $scope;
 
     /**
      * @var Client
      */
-    private $client;
+    protected $client;
 
     /**
      * Set code

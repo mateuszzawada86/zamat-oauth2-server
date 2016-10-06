@@ -10,27 +10,32 @@ class Client
     /**
      * @var string
      */
-    private $client_id;
+    protected $client_id;
 
     /**
      * @var string
      */
-    private $client_secret;
+    protected $client_secret;
 
     /**
      * @var array
      */
-    private $redirect_uri;
+    protected $redirect_uri;
 
     /**
      * @var ClientPublicKey $public_key
      */
-    private $grant_types;
+    protected $grant_types;
 
     /**
      * @var string
      */
-    private $public_key;
+    protected $public_key;
+    
+    /**
+     * @var string
+     */
+    protected $scopes;  
 
     /**
      * Set client_id
@@ -123,10 +128,6 @@ class Client
     {
         return $this->grant_types;
     }
-    /**
-     * @var array
-     */
-    private $scopes;
 
     /**
      * Set scopes

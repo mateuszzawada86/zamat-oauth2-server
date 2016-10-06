@@ -11,17 +11,17 @@ class ClientPublicKey
     /**
      * @var Client
      */
-    private $client;
+    protected $client;
 
     /**
      * @var integer
      */
-    private $client_id;
+    protected $client_id;
 
     /**
      * @var string
      */
-    private $public_key;
+    protected $public_key;
 
     /**
      * Set client

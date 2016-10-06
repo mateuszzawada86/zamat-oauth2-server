@@ -7,12 +7,12 @@ class Scope
     /**
      * @var string
      */
-    private $scope;
+    protected $scope;
 
     /**
      * @var string
      */
-    private $description;
+    protected $description;
 
     /**
      * Set scope
