@@ -66,8 +66,7 @@ class OAuth2Provider implements AuthenticationProviderInterface
             
             $token->setAuthenticated(true);      
             $token->setUser($accessToken->getUserId());
-            var_dump($token);
-            die();
+            
             return $token;
         }
         catch (\Exception $e) {
