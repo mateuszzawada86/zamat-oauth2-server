@@ -3,29 +3,25 @@
 namespace Zamat\OAuth2\Storage;
 
 use OAuth2\Storage\AccessTokenInterface;
-
 use Zamat\OAuth2\Provider\ClientProviderInterface;
 use Zamat\OAuth2\Provider\AccessTokenProviderInterface;
 use Zamat\OAuth2\AccessToken;
 
-
 class AccessTokenStorage implements AccessTokenInterface
 {
-    
-    
+
     /**
      *
      * @var ClientProviderInterface 
      */
     protected $clientProvider;
-    
+
     /**
      *
      * @var AccessTokenProviderInterface 
      */
     protected $accessTokenProvider;
-    
-    
+
     /**
      * 
      * @return type
@@ -45,7 +41,7 @@ class AccessTokenStorage implements AccessTokenInterface
         $this->clientProvider = $clientProvider;
         return $this;
     }
-    
+
     /**
      * 
      * @return type
@@ -65,7 +61,7 @@ class AccessTokenStorage implements AccessTokenInterface
         $this->accessTokenProvider = $accessTokenProvider;
         return $this;
     }
-    
+
     /**
      * 
      * @param ClientProviderInterface $clientProvider
@@ -149,4 +145,16 @@ class AccessTokenStorage implements AccessTokenInterface
 
         $this->getAccessTokenProvider()->save($accessToken);
     }
+    
+    /**
+     * 
+     * @param type $token
+     * @return type
+     */
+    public function verifyAccessToken($token)
+    {
+        return $this->getAccessTokenProvider()->find($token);
+        
+    }
+
 }

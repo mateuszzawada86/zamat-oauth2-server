@@ -7,10 +7,6 @@ Zamat\Bundle\OAuth2Bundle\Entity\AccessToken:
             type:       string
             length:     40
     fields:
-        user_id:
-            type:       string
-            length:     100
-            nullable:   true
         expires:
             type:       datetime
         scope:
@@ -25,4 +21,11 @@ Zamat\Bundle\OAuth2Bundle\Entity\AccessToken:
           referencedColumnName: client_id
           onDelete: CASCADE
           onUpdate: CASCADE
+      user_id:
+        targetEntity: \Zamat\Bundle\OAuth2Bundle\Entity\User
+        joinColumn:
+          name: user_id
+          referencedColumnName: username
+          onDelete: CASCADE
+          onUpdate: CASCADE      
     lifecycleCallbacks: {  }

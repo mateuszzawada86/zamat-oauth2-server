@@ -91,5 +91,17 @@ services:
         
     zamat_oauth2.client_manager:    
         class: Zamat\OAuth2\Manager\ClientManager
-        arguments: ["@zamat_oauth.client.provider","@zamat_oauth2.scope_manager"]    
+        arguments: ["@zamat_oauth.client.provider","@zamat_oauth2.scope_manager"]  
+        
+        
+    # security     
+    oauth.security.authentication.provider:
+        class: Zamat\OAuth2\Security\Authentication\Provider\OAuth2Provider
+        arguments: ["@zamat_oauth.user.provider","@zamat_oauth.access.token.storage"]
+        public: false
+
+    oauth.security.authentication.listener:
+        class: Zamat\OAuth2\Security\Authentication\Firewall\OAuth2Listener
+        arguments: ['@security.token_storage', '@security.authentication.manager']
+        public: false
 

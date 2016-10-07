@@ -4,6 +4,7 @@ namespace Zamat\OAuth2;
 
 class AccessToken
 {
+
     /**
      * @var string
      */
@@ -150,4 +151,5 @@ class AccessToken
     {
         return $this->client;
     }
+
 }
