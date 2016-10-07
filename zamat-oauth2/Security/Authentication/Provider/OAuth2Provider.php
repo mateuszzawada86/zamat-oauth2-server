@@ -25,7 +25,7 @@ class OAuth2Provider implements AuthenticationProviderInterface
      * @var AccessTokenStorage
      */
     protected $accessTokenStorage;
-    
+
     /**
      * @var UserCheckerInterface
      */
@@ -37,7 +37,7 @@ class OAuth2Provider implements AuthenticationProviderInterface
      * @param AccessTokenStorage $accessTokenStorage
      * @param UserCheckerInterface $userChecker
      */
-    public function __construct(UserProviderInterface $userProvider = null, AccessTokenStorage $accessTokenStorage = null , UserCheckerInterface $userChecker = null)
+    public function __construct(UserProviderInterface $userProvider = null, AccessTokenStorage $accessTokenStorage = null, UserCheckerInterface $userChecker = null)
     {
         $this->userProvider = $userProvider;
         $this->accessTokenStorage = $accessTokenStorage;
@@ -56,18 +56,29 @@ class OAuth2Provider implements AuthenticationProviderInterface
         try {
 
             $accessToken = $this->accessTokenStorage->verifyAccessToken($token->getToken());
-            if(!$accessToken) {
+            if (!$accessToken) {
                 return;
             }
+
             $currentTime = new \DateTime();
             if ($accessToken->getExpires()->getTimestamp() < $currentTime->getTimestamp()) {
                 throw new AuthenticationException('OAuth2 authentication failed. Token expired');
             }
-            
-            $token->setAuthenticated(true);      
-            $token->setUser($accessToken->getUserId());
-            
-            return $token;
+
+
+            $roles = array();
+            $account = $accessToken->getUserId();
+            if ($account) {
+                $roles = $account->getRoles();
+            }
+
+            $generatedToken = new OAuth2Token($roles);
+            $generatedToken->setToken($token->getToken());
+            $generatedToken->setAuthenticated(true);
+            $generatedToken->setUser($account);
+
+
+            return $generatedToken;
         }
         catch (\Exception $e) {
 

@@ -13,7 +13,7 @@ class RefreshToken
     protected $token;
 
     /**
-     * @var string
+     * @var User
      */
     protected $user_id;
 
@@ -58,10 +58,10 @@ class RefreshToken
     /**
      * Set user_id
      *
-     * @param  string       $userId
+     * @param  User $userId
      * @return RefreshToken
      */
-    public function setUserId($userId)
+    public function setUserId(User $userId = null)
     {
         $this->user_id = $userId;
 
@@ -71,7 +71,7 @@ class RefreshToken
     /**
      * Get user_id
      *
-     * @return string
+     * @return User
      */
     public function getUserId()
     {

@@ -1,6 +1,7 @@
 <?php
 
 namespace Zamat\Bundle\OAuth2Bundle\Entity;
+
 use Zamat\OAuth2\ClientPublicKey as BaseClientPublicKey;
 
 /**
@@ -8,5 +9,5 @@ use Zamat\OAuth2\ClientPublicKey as BaseClientPublicKey;
  */
 class ClientPublicKey extends BaseClientPublicKey
 {
- 
+    
 }

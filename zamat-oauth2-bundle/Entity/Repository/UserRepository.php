@@ -1,4 +1,5 @@
 <?php
+
 namespace Zamat\Bundle\OAuth2Bundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
@@ -7,6 +8,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Zamat\Bundle\OAuth2Bundle\Entity\User;
+
 /**
  * Description of UserRepository
  * @author mateusz.zawada
@@ -19,7 +21,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
      * @var EncoderFactoryInterface 
      */
     private $encoderFactory;
-    
+
     /**
      * 
      * @return type
@@ -49,7 +51,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
     {
         return $this->findOneBy(array('username' => $username));
     }
-    
+
     /**
      * 
      * @param UserInterface $user
@@ -60,13 +62,12 @@ class UserRepository extends EntityRepository implements UserProviderInterface
     {
         if (!$user instanceof UserInterface) {
             throw new UnsupportedUserException(
-                sprintf('Instances of "%s" are not supported.', get_class($user))
+            sprintf('Instances of "%s" are not supported.', get_class($user))
             );
         }
 
         return $this->loadUserByUsername($user->getUsername());
     }
-    
 
     /**
      * 
@@ -77,8 +78,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
     {
         return $class === __NAMESPACE__;
     }
-    
-    
+
     /**
      * Creates a new user
      *
@@ -95,7 +95,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
     public function createUser($username, $password, array $roles = array(), array $scopes = array())
     {
         $user = new User();
-        
+
         $user->setUsername($username);
         $user->setRoles($roles);
         $user->setScopes($scopes);
@@ -119,6 +119,6 @@ class UserRepository extends EntityRepository implements UserProviderInterface
     protected function generateSalt()
     {
         return base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
-    }   
-  
+    }
+
 }

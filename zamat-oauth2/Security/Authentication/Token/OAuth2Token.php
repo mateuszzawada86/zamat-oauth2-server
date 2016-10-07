@@ -43,7 +43,7 @@ class OAuth2Token extends AbstractToken
     {
         return $this->token;
     }
-    
+
     /**
      * 
      * @param type $expires

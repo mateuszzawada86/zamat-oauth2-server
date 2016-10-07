@@ -11,7 +11,7 @@ class AccessToken
     protected $token;
 
     /**
-     * @var string
+     * @var User
      */
     protected $user_id;
 
@@ -33,7 +33,7 @@ class AccessToken
     /**
      * Set token
      *
-     * @param  string      $token
+     * @param  string $token
      * @return AccessToken
      */
     public function setToken($token)
@@ -56,10 +56,10 @@ class AccessToken
     /**
      * Set user_id
      *
-     * @param  string      $userId
+     * @param  User $userId
      * @return AccessToken
      */
-    public function setUserId($userId)
+    public function setUserId(User $userId = null)
     {
         $this->user_id = $userId;
 
@@ -69,7 +69,7 @@ class AccessToken
     /**
      * Get user_id
      *
-     * @return string
+     * @return User
      */
     public function getUserId()
     {
@@ -85,7 +85,6 @@ class AccessToken
     public function setExpires($expires)
     {
         if (!$expires instanceof \DateTime) {
-            // @see https://github.com/bshaffer/oauth2-server-bundle/issues/24
             $dateTime = new \DateTime();
             $dateTime->setTimestamp($expires);
             $expires = $dateTime;
@@ -109,7 +108,7 @@ class AccessToken
     /**
      * Set scope
      *
-     * @param  string      $scope
+     * @param  string $scope
      * @return AccessToken
      */
     public function setScope($scope)

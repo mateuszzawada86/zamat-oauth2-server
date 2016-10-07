@@ -18,7 +18,7 @@ class AuthorizationCode
     protected $expires;
 
     /**
-     * @var string
+     * @var User
      */
     protected $user_id;
 
@@ -40,7 +40,7 @@ class AuthorizationCode
     /**
      * Set code
      *
-     * @param  string            $code
+     * @param  string $code
      * @return AuthorizationCode
      */
     public function setCode($code)
@@ -63,13 +63,12 @@ class AuthorizationCode
     /**
      * Set expires
      *
-     * @param  \DateTime         $expires
+     * @param  \DateTime $expires
      * @return AuthorizationCode
      */
     public function setExpires($expires)
     {
         if (!$expires instanceof \DateTime) {
-            // @see https://github.com/bshaffer/oauth2-server-bundle/issues/24
             $dateTime = new \DateTime();
             $dateTime->setTimestamp($expires);
             $expires = $dateTime;
@@ -92,21 +91,19 @@ class AuthorizationCode
 
     /**
      * Set user_id
-     *
-     * @param  string            $userId
+     * @param  User $userId
      * @return AuthorizationCode
      */
-    public function setUserId($userId)
+    public function setUserId(User $userId = null)
     {
         $this->user_id = $userId;
-
         return $this;
     }
 
     /**
      * Get user_id
      *
-     * @return string
+     * @return User
      */
     public function getUserId()
     {
