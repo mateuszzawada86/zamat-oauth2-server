@@ -100,6 +100,7 @@ class UserCredentialsStorage  implements UserCredentialsInterface
     {
         try {
             $user = $this->userProvider->loadUserByUsername($username);
+                        
         } catch (UsernameNotFoundException $e) {
             return false;
         }
@@ -118,11 +119,10 @@ class UserCredentialsStorage  implements UserCredentialsInterface
                 return false;
             }
         }
-        
+                
         if ($this->encoderFactory->getEncoder($user)->isPasswordValid($user->getPassword(), $password, $user->getSalt())) {
             return true;
         }
-
         return false;
     }
 

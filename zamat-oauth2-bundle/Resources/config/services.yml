@@ -63,7 +63,7 @@ services:
         arguments: ["@zamat_oauth.client.provider","@zamat_oauth2.scope_manager"] 
     zamat_oauth.user.credentials.storage:
         class: Zamat\OAuth2\Storage\UserCredentialsStorage
-        arguments: ["@oauth2_application_user_provider","@security.encoder_factory"] 
+        arguments: ["@zamat_oauth.user.provider","@security.encoder_factory"] 
      
     # server
     zamat_oauth2.server:
