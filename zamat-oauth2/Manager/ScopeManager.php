@@ -82,7 +82,7 @@ class ScopeManager implements ScopeManagerInterface
      */
     public function findScopeByScope($scope)
     {
-        return $this->scopeProvider->find($scope);
+        return $this->scopeProvider->findScope($scope);
     }
 
     /**

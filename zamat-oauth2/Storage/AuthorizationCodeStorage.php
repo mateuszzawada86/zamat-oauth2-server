@@ -105,15 +105,15 @@ class AuthorizationCodeStorage implements AuthorizationCodeInterface
      */
     public function getAuthorizationCode($code)
     {
-        $authCode = $this->getAuthCodeProvider($code)->find($code);
+        $authCode = $this->getAuthCodeProvider($code)->findCode($code);
         if (!$authCode) {
             return null;
         }
 
         return array(
-            'client_id' => $code->getClient()->getClientId(),
-            'user_id' => $code->getUserId(),
-            'expires' => $code->getExpires()->getTimestamp(),
+            'client_id' => $authCode->getClient()->getClientId(),
+            'user_id' => $authCode->getUserId(),
+            'expires' => $authCode->getExpires()->getTimestamp(),
             'redirect_uri' => implode(' ', $authCode->getRedirectUri()),
             'scope' => $authCode->getScope()
         );

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="page-container">   
+      {% block wrapper %}
+      <div class="page-content-wrapper">         
+        <div class="content"> 
+             {% block content %}{% endblock %}
+        </div>
+        {{include('::footer.html.twig')}}           
+      </div>
+      {% endblock %}
+      
+    </div>
+{% endblock %}
+
+

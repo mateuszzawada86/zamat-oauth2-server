@@ -1,6 +1,6 @@
 <?php
 
-namespace Zamat\OAuth2\Command;
+namespace Zamat\Bundle\OAuth2Bundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -33,7 +33,7 @@ class CreateUserCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $container = $this->getContainer();
-        $userProvider = $container->get('oauth2.user_provider');
+        $userProvider = $container->get('zamat_oauth.user.provider');
 
         try {
             $userProvider->createUser($input->getArgument('username'), $input->getArgument('password'));

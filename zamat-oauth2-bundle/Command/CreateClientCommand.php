@@ -1,12 +1,13 @@
 <?php
 
-namespace Zamat\OAuth2\Command;
+namespace Zamat\Bundle\OAuth2Bundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Zamat\OAuth2\Exception\ScopeNotFoundException;
 
 class CreateClientCommand extends ContainerAwareCommand
 {
@@ -36,7 +37,7 @@ class CreateClientCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $container = $this->getContainer();
-        $clientManager = $container->get('oauth2.client_manager');
+        $clientManager = $container->get('zamat_oauth2.client_manager');
 
         try {
             $client = $clientManager->createClient(
@@ -49,7 +50,7 @@ class CreateClientCommand extends ContainerAwareCommand
             $output->writeln('<fg=red>Unable to create client ' . $input->getArgument('identifier') . '</fg=red>');
             $output->writeln('<fg=red>' . $e->getMessage() . '</fg=red>');
             return 1;
-        } catch (\OAuth2\ServerBundle\Exception\ScopeNotFoundException $e) {
+        } catch (ScopeNotFoundException $e) {
             $output->writeln('<fg=red>Scope not found, please create it first</fg=red>');
             return 1;
         }

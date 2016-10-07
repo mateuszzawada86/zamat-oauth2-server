@@ -4,8 +4,7 @@ namespace Zamat\OAuth2\Manager;
 
 use Zamat\OAuth2\Provider\ClientProviderInterface;
 use Zamat\OAuth2\Manager\ScopeManagerInterface;
-use OAuth2\Exception\ScopeNotFoundException;
-
+use Zamat\OAuth2\Exception\ScopeNotFoundException;
 use Zamat\OAuth2\Client;
 
 

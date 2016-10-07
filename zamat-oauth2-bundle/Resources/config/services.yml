@@ -42,6 +42,8 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zamat\Bundle\OAuth2Bundle\Entity\User
+        calls:
+            - [setEncoderFactory, ["@security.encoder_factory"]]         
             
     # storage         
     zamat_oauth.access.token.storage:

@@ -8,7 +8,7 @@ use Zamat\OAuth2\Scope;
  */
 interface ScopeProviderInterface
 {
-    public function find($id);
+    public function findScope($scope);
     public function save(Scope $scope);
     public function findScopesByScopes($scopes);
 

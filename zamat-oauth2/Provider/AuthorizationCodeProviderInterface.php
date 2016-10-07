@@ -8,7 +8,7 @@ use Zamat\OAuth2\AuthorizationCode;
  */
 interface AuthorizationCodeProviderInterface
 {
-    public function find($id);
+    public function findCode($code);
     public function save(AuthorizationCode $accessToken);
     public function remove($code);
 }

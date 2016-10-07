@@ -4,6 +4,7 @@ namespace Zamat\Bundle\OAuth2Bundle\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 use Zamat\OAuth2\Provider\ScopeProviderInterface;
 use Zamat\OAuth2\Scope;
+use Zamat\Bundle\OAuth2Bundle\Entity\Scope as ScopeEntity;
 
 /**
  * Description of ScopeRepository
@@ -19,7 +20,27 @@ class ScopeRepository extends EntityRepository implements ScopeProviderInterface
      */
     public function save(Scope $scope)
     {
+        
+        $entity = new ScopeEntity();
+        $entity->setScope($scope->getScope());
+        $entity->setDescription($scope->getDescription());
+        
+        $this->getEntityManager()->persist($entity);
+        $this->getEntityManager()->flush();
+        
         return $scope;
+    }
+    
+    /**
+     * 
+     * @param type $id
+     * @param type $lockMode
+     * @param type $lockVersion
+     * @return type
+     */
+    public function findScope($scope)
+    {
+        return $this->findOneBy(array('scope' => $scope));
     }
     
     /**

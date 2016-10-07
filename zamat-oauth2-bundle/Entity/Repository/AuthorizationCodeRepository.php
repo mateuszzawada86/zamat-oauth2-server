@@ -21,8 +21,9 @@ class AuthorizationCodeRepository extends EntityRepository implements Authorizat
      */
     public function save(AuthorizationCode $accessToken)
     {
-        
+                      
         $entity = new Entity();
+        
         $entity->setClient($accessToken->getClient());
         $entity->setCode($accessToken->getCode());
         $entity->setExpires($accessToken->getExpires());
@@ -36,6 +37,15 @@ class AuthorizationCodeRepository extends EntityRepository implements Authorizat
         
         
         return $accessToken;
+    }
+    
+    /**
+     * 
+     * @param type $code
+     */
+    public function findCode($code)
+    {
+        return $this->findOneBy(array('code'=>$code));
     }
     
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Zamat\OAuth2\Command;
+namespace Zamat\Bundle\OAuth2Bundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -35,13 +35,12 @@ class CreateScopeCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $container = $this->getContainer();
-        $scopeManager = $container->get('oauth2.scope_manager');
+        $scopeManager = $container->get('zamat_oauth2.scope_manager');
 
         try {
             $scopeManager->createScope($input->getArgument('scope'), $input->getArgument('description'));
         } catch (\Doctrine\DBAL\DBALException $e) {
             $output->writeln('<fg=red>Unable to create scope ' . $input->getArgument('scope') . '</fg=red>');
-
             return;
         }
 

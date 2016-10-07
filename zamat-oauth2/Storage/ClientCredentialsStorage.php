@@ -61,7 +61,7 @@ class ClientCredentialsStorage implements ClientCredentialsInterface
      */
     public function checkClientCredentials($client_id, $client_secret = null)
     {
-        $client = $this->getClientProvider()->find($client_id);
+        $client = $this->getClientProvider()->find($client_id);        
         if ($client) {
             return $client->getClientSecret() === $client_secret;
         }
