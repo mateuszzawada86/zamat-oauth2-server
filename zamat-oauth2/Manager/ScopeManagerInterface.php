@@ -2,19 +2,26 @@
 
 namespace Zamat\OAuth2\Manager;
 
-use Doctrine\ORM\EntityManager;
-
+use Zamat\OAuth2\Provider\ScopeProviderInterface;
 interface ScopeManagerInterface
 {
-    public function __construct(EntityManager $entityManager);
-
+    
+    /**
+     * 
+     * @param \Zamat\OAuth2\Manager\ScopeProviderInterface $scopeProvider
+     */
+    public function setScopeProvider(ScopeProviderInterface $scopeProvider);
+    
+    /**
+     * 
+     * @param ScopeProviderInterface $scopeProvider
+     */
+    public function __construct(ScopeProviderInterface $scopeProvider );   
+    
     /**
      * Creates a new scope
-     *
      * @param string $scope
-     *
      * @param string $description
-     *
      * @return Scope
      */
     public function createScope($scope, $description = null);
@@ -34,4 +41,5 @@ interface ScopeManagerInterface
      * @return mixed
      */
     public function findScopesByScopes(array $scopes);
+    
 }

@@ -3,9 +3,8 @@
 namespace Zamat\OAuth2\Storage;
 
 use OAuth2\Storage\ScopeInterface;
-use Zamat\OAuth2\Manager\ScopeManagerInterface;
 use Zamat\OAuth2\Provider\ClientProviderInterface;
-
+use Zamat\OAuth2\Provider\ScopeProviderInterface;
 
 class ScopeStorage implements ScopeInterface
 {
@@ -18,9 +17,10 @@ class ScopeStorage implements ScopeInterface
     
     
     /**
-     * @var ScopeManagerInterface
+     *
+     * @var ScopeProviderInterface 
      */
-    private $scopeManager;
+    protected $scopeProvider;
       
     /**
      * 
@@ -44,23 +44,42 @@ class ScopeStorage implements ScopeInterface
     
     /**
      * 
-     * @param ClientProviderInterface $clientProvider
-     * @param ScopeManagerInterface $manager
+     * @return type
      */
-    public function __construct(ClientProviderInterface $clientProvider, ScopeManagerInterface $manager = null)
+    public function getScopeProvider()
+    {
+        return $this->scopeProvider;
+    }
+
+    /**
+     * 
+     * @param ScopeProviderInterface $scopeProvider
+     * @return \Zamat\OAuth2\Storage\ScopeStorage
+     */
+    public function setScopeProvider(ScopeProviderInterface $scopeProvider)
+    {
+        $this->scopeProvider = $scopeProvider;
+        return $this;
+    }
+
+        
+    /**
+     * 
+     * @param ClientProviderInterface $clientProvider
+     * @param ScopeProviderInterface $scopeProvider
+     */
+    public function __construct(ClientProviderInterface $clientProvider, ScopeProviderInterface $scopeProvider = null)
     {
         $this->clientProvider = $clientProvider;
-        $this->scopeManager = $manager;
+        $this->scopeProvider = $scopeProvider;
     }
 
     /**
      * Check if the provided scope exists.
-     *
      * @param $scope
      * A space-separated string of scopes.
      * @param $client_id
      * The requesting client.
-     *
      * @return
      * TRUE if it exists, FALSE otherwise.
      */
@@ -82,7 +101,7 @@ class ScopeStorage implements ScopeInterface
             return true;
         }
 
-        $valid_scopes = $this->scopeManager->findScopesByScopes($scopes);
+        $valid_scopes = $this->scopeProvider->findScopesByScopes($scopes);
         return count($valid_scopes) == count($scopes);
     }
 
@@ -117,12 +136,11 @@ class ScopeStorage implements ScopeInterface
      */
     public function getDescriptionForScope($scope)
     {
-        $scopeObject = $this->scopeManager->findScopeByScope($scope);
+        $scopeObject = $this->scopeProvider->findScopeByScope($scope);
         if (!$scopeObject) {
             return $scope;
         }
         return $scopeObject->getDescription(); 
               
-
     }
 }

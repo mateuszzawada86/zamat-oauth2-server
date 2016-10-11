@@ -3,25 +3,29 @@
 namespace Zamat\OAuth2\Manager;
 
 use Zamat\OAuth2\Provider\ClientProviderInterface;
+use Zamat\OAuth2\Provider\ScopeProviderInterface;
+
 use Zamat\OAuth2\Manager\ScopeManagerInterface;
 use Zamat\OAuth2\Exception\ScopeNotFoundException;
 use Zamat\OAuth2\Client;
 
-
-class ClientManager
+class ClientManager implements ClientManagerInterface
 {
+    
     /**
      *
      * @var ClientProviderInterface 
      */
     protected $clientProvider;
     
+    
     /**
      *
-     * @var ScopeManagerInterface 
+     * @var ScopeProviderInterface 
      */
-    protected $scopeManager;
-    
+    protected $scopeProvider;
+      
+      
     /**
      * 
      * @return type
@@ -41,28 +45,27 @@ class ClientManager
         $this->clientProvider = $clientProvider;
         return $this;
     }
-    
+
     /**
      * 
-     * @return type
+     * @return ScopeProviderInterface
      */
-    public function getScopeManager()
+    public function getScopeProvider()
     {
-        return $this->scopeManager;
+        return $this->scopeProvider;
     }
 
     /**
      * 
-     * @param ScopeManagerInterface $scopeManager
-     * @return \Zamat\OAuth2\Manager\ClientManager
+     * @param ScopeProviderInterface $scopeProvider
+     * @return \Zamat\OAuth2\Manager\ScopeManager
      */
-    public function setScopeManager(ScopeManagerInterface $scopeManager)
+    public function setScopeProvider(ScopeProviderInterface $scopeProvider)
     {
-        $this->scopeManager = $scopeManager;
+        $this->scopeProvider = $scopeProvider;
         return $this;
     }
 
-    
     /**
      * 
      * @param ClientProviderInterface $clientProvider
@@ -71,7 +74,7 @@ class ClientManager
     public function __construct(ClientProviderInterface $clientProvider, ScopeManagerInterface $scopeManager)
     {
         $this->clientProvider = $clientProvider;
-        $this->scopeManager = $scopeManager;
+        $this->scopeProvider = $scopeManager;
     }
 
     /**
@@ -97,7 +100,7 @@ class ClientManager
         $client->setGrantTypes($grant_types);
 
         foreach ($scopes as $scope) {
-            $scopeObject = $this->scopeManager->findScopeByScope($scope);
+            $scopeObject = $this->scopeProvider->findScopeByScope($scope);
             if (!$scopeObject) {
                 throw new ScopeNotFoundException();
             }

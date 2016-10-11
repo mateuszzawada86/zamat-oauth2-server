@@ -60,7 +60,7 @@ services:
         arguments: ["@zamat_oauth.refresh.token.provider","@zamat_oauth.client.provider"]
     zamat_oauth.scope.storage:
         class: Zamat\OAuth2\Storage\ScopeStorage
-        arguments: ["@zamat_oauth.client.provider","@zamat_oauth2.scope_manager"] 
+        arguments: ["@zamat_oauth.client.provider","@zamat_oauth.scope.provider"] 
     zamat_oauth.user.credentials.storage:
         class: Zamat\OAuth2\Storage\UserCredentialsStorage
         arguments: ["@zamat_oauth.user.provider","@security.encoder_factory"] 
@@ -84,24 +84,26 @@ services:
         class: OAuth2\GrantType\ClientCredentials
         arguments: ["@zamat_oauth.client.credentials.storage"]      
     
-    # manager
-    zamat_oauth2.scope_manager: 
-        class: Zamat\OAuth2\Manager\ScopeManager
-        arguments: ['@doctrine.orm.default_entity_manager']    
-        
+    # manager        
     zamat_oauth2.client_manager:    
         class: Zamat\OAuth2\Manager\ClientManager
-        arguments: ["@zamat_oauth.client.provider","@zamat_oauth2.scope_manager"]  
-        
+        arguments: ["@zamat_oauth.client.provider","@zamat_oauth.scope.provider"]  
+    zamat_oauth2.scope_manager: 
+        class: Zamat\OAuth2\Manager\ScopeManager
+        arguments: ['@zamat_oauth.scope.provider']       
         
     # security     
     oauth.security.authentication.provider:
         class: Zamat\OAuth2\Security\Authentication\Provider\OAuth2Provider
-        arguments: ["@zamat_oauth.user.provider","@zamat_oauth.access.token.storage"]
+        arguments: ["@zamat_oauth.user.provider","@zamat_oauth.access.token.storage","@security.user_checker"]
         public: false
 
     oauth.security.authentication.listener:
         class: Zamat\OAuth2\Security\Authentication\Firewall\OAuth2Listener
         arguments: ['@security.token_storage', '@security.authentication.manager']
         public: false
-
+        
+    oauth.security.entry_point:
+        class: Zamat\OAuth2\Security\EntryPoint\OAuthEntryPoint
+        arguments: []
+        public: false

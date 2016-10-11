@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\SecurityFactoryInterface;
+use Zamat\OAuth2\Security\EntryPoint\OAuthEntryPoint;
 
 class OAuth2Factory implements SecurityFactoryInterface
 {
@@ -34,7 +35,7 @@ class OAuth2Factory implements SecurityFactoryInterface
         return array(
             $providerId, 
             $listenerId, 
-            $defaultEntryPoint
+            'oauth.security.entry_point'
         );
     }
 

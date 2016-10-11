@@ -14,26 +14,28 @@ use OAuth2\ResponseInterface;
      /**
       * 
       * @param array $parameters
+      * @return \Zamat\OAuth2\HttpFoundation\Response
       */
     public function addParameters(array $parameters)
     {
-        // if there are existing parametes, add to them
         if ($this->content && $data = json_decode($this->content, true)) {
             $parameters = array_merge($data, $parameters);
         }
-        // this will encode the php array as json data
         $this->setData($parameters);
+        return $this;
     }
 
     /**
      * 
      * @param array $httpHeaders
+     * @return \Zamat\OAuth2\HttpFoundation\Response
      */
     public function addHttpHeaders(array $httpHeaders)
     {
         foreach ($httpHeaders as $key => $value) {
             $this->headers->set($key, $value);
         }
+        return $this;
     }
 
     /**
@@ -46,6 +48,7 @@ use OAuth2\ResponseInterface;
         if ($this->content && $data = json_decode($this->content, true)) {
             return isset($data[$name]) ? $data[$name] : null;
         }
+        return null;
     }
 
     /**
@@ -54,6 +57,7 @@ use OAuth2\ResponseInterface;
      * @param type $error
      * @param type $description
      * @param type $uri
+     * @return \Zamat\OAuth2\HttpFoundation\Response
      */
     public function setError($statusCode, $error, $description = null, $uri = null)
     {
@@ -63,6 +67,7 @@ use OAuth2\ResponseInterface;
             'error_description' => $description,
             'error_uri'         => $uri,
         )));
+        return $this;
     }
 
     /**
@@ -73,6 +78,7 @@ use OAuth2\ResponseInterface;
      * @param type $error
      * @param type $errorDescription
      * @param type $errorUri
+     * @return \Zamat\OAuth2\HttpFoundation\Response
      */
     public function setRedirect($statusCode = 302, $url, $state = null, $error = null, $errorDescription = null, $errorUri = null)
     {
@@ -91,5 +97,6 @@ use OAuth2\ResponseInterface;
             $url .= $sep . http_build_query($params);
         }
         $this->headers->set('Location', $url);
+        return $this;
     }
  }

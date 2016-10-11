@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request as BaseRequest;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use OAuth2\RequestInterface;
 
+
 /**
  * Symfony Request Bridge
  * Override symfony request

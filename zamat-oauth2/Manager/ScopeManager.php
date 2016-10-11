@@ -2,20 +2,12 @@
 
 namespace Zamat\OAuth2\Manager;
 
-use Doctrine\ORM\EntityManager;
-
 use Zamat\OAuth2\Scope;
 use Zamat\OAuth2\Provider\ScopeProviderInterface;
-use Zamat\Bundle\OAuth2Bundle\Entity\Scope as EntityScope;
 
 class ScopeManager implements ScopeManagerInterface
 {
-    /**
-     *
-     * @var EntityManager 
-     */
-    protected $entityManager;
-    
+   
     /**
      *
      * @var ScopeProviderInterface 
@@ -41,17 +33,14 @@ class ScopeManager implements ScopeManagerInterface
         $this->scopeProvider = $scopeProvider;
         return $this;
     }
-
-    
+   
     /**
      * 
-     * @param EntityManager $entityManager
+     * @param ScopeProviderInterface $scopeProvider
      */
-    public function __construct(EntityManager $entityManager )
-    {
-        $this->entityManager = $entityManager;
-        
-        $this->setScopeProvider($this->entityManager->getRepository(EntityScope::class));
+    public function __construct(ScopeProviderInterface $scopeProvider)
+    {        
+        $this->setScopeProvider($scopeProvider);
     }
 
     /**
