@@ -22,10 +22,10 @@ Zamat\Bundle\OAuth2Bundle\Entity\AccessToken:
           onDelete: CASCADE
           onUpdate: CASCADE
       user_id:
-        targetEntity: \Zamat\Bundle\OAuth2Bundle\Entity\User
+        targetEntity: \Zamat\Bundle\SecurityBundle\Entity\EntityUser
         joinColumn:
           name: user_id
-          referencedColumnName: username
+          referencedColumnName: id
           nullable: TRUE
           onDelete: CASCADE
           onUpdate: CASCADE     

@@ -11,6 +11,5 @@ interface ScopeProviderInterface
     public function findScope($scope);
     public function findScopesByScopes($scopes);
     public function save(Scope $scope);
-  
 
 }

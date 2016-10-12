@@ -1,6 +1,7 @@
 <?php
 
 namespace Zamat\OAuth2;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class AccessToken
 {
@@ -11,7 +12,7 @@ class AccessToken
     protected $token;
 
     /**
-     * @var User
+     * @var UserInterface
      */
     protected $user_id;
 
@@ -56,10 +57,10 @@ class AccessToken
     /**
      * Set user_id
      *
-     * @param  User $userId
+     * @param  UserInterface $userId
      * @return AccessToken
      */
-    public function setUserId(User $userId = null)
+    public function setUserId(UserInterface $userId = null)
     {
         $this->user_id = $userId;
 
@@ -69,7 +70,7 @@ class AccessToken
     /**
      * Get user_id
      *
-     * @return User
+     * @return UserInterface
      */
     public function getUserId()
     {

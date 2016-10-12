@@ -4,21 +4,9 @@
 {% block javascripts %}
 {% endblock %}
 {% block content %}
-<h1>{{'Authorize'|trans}}</h1>
-
-{% if scopes|length > 0 %}
-<p>{{ request.client_id }}{{'Czy chcesz zautoryzować uzytkownika na podane dane'|trans}}</p>
-<ul>
-    {% for scope in scopes %}
-    <li>{{ scope }}</li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>{{'Klient'|trans}} {{ request.client_id }} {{'żąda dostępu'|trans}}</p>
-{% endif %}
-
-<form method="post">   
-    <input type="hidden" name="authorize" value="1" />
-    <input type="submit" value="Auhtorize" />
-</form>
+    <h1>{{'Authorize'|trans}}</h1>
+    <form method="post">   
+        <input type="hidden" name="authorize" value="1" />
+        <input type="submit" value="{{'Authorize'|trans}}" />
+    </form>
 {% endblock%}

@@ -12,7 +12,7 @@ class TokenController extends Controller
      * an authorization code from the Authorize Controller (@see OAuth2\ServerBundle\Controller\AuthorizeController).
      * returns a JSON-encoded Access Token or a JSON object with
      * "error" and "error_description" properties.
-     * @Route("/token", name="_oauth_token")
+     * @Route("/oauth/v2/token", name="_oauth_token")
      */
     public function tokenAction()
     {

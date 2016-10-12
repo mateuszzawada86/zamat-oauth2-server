@@ -6,7 +6,8 @@ services:
         factory: [Zamat\OAuth2\HttpFoundation\Request, createFromRequest]  
         scope: request     
     zamat_oauth2.response:
-        class: Zamat\OAuth2\HttpFoundation\Response   
+        class: Zamat\OAuth2\HttpFoundation\Response
+        
     zamat_oauth.access.token.provider:
         class: Doctrine\ORM\EntityRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
@@ -37,14 +38,7 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zamat\Bundle\OAuth2Bundle\Entity\ClientPublicKey 
-    zamat_oauth.user.provider:
-        class: Doctrine\ORM\EntityRepository
-        factory: ['@doctrine.orm.default_entity_manager', getRepository]
-        arguments:
-            - Zamat\Bundle\OAuth2Bundle\Entity\User
-        calls:
-            - [setEncoderFactory, ["@security.encoder_factory"]]         
-            
+    
     # storage         
     zamat_oauth.access.token.storage:
         class: Zamat\OAuth2\Storage\AccessTokenStorage
@@ -63,7 +57,7 @@ services:
         arguments: ["@zamat_oauth.client.provider","@zamat_oauth.scope.provider"] 
     zamat_oauth.user.credentials.storage:
         class: Zamat\OAuth2\Storage\UserCredentialsStorage
-        arguments: ["@zamat_oauth.user.provider","@security.encoder_factory"] 
+        arguments: ["@database_application_user_provider","@security.encoder_factory"] 
      
     # server
     zamat_oauth2.server:
@@ -92,7 +86,8 @@ services:
         class: Zamat\OAuth2\Manager\ScopeManager
         arguments: ['@zamat_oauth.scope.provider']       
         
-    # security     
+    # security   
+    
     oauth.security.authentication.provider:
         class: Zamat\OAuth2\Security\Authentication\Provider\OAuth2Provider
         arguments: ["@zamat_oauth.user.provider","@zamat_oauth.access.token.storage","@security.user_checker"]
@@ -107,3 +102,12 @@ services:
         class: Zamat\OAuth2\Security\EntryPoint\OAuthEntryPoint
         arguments: []
         public: false
+        
+    # Authorization Form  #       
+    oauth.form.authorization:
+        class: Zamat\Bundle\OAuth2Bundle\Entity\Form\AuthorizationForm
+        arguments: []
+        tags:
+            - { name: form.type } 
+            
+          
