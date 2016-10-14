@@ -54,7 +54,7 @@ class OAuth2Factory implements SecurityFactoryInterface
      */
     public function getKey()
     {
-        return 'oauth';
+        return 'oaut2h';
     }
 
     /**

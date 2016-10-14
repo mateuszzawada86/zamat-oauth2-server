@@ -1,5 +1,7 @@
 parameters:
     zamat_oauth2.server.class: OAuth2\Server
+    zamar_server_parameters:
+        enforce_state: false
 services:
     zamat_oauth2.request:
         class:   Zamat\OAuth2\HttpFoundation\Request
@@ -62,7 +64,7 @@ services:
     # server
     zamat_oauth2.server:
         class: Zamat\OAuth2\Server\OAuth2
-        arguments: ["@zamat_oauth.client.credentials.storage","@zamat_oauth.access.token.storage","@zamat_oauth.authorization.code.storage","@zamat_oauth.user.credentials.storage","@zamat_oauth.refresh.token.storage","@zamat_oauth.scope.storage"]       
+        arguments: ["@zamat_oauth.client.credentials.storage","@zamat_oauth.access.token.storage","@zamat_oauth.authorization.code.storage","@zamat_oauth.user.credentials.storage","@zamat_oauth.refresh.token.storage","@zamat_oauth.scope.storage",null,"%zamar_server_parameters%"]       
     
     # grant type
     zamat_oauth2.oauth2.grant_type.authorization_code:    
@@ -90,7 +92,7 @@ services:
     
     oauth.security.authentication.provider:
         class: Zamat\OAuth2\Security\Authentication\Provider\OAuth2Provider
-        arguments: ["@zamat_oauth.user.provider","@zamat_oauth.access.token.storage","@security.user_checker"]
+        arguments: ["@database_application_user_provider","@zamat_oauth.access.token.storage","@security.user_checker"]
         public: false
 
     oauth.security.authentication.listener:
