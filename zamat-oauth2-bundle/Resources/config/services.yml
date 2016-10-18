@@ -2,6 +2,16 @@ parameters:
     zamat_oauth2.server.class: OAuth2\Server
     zamar_server_parameters:
         enforce_state: false
+    zamat_client_parameters:
+        client: client
+        clientSecret : cznpv2otjjcowcc4s848sg8044o8ogo
+        scopes : crm
+        redirectUri : http://prezentacja.pl/app_dev.php/oauth/v2/check
+    zamat_oauth_parameters:
+        authorizeUrl: http://prezentacja.pl/app_dev.php/oauth/v2/auth
+        tokenUrl : http://prezentacja.pl/app_dev.php/oauth/v2/token
+        checkUrl : http://prezentacja.pl/app_dev.php/oauth/v2/check
+        connectUrl : http://prezentacja.pl/app_dev.php/oauth/v2/connect
 services:
     zamat_oauth2.request:
         class:   Zamat\OAuth2\HttpFoundation\Request
@@ -88,8 +98,7 @@ services:
         class: Zamat\OAuth2\Manager\ScopeManager
         arguments: ['@zamat_oauth.scope.provider']       
         
-    # security   
-    
+    # security      
     oauth.security.authentication.provider:
         class: Zamat\OAuth2\Security\Authentication\Provider\OAuth2Provider
         arguments: ["@database_application_user_provider","@zamat_oauth.access.token.storage","@security.user_checker"]
@@ -105,7 +114,23 @@ services:
         arguments: []
         public: false
         
-    # Authorization Form  #       
+    oauth.client.security.entry_point:
+        class: Zamat\OAuth2\Security\EntryPoint\EntryPoint
+        arguments: ["@http_kernel","@security.http_utils","@oauth.parameters"]
+        public: false  
+        
+   # client  #      
+    oauth.parameters:
+        class: Zamat\OAuth2\Client\OAuthParameters
+        arguments: ["%zamat_oauth_parameters%"]
+    oauth.client.parameters:
+        class: Zamat\OAuth2\Client\OAuthClientParameters
+        arguments: ["%zamat_client_parameters%"]       
+    oauth.client:
+        class: Zamat\OAuth2\Client\OAuthClient
+        arguments: ["@zamat_oauth2.request","@oauth.client.parameters","@oauth.parameters"]
+
+    # form  #       
     oauth.form.authorization:
         class: Zamat\Bundle\OAuth2Bundle\Entity\Form\AuthorizationForm
         arguments: []

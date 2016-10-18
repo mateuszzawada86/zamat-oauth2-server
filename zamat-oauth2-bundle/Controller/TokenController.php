@@ -17,7 +17,7 @@ class TokenController extends Controller
     public function tokenAction()
     {
         $server = $this->get('zamat_oauth2.server');
-
+               
         $server->addGrantType($this->get('zamat_oauth2.oauth2.grant_type.client_credentials'));
         $server->addGrantType($this->get('zamat_oauth2.oauth2.grant_type.authorization_code'));
         $server->addGrantType($this->get('zamat_oauth2.oauth2.grant_type.refresh_token'));

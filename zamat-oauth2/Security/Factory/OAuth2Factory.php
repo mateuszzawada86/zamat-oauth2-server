@@ -25,6 +25,7 @@ class OAuth2Factory implements SecurityFactoryInterface
      */
     public function create(ContainerBuilder $container, $id, $config, $userProvider, $defaultEntryPoint)
     {
+        
 
         $providerId = 'security.authentication.provider.oauth.'.$id;
         $container->setDefinition($providerId, new DefinitionDecorator('oauth.security.authentication.provider'));
@@ -35,7 +36,7 @@ class OAuth2Factory implements SecurityFactoryInterface
         return array(
             $providerId, 
             $listenerId, 
-            'oauth.security.entry_point'
+            'oauth.client.security.entry_point'
         );
     }
 
@@ -54,7 +55,7 @@ class OAuth2Factory implements SecurityFactoryInterface
      */
     public function getKey()
     {
-        return 'oaut2h';
+        return 'oauth2';
     }
 
     /**
