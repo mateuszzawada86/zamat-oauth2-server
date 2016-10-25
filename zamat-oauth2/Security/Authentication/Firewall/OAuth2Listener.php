@@ -2,77 +2,94 @@
 
 namespace Zamat\OAuth2\Security\Authentication\Firewall;
 
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Http\Firewall\ListenerInterface;
+use Symfony\Component\Security\Http\Firewall\AbstractAuthenticationListener;
+use Symfony\Component\HttpFoundation\Request;
+use Zamat\OAuth2\Client\OAuthClient;
 use Zamat\OAuth2\Security\Authentication\Token\OAuth2Token;
 
-class OAuth2Listener implements ListenerInterface
+class OAuth2Listener extends AbstractAuthenticationListener
 {
 
     /**
      *
-     * @var TokenStorageInterface 
+     * @var type 
      */
-    protected $tokenStorage;
-
-    /**
-     *
-     * @var AuthenticationManagerInterface 
-     */
-    protected $authenticationManager;
+    protected $serverAuthorizeUri;
+    protected $serverTokenUri;
+    protected $clientId;
+    protected $clientSecret;
+    protected $scope;
+    protected $redirectUri;
+    protected $validateSSL;
+    
 
     /**
      * 
-     * @param TokenStorageInterface $tokenStorage
-     * @param AuthenticationManagerInterface $authenticationManager
+     * @param array $parameters
+     * @return \Zamat\OAuth2\Security\Authentication\Firewall\OAuth2Listener
      */
-    public function __construct(TokenStorageInterface $tokenStorage, AuthenticationManagerInterface $authenticationManager)
+    public function setParameters(array $parameters = array())
     {
-        $this->tokenStorage = $tokenStorage;
-        $this->authenticationManager = $authenticationManager;
+        $this->serverAuthorizeUri = $parameters['authorize_uri'];
+        $this->serverTokenUri = $parameters['token_uri'];
+        $this->validateSSL = $parameters['validate_ssl'];
+        $this->clientId = $parameters['client_id'];
+        $this->clientSecret = $parameters['client_secret'];
+        $this->redirectUri = $parameters['redirect_uri'];
+        $this->scope = $parameters['scope'];
+
+        return $this;
     }
 
     /**
      * 
-     * @param GetResponseEvent $event
+     * @param Request $request
+     * @return boolean
+     */
+    public function requiresAuthentication(Request $request)
+    {
+        return true;
+    }
+
+    /**
+     * 
+     * @param Request $request
      * @return type
      */
-    public function handle(GetResponseEvent $event)
+    protected function attemptAuthentication(Request $request)
     {
-        $request = $event->getRequest();
-
-        /* Fetch Bearer Token */
-        $authorization = $request->headers->get('Authorization');       
-        $oauthRegex = '/Bearer ([^"]+)/';
-        if (!$request->headers->has('Authorization') || 1 !== preg_match($oauthRegex, $request->headers->get('Authorization'), $matches)) {
-            return;
-        }       
-             
-        $token = new OAuth2Token();
-        $token->setToken(explode(' ',$authorization)[1]);
-
-        try {
-
-            $authToken = $this->authenticationManager->authenticate($token);
-            $this->tokenStorage->setToken($authToken);
-            return;
+        if (!$request->query->has('code')) {
+            return null;
         }
-        catch (AuthenticationException $authenticationFailed) {
-
-            $token = $this->tokenStorage->getToken();
-            if ($token instanceof OAuth2Token && $this->providerKey === $token->getProviderKey()) {
-                $this->tokenStorage->setToken(null);
-            }
-            return;
+        
+        $session = $request->getSession();
+        if ($session->get('state') != $request->query->get('state')) {
+          return null;
         }
 
-        $response = new Response();
-        $response->setStatusCode(Response::HTTP_FORBIDDEN);
-        $event->setResponse($response);
+        $client = new OAuthClient();
+        $token = $client->getAccessToken(array(
+            'client_id' => $this->clientId,
+            'client_secret' => $this->clientSecret,
+            'token_url' => $this->serverTokenUri,
+            'scope' => $this->scope,
+            'redirect_uri' => $this->redirectUri,
+            'code' => $request->query->get('code'),
+        ));
+
+        if (!is_array($token) || empty($token)) {
+            return null;
+        }
+                
+        $oauth2Token = new OAuth2Token();
+        $oauth2Token->setAccessToken($token['access_token']);
+        $oauth2Token->setRefreshToken($token['refresh_token']);
+        $oauth2Token->setExpires($token['expires_in']);
+        $oauth2Token->setRawToken(json_encode($token));
+
+        $authToken = $this->authenticationManager->authenticate($oauth2Token);
+                
+        return $authToken;
         
     }
 

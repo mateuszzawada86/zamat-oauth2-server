@@ -1,25 +1,14 @@
 parameters:
     zamat_oauth2.server.class: OAuth2\Server
-    zamar_server_parameters:
+    zamat_server_parameters:
         enforce_state: false
-    zamat_client_parameters:
-        client: client
-        clientSecret : cznpv2otjjcowcc4s848sg8044o8ogo
-        scopes : crm
-        redirectUri : http://prezentacja.pl/app_dev.php/oauth/v2/check
-    zamat_oauth_parameters:
-        authorizeUrl: http://prezentacja.pl/app_dev.php/oauth/v2/auth
-        tokenUrl : http://prezentacja.pl/app_dev.php/oauth/v2/token
-        checkUrl : http://prezentacja.pl/app_dev.php/oauth/v2/check
-        connectUrl : http://prezentacja.pl/app_dev.php/oauth/v2/connect
 services:
     zamat_oauth2.request:
         class:   Zamat\OAuth2\HttpFoundation\Request
         factory: [Zamat\OAuth2\HttpFoundation\Request, createFromRequest]  
         scope: request     
     zamat_oauth2.response:
-        class: Zamat\OAuth2\HttpFoundation\Response
-        
+        class: Zamat\OAuth2\HttpFoundation\Response       
     zamat_oauth.access.token.provider:
         class: Doctrine\ORM\EntityRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
@@ -74,7 +63,7 @@ services:
     # server
     zamat_oauth2.server:
         class: Zamat\OAuth2\Server\OAuth2
-        arguments: ["@zamat_oauth.client.credentials.storage","@zamat_oauth.access.token.storage","@zamat_oauth.authorization.code.storage","@zamat_oauth.user.credentials.storage","@zamat_oauth.refresh.token.storage","@zamat_oauth.scope.storage",null,"%zamar_server_parameters%"]       
+        arguments: ["@zamat_oauth.client.credentials.storage","@zamat_oauth.access.token.storage","@zamat_oauth.authorization.code.storage","@zamat_oauth.user.credentials.storage","@zamat_oauth.refresh.token.storage","@zamat_oauth.scope.storage",null,"%zamat_server_parameters%"]       
     
     # grant type
     zamat_oauth2.oauth2.grant_type.authorization_code:    
@@ -97,39 +86,29 @@ services:
     zamat_oauth2.scope_manager: 
         class: Zamat\OAuth2\Manager\ScopeManager
         arguments: ['@zamat_oauth.scope.provider']       
-        
-    # security      
+    
+    # security     
+    security.user.provider.concrete.oauth.security.user.provider:
+        class: Zamat\OAuth2\Security\User\OAuth2UserProvider
+        public: false 
+       
+    oauth.security.authentication.client:
+        class: Zamat\OAuth2\Client\OAuthClient;
+        public: false 
+
     oauth.security.authentication.provider:
         class: Zamat\OAuth2\Security\Authentication\Provider\OAuth2Provider
-        arguments: ["@database_application_user_provider","@zamat_oauth.access.token.storage","@security.user_checker"]
+        arguments: ["@oauth.security.user.provider"]
         public: false
-
     oauth.security.authentication.listener:
         class: Zamat\OAuth2\Security\Authentication\Firewall\OAuth2Listener
-        arguments: ['@security.token_storage', '@security.authentication.manager']
+        parent: security.authentication.listener.abstract
         public: false
-        
-    oauth.security.entry_point:
-        class: Zamat\OAuth2\Security\EntryPoint\OAuthEntryPoint
-        arguments: []
-        public: false
-        
+        abstract : true       
     oauth.client.security.entry_point:
-        class: Zamat\OAuth2\Security\EntryPoint\EntryPoint
-        arguments: ["@http_kernel","@security.http_utils","@oauth.parameters"]
+        class: Zamat\OAuth2\Security\EntryPoint\OAuth2AuthorizationCodeEntryPoint
         public: false  
         
-   # client  #      
-    oauth.parameters:
-        class: Zamat\OAuth2\Client\OAuthParameters
-        arguments: ["%zamat_oauth_parameters%"]
-    oauth.client.parameters:
-        class: Zamat\OAuth2\Client\OAuthClientParameters
-        arguments: ["%zamat_client_parameters%"]       
-    oauth.client:
-        class: Zamat\OAuth2\Client\OAuthClient
-        arguments: ["@zamat_oauth2.request","@oauth.client.parameters","@oauth.parameters"]
-
     # form  #       
     oauth.form.authorization:
         class: Zamat\Bundle\OAuth2Bundle\Entity\Form\AuthorizationForm

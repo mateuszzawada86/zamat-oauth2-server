@@ -30,9 +30,7 @@ class ScopeRepository extends EntityRepository implements ScopeProviderInterface
         
         return $scope;
     }
-    
-    
-    
+       
     /**
      * 
      * @param type $id
@@ -44,8 +42,7 @@ class ScopeRepository extends EntityRepository implements ScopeProviderInterface
     {
         return $this->findOneBy(array('scope' => $scope));
     }
-    
-    
+       
     /**
      * 
      * @param type $id
@@ -57,8 +54,6 @@ class ScopeRepository extends EntityRepository implements ScopeProviderInterface
     {
         return $this->findOneBy(array('scope' => $scope));
     }  
-    
- 
     
     /**
      * 

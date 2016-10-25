@@ -10,9 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Zamat\Bundle\OAuth2Bundle\Entity\Form\AuthorizationForm;
-use Zamat\Bundle\OAuth2Bundle\Entity\Form\AuthorizationFormHandler;
-
 class AuthorizeController extends Controller
 {
     /**
@@ -57,7 +54,7 @@ class AuthorizeController extends Controller
         $server   = $this->get('zamat_oauth2.server');
         $request  = $this->get('zamat_oauth2.request');
         $response = $this->get('zamat_oauth2.response');
-        
+                
         
         $currentUser = $this->get('database_data_provider')->find($user->getId());
                
@@ -95,5 +92,6 @@ class AuthorizeController extends Controller
     public function loginCheckAction()
     {
     } 
-    
+
+
 }

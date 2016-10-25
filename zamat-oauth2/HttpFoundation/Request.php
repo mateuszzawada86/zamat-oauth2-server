@@ -6,20 +6,19 @@ use Symfony\Component\HttpFoundation\Request as BaseRequest;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use OAuth2\RequestInterface;
 
-
 /**
  * Symfony Request Bridge
  * Override symfony request
  */
- class Request extends BaseRequest implements RequestInterface
- {
-     
-     /**
-      * 
-      * @param type $name
-      * @param type $default
-      * @return type
-      */
+class Request extends BaseRequest implements RequestInterface
+{
+
+    /**
+     * 
+     * @param type $name
+     * @param type $default
+     * @return type
+     */
     public function query($name, $default = null)
     {
         return $this->query->get($name, $default);
@@ -74,32 +73,26 @@ use OAuth2\RequestInterface;
      */
     public static function createFromRequest()
     {
-        
+
         $request = BaseRequest::createFromGlobals();
-        
+
         return new static(
-                $request->query->all(), 
-                $request->request->all(), 
-                $request->attributes->all(), 
-                $request->cookies->all(), 
-                $request->files->all(), 
-                $request->server->all(), 
-                $request->getContent()
-             );
+                $request->query->all(), $request->request->all(), $request->attributes->all(), $request->cookies->all(), $request->files->all(), $request->server->all(), $request->getContent()
+        );
     }
-    
+
     /**
      * 
      * @return type
      */
     public static function createFromGlobals()
     {
-        $request = parent::createFromGlobals(); 
+        $request = parent::createFromGlobals();
         self::fixAuthHeader($request->headers);
-        
+
         return $request;
     }
-    
+
     /**
      * 
      * @param \Symfony\Component\HttpFoundation\HeaderBag $headers

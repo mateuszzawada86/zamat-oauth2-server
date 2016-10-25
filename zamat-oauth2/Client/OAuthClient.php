@@ -5,113 +5,32 @@ namespace Zamat\OAuth2\Client;
 use Buzz\Message\Request as HttpRequest;
 use Buzz\Message\Response as HttpResponse;
 use Buzz\Client\Curl;
-
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Zamat\OAuth2\HttpFoundation\Request;
+use Zamat\OAuth2\Client\OAuthClientInterface;
 
-class OAuthClient
+
+class OAuthClient implements OAuthClientInterface
 {
 
     /**
-     *
-     * @var Request 
-     */
-    protected $request;
-
-    /**
-     *
-     * @var OAuthClientParameters 
-     */
-    protected $clientParameters;
-
-    /**
-     *
-     * @var OAuthParameters 
-     */
-    protected $options;
-    
-
-    /**
      * 
-     * @param RequestInterface $request
-     * @param \Zamat\OAuth2\Client\OAuthClientParameters $clientParameters
-     */
-    public function __construct(Request $request, OAuthClientParameters $clientParameters, OAuthParameters $parameters)
-    {
-        $this->request = $request;
-        $this->clientParameters = $clientParameters;
-        $this->options = $parameters;
-    }
-
-    /**
-     * 
+     * @param type $parameters
      * @return type
      */
-    public function getRequest()
-    {
-        return $this->request;
-    }
-
-    /**
-     * 
-     * @param RequestInterface $request
-     * @return \Zamat\OAuth2\Client\OAuthClient
-     */
-    public function setRequest(Request $request)
-    {
-        $this->request = $request;
-        return $this;
-    }
-
-    /**
-     * 
-     * @return type
-     */
-    public function getClientParameters()
-    {
-        return $this->clientParameters;
-    }
-
-    /**
-     * 
-     * @param \Zamat\OAuth2\Client\OAuthClientParameters $clientParameters
-     * @return \Zamat\OAuth2\Client\OAuthClient
-     */
-    public function setClientParameters(OAuthClientParameters $clientParameters)
-    {
-        $this->clientParameters = $clientParameters;
-        return $this;
-    }
-
-    /**
-     * 
-     * @return type
-     */
-    public function getOptions()
-    {
-        return $this->options;
-    }
-
-
-    /**
-     * 
-     * generate access token for given authorization code
-     * @param type $code
-     * @return \Zamat\OAuth2\Client\OAuthClient
-     */
-    public function getAccessToken()
+    public function getAccessToken($parameters = array())
     {
 
         $params = array(
-            'client_id' => $this->getClientParameters()->getClient(),
-            'client_secret' => $this->getClientParameters()->getClientSecret(),
-            'scope' => $this->getClientParameters()->getScopes(),
-            'redirect_uri' => $this->getClientParameters()->getRedirectUrl(),
-            'code' => $this->getRequest()->get('code'),
-            'state' => $this->generateState(),
+            'client_id' => $parameters['client_id'],
+            'client_secret' => $parameters['client_secret'],
+            'scope' => $parameters['scope'],
+            'redirect_uri' => $parameters['redirect_uri'],
+            'code' => $parameters['code'],
             'grant_type' => 'authorization_code',
         );
 
-        $request = new HttpRequest(Request::METHOD_POST, $this->getOptions()->getTokenUrl());
+        $request = new HttpRequest(Request::METHOD_POST, $parameters['token_url']);
         $request->setContent(http_build_query($params));
 
         $response = new HttpResponse();
@@ -119,53 +38,74 @@ class OAuthClient
         $client = new Curl();
         $client->send($request, $response);
 
-        return $response->getContent();
+        $content = $this->getResponseContent($response);
+
+        return $this->validateResponseContent($content);
     }
     
     /**
-     * generate authorization url
-     * @param array $extraParameters
+     * 
+     * @param type $parameters
      * @return type
      */
-    public function generateAuthorizationUrl(array $extraParameters = array())
+    public function getUserInformation($verifyUrl,$accessToken)
     {
+        $request = new HttpRequest(Request::METHOD_POST, $verifyUrl);
+        $request->setHeaders(array('Authorization' => 'Bearer '.$accessToken));
 
-        $parameters = array_merge(array(
-            'response_type' => 'code',
-            'client_id' => $this->getClientParameters()->getClient(),
-            'scope' => $this->getClientParameters()->getScopes(),
-            'state' => $this->generateState(),
-            'redirect_uri' => $this->getClientParameters()->getRedirectUrl()
-        ), $extraParameters);
+        $response = new HttpResponse();
 
-        return $this->normalizeUrl($this->getOptions()->getAuthorizeUrl(), $parameters);
+        $client = new Curl();
+        $client->send($request, $response);
+                
+        return $this->getResponseContent($response);
+
+
     } 
     
-    
+
     /**
-     * normalize url
-     * @param string $url
-     * @param array  $parameters
+     * Get the 'parsed' content based on the response headers.
      *
-     * @return string
+     * @param HttpMessageInterface $rawResponse
+     *
+     * @return array
      */
-    protected function normalizeUrl($url, array $parameters = array())
+    protected function getResponseContent(HttpResponse $rawResponse)
     {
-        $normalizedUrl = $url;
-        if (!empty($parameters)) {
-            $normalizedUrl .= (false !== strpos($url, '?') ? '&' : '?').http_build_query($parameters, '', '&');
+        // First check that content in response exists, due too bug: https://bugs.php.net/bug.php?id=54484
+        $content = $rawResponse->getContent();
+        if (!$content) {
+            return array();
+        }
+
+        $response = json_decode($content, true);
+        if (JSON_ERROR_NONE !== json_last_error()) {
+            parse_str($content, $response);
         }
         
-        return $normalizedUrl;
-    } 
+       // var_dump($response);die();
+
+        return $response;
+    }
 
     /**
-     * generate unique state
-     * @return type
+     * @param mixed $response the 'parsed' content based on the response headers
+     *
+     * @throws AuthenticationException If an OAuth error occurred or no access token is found
      */
-    public function generateState()
+    protected function validateResponseContent($response)
     {
-        return uniqid();
+        if (isset($response['error_description'])) {
+            throw new AuthenticationException(sprintf('OAuth error: "%s"', $response['error_description']));
+        }
+        if (isset($response['error'])) {
+            throw new AuthenticationException(sprintf('OAuth error: "%s"', isset($response['error']['message']) ? $response['error']['message'] : $response['error']));
+        }
+        if (!isset($response['access_token'])) {
+            throw new AuthenticationException('Not a valid access token.');
+        }
+        return $response;
     }
 
 }

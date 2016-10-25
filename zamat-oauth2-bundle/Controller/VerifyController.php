@@ -21,8 +21,7 @@ class VerifyController extends Controller
         if (!$server->verifyResourceRequest($this->get('zamat_oauth2.request'), $this->get('zamat_oauth2.response'))) {
             return $server->getResponse();
         }
-        $tokenData = $server->getAccessTokenData($this->get('zamat_oauth2.request'), $this->get('zamat_oauth2.response'));
-        
+        $tokenData = $server->getAccessTokenData($this->get('zamat_oauth2.request'), $this->get('zamat_oauth2.response'));  
         return new JsonResponse($tokenData);
     }
 }

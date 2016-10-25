@@ -3,98 +3,64 @@
 namespace Zamat\OAuth2\Security\Authentication\Provider;
 
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Zamat\OAuth2\Security\Authentication\Token\OAuth2Token;
-use Zamat\OAuth2\Storage\AccessTokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-/**
- * OAuthProvider class.
- */
+use Zamat\OAuth2\Security\Authentication\Token\OAuth2Token;
+
 class OAuth2Provider implements AuthenticationProviderInterface
 {
-
+    
     /**
-     * @var UserProviderInterface
+     *
+     * @var type 
      */
-    protected $userProvider;
-
-    /**
-     * @var AccessTokenStorage
-     */
-    protected $accessTokenStorage;
-
-    /**
-     * @var UserCheckerInterface
-     */
-    protected $userChecker;
+    private $userProvider;
 
     /**
      * 
      * @param UserProviderInterface $userProvider
-     * @param AccessTokenStorage $accessTokenStorage
-     * @param UserCheckerInterface $userChecker
      */
-    public function __construct(UserProviderInterface $userProvider = null, AccessTokenStorage $accessTokenStorage = null, UserCheckerInterface $userChecker = null)
+    public function __construct(UserProviderInterface $userProvider)
     {
         $this->userProvider = $userProvider;
-        $this->accessTokenStorage = $accessTokenStorage;
-        $this->userChecker = $userChecker;
     }
-
+    
     /**
-     * {@inheritdoc}
-     */
+     * 
+     * @param TokenInterface $token
+     * @return OAuth2Token
+     * @throws AuthenticationException
+     */   
     public function authenticate(TokenInterface $token)
     {
-        if (!$this->supports($token)) {
-            return;
-        }
-
         try {
-
-            $accessToken = $this->accessTokenStorage->verifyAccessToken($token->getToken());
-            if (!$accessToken) {
-                return;
-            }
-
-            $currentTime = new \DateTime();
-            if ($accessToken->getExpires()->getTimestamp() < $currentTime->getTimestamp()) {
-                throw new AuthenticationException('OAuth2 authentication failed. Token expired');
-            }
-
-
-            $roles = array();
-            $account = $accessToken->getUserId();
-            if ($account) {
-                $roles = $account->getRoles();
-            }
-
-            $generatedToken = new OAuth2Token($roles);
-            $generatedToken->setToken($token->getToken());
-            $generatedToken->setAuthenticated(true);
-            if($account) {
-              $generatedToken->setUser($account);  
-            }
+            
+            # oauth /me page response
+            
+            
+            $token->setAuthenticated(true);
+            $token->setUser('admin');
             
 
-
-            return $generatedToken;
+            return $token;
         }
-        catch (\Exception $e) {
-
-            throw $e;
+        catch (\Exception $e)
+        {
+            throw new AuthenticationException('The OAuth2 Access Token is invalid.');
         }
+        throw new AuthenticationException('OAuth2 authentication failed.');
     }
-
+    
     /**
-     * {@inheritdoc}
+     * 
+     * @param TokenInterface $token
+     * @return type
      */
     public function supports(TokenInterface $token)
     {
         return $token instanceof OAuth2Token;
     }
-
 }
+
