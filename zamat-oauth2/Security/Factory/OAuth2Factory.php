@@ -90,7 +90,8 @@ class OAuth2Factory extends AbstractFactory
         $listenerId = parent::createListener($container, $id, $config, $userProvider);
         $container
             ->getDefinition($listenerId)
-            ->addMethodCall('setParameters', array($config));
+            ->addMethodCall('setParameters', array($config))
+            ->addArgument(new Reference('oauth.security.authentication.client'));
         return $listenerId;
     }
     

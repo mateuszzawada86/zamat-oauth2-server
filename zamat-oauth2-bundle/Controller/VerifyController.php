@@ -10,8 +10,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class VerifyController extends Controller
 {
     /**
-     * This is called with an access token, details
-     * about the access token are then returned.
      * Used for verification purposes.
      * @Route("/oauth/v2/verify", name="_verify_token")
      */

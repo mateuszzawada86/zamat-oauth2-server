@@ -89,22 +89,21 @@ services:
     
     # security     
     security.user.provider.concrete.oauth.security.user.provider:
-        class: Zamat\OAuth2\Security\User\OAuth2UserProvider
-        public: false 
-       
+        class: Zamat\OAuth2\Security\User\OAuth2UserProvider       
     oauth.security.authentication.client:
-        class: Zamat\OAuth2\Client\OAuthClient;
-        public: false 
+        class: Zamat\OAuth2\Client\OAuthClient
 
     oauth.security.authentication.provider:
         class: Zamat\OAuth2\Security\Authentication\Provider\OAuth2Provider
         arguments: ["@oauth.security.user.provider"]
         public: false
+
     oauth.security.authentication.listener:
         class: Zamat\OAuth2\Security\Authentication\Firewall\OAuth2Listener
         parent: security.authentication.listener.abstract
         public: false
-        abstract : true       
+        abstract : true
+
     oauth.client.security.entry_point:
         class: Zamat\OAuth2\Security\EntryPoint\OAuth2AuthorizationCodeEntryPoint
         public: false  

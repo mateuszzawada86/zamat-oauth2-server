@@ -8,10 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class TokenController extends Controller
 {
     /**
-     * This is called by the client app once the client has obtained
-     * an authorization code from the Authorize Controller (@see OAuth2\ServerBundle\Controller\AuthorizeController).
-     * returns a JSON-encoded Access Token or a JSON object with
-     * "error" and "error_description" properties.
+     * Generate token response
      * @Route("/oauth/v2/token", name="_oauth_token")
      */
     public function tokenAction()
