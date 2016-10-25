@@ -3,6 +3,7 @@
 namespace Zamat\Bundle\OAuth2Bundle\Controller;
 
 use Zamat\Mvc\Controller\BaseController as Controller;
+
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
