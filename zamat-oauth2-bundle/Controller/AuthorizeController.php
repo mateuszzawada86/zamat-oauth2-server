@@ -94,5 +94,4 @@ class AuthorizeController extends Controller
     {
     } 
 
-
 }
