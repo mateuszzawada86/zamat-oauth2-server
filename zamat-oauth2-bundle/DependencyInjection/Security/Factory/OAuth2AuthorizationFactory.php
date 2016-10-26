@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 
 
-class OAuth2Factory extends AbstractFactory
+class OAuth2AuthorizationFactory extends AbstractFactory
 {
     
     /**
