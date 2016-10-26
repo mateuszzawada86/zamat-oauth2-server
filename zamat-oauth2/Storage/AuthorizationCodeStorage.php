@@ -7,7 +7,6 @@ use Zamat\OAuth2\Provider\ClientProviderInterface;
 use Zamat\OAuth2\Provider\AuthorizationCodeProviderInterface;
 use Zamat\OAuth2\AuthorizationCode;
 
-
 class AuthorizationCodeStorage implements AuthorizationCodeInterface
 {
 
@@ -16,14 +15,13 @@ class AuthorizationCodeStorage implements AuthorizationCodeInterface
      * @var ClientProviderInterface 
      */
     protected $clientProvider;
-    
+
     /**
      *
      * @var AuthorizationCodeProviderInterface 
      */
     protected $authCodeProvider;
-    
-    
+
     /**
      * 
      * @return type
@@ -43,7 +41,7 @@ class AuthorizationCodeStorage implements AuthorizationCodeInterface
         $this->clientProvider = $clientProvider;
         return $this;
     }
-    
+
     /**
      * 
      * @return type
@@ -69,13 +67,11 @@ class AuthorizationCodeStorage implements AuthorizationCodeInterface
      * @param ClientProviderInterface $clientProvider
      * @param AuthorizationCodeProviderInterface $authCodeProvider
      */
-    public function __construct(ClientProviderInterface $clientProvider,AuthorizationCodeProviderInterface $authCodeProvider)
+    public function __construct(ClientProviderInterface $clientProvider, AuthorizationCodeProviderInterface $authCodeProvider)
     {
         $this->clientProvider = $clientProvider;
         $this->authCodeProvider = $authCodeProvider;
-    } 
-    
-
+    }
 
     /**
      * Fetch authorization code data (probably the most common grant type).
@@ -150,7 +146,7 @@ class AuthorizationCodeStorage implements AuthorizationCodeInterface
         $client = $this->getClientProvider()->find($client_id);
 
         if (!$client) {
-           throw new \Exception('Unknown client identifier'); 
+            throw new \Exception('Unknown client identifier');
         }
 
         $authorizationCode = new AuthorizationCode();
@@ -179,6 +175,9 @@ class AuthorizationCodeStorage implements AuthorizationCodeInterface
     public function expireAuthorizationCode($code)
     {
         $code = $this->getAuthCodeProvider()->find($code);
-        $this->getAuthCodeProvider()->remove($code);     
+        if ($code) {
+            $this->getAuthCodeProvider()->remove($code);
+        }
     }
+
 }

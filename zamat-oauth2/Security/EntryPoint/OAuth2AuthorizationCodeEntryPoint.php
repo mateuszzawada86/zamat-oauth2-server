@@ -38,7 +38,7 @@ class OAuth2AuthorizationCodeEntryPoint implements AuthenticationEntryPointInter
     protected $clientParameters;
        
     /**
-     * 
+     * @Container Parameters
      * @param array $clientParameters
      * @return \Zamat\OAuth2\Security\EntryPoint\OAuth2AuthorizationCodeEntryPoint
      */
@@ -47,8 +47,7 @@ class OAuth2AuthorizationCodeEntryPoint implements AuthenticationEntryPointInter
         $this->clientParameters = $clientParameters;
         return $this;
     }
-
-        
+      
     /**
      * 
      * @return array
@@ -57,9 +56,7 @@ class OAuth2AuthorizationCodeEntryPoint implements AuthenticationEntryPointInter
     {
         return $this->clientParameters;
     }
-
-
-        
+    
     /**
      * 
      * @param array $parameters
@@ -96,7 +93,7 @@ class OAuth2AuthorizationCodeEntryPoint implements AuthenticationEntryPointInter
     public function start(Request $request, AuthenticationException $authException = null)
     {
 
-        $state = uniqid();
+        $state = uniqid(rand());
         $session = $request->getSession();
         $session->set('state', $state);
                         

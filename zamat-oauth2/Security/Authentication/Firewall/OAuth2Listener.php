@@ -4,6 +4,14 @@ namespace Zamat\OAuth2\Security\Authentication\Firewall;
 
 use Symfony\Component\Security\Http\Firewall\AbstractAuthenticationListener;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
+use Symfony\Component\Security\Http\Session\SessionAuthenticationStrategyInterface;
+use Symfony\Component\Security\Http\HttpUtils;
+use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Psr\Log\LoggerInterface;
 
 use Zamat\OAuth2\Security\Authentication\Token\OAuth2Token;
 use Zamat\OAuth2\Client\OAuthClientInterface;
@@ -49,19 +57,19 @@ class OAuth2Listener extends AbstractAuthenticationListener
      
     /**
      * 
-     * @param \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface $tokenStorage
-     * @param \Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface $authenticationManager
-     * @param \Symfony\Component\Security\Http\Session\SessionAuthenticationStrategyInterface $sessionStrategy
-     * @param \Symfony\Component\Security\Http\HttpUtils $httpUtils
+     * @param TokenStorageInterface $tokenStorage
+     * @param AuthenticationManagerInterface $authenticationManager
+     * @param SessionAuthenticationStrategyInterface $sessionStrategy
+     * @param HttpUtils $httpUtils
      * @param type $providerKey
-     * @param \Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface $successHandler
-     * @param \Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface $failureHandler
+     * @param AuthenticationSuccessHandlerInterface $successHandler
+     * @param AuthenticationFailureHandlerInterface $failureHandler
      * @param array $options
-     * @param \Psr\Log\LoggerInterface $logger
-     * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
+     * @param LoggerInterface $logger
+     * @param EventDispatcherInterface $dispatcher
      * @param OAuthClientInterface $client
      */
-    public function __construct(\Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface $tokenStorage, \Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface $authenticationManager, \Symfony\Component\Security\Http\Session\SessionAuthenticationStrategyInterface $sessionStrategy, \Symfony\Component\Security\Http\HttpUtils $httpUtils, $providerKey, \Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface $successHandler, \Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface $failureHandler, array $options = array(), \Psr\Log\LoggerInterface $logger = null, \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher = null,OAuthClientInterface $client = null )
+    public function __construct(TokenStorageInterface $tokenStorage,AuthenticationManagerInterface $authenticationManager,SessionAuthenticationStrategyInterface $sessionStrategy, HttpUtils $httpUtils, $providerKey, AuthenticationSuccessHandlerInterface $successHandler, AuthenticationFailureHandlerInterface $failureHandler, array $options = array(),LoggerInterface $logger = null, EventDispatcherInterface $dispatcher = null,OAuthClientInterface $client = null )
     {
         if($client) {
             $this->setClient($client);
@@ -122,19 +130,26 @@ class OAuth2Listener extends AbstractAuthenticationListener
         
         if (!is_array($token) || empty($token)) {
             return null;
-        }
-                
-        $oauth2Token = new OAuth2Token();
+        }       
+        return $this->generateToken($token);
         
+    }
+    
+    /**
+     * 
+     * @param array $token
+     * @return type
+     */
+    protected function generateToken(array $token)
+    {
+
+        $oauth2Token = new OAuth2Token();
         $oauth2Token->setAccessToken($token['access_token']);
         $oauth2Token->setRefreshToken($token['refresh_token']);
         $oauth2Token->setExpires($token['expires_in']);
         $oauth2Token->setRawToken(json_encode($token));
-        
-        $authToken = $this->authenticationManager->authenticate($oauth2Token);
-                
-        return $authToken;
-        
+
+        return $this->authenticationManager->authenticate($oauth2Token);
     }
 
 }

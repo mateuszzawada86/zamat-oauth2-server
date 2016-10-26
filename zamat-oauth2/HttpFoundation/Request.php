@@ -75,10 +75,7 @@ class Request extends BaseRequest implements RequestInterface
     {
 
         $request = BaseRequest::createFromGlobals();
-
-        return new static(
-                $request->query->all(), $request->request->all(), $request->attributes->all(), $request->cookies->all(), $request->files->all(), $request->server->all(), $request->getContent()
-        );
+        return new static($request->query->all(), $request->request->all(), $request->attributes->all(), $request->cookies->all(), $request->files->all(), $request->server->all(), $request->getContent());
     }
 
     /**

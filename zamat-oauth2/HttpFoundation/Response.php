@@ -8,14 +8,14 @@ use OAuth2\ResponseInterface;
 /**
  * Symfony Response Bridge
  */
- class Response extends JsonResponse implements ResponseInterface
- {
-   
-     /**
-      * 
-      * @param array $parameters
-      * @return \Zamat\OAuth2\HttpFoundation\Response
-      */
+class Response extends JsonResponse implements ResponseInterface
+{
+
+    /**
+     * 
+     * @param array $parameters
+     * @return \Zamat\OAuth2\HttpFoundation\Response
+     */
     public function addParameters(array $parameters)
     {
         if ($this->content && $data = json_decode($this->content, true)) {
@@ -63,9 +63,9 @@ use OAuth2\ResponseInterface;
     {
         $this->setStatusCode($statusCode);
         $this->addParameters(array_filter(array(
-            'error'             => $error,
+            'error' => $error,
             'error_description' => $description,
-            'error_uri'         => $uri,
+            'error_uri' => $uri,
         )));
         return $this;
     }
@@ -80,15 +80,15 @@ use OAuth2\ResponseInterface;
      * @param type $errorUri
      * @return \Zamat\OAuth2\HttpFoundation\Response
      */
-    public function setRedirect($statusCode = 302, $url, $state = null, $error = null, $errorDescription = null, $errorUri = null)
+    public function setRedirect($statusCode, $url, $state = null, $error = null, $errorDescription = null, $errorUri = null)
     {
         $this->setStatusCode($statusCode);
 
         $params = array_filter(array(
-            'state'             => $state,
-            'error'             => $error,
+            'state' => $state,
+            'error' => $error,
             'error_description' => $errorDescription,
-            'error_uri'         => $errorUri,
+            'error_uri' => $errorUri,
         ));
 
         if ($params) {
@@ -99,4 +99,5 @@ use OAuth2\ResponseInterface;
         $this->headers->set('Location', $url);
         return $this;
     }
- }
+
+}
