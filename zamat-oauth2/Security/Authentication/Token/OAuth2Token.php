@@ -33,7 +33,7 @@ class OAuth2Token extends AbstractToken
      * @var type 
      */
     protected $expires;
-    
+
     /**
      * 
      * @param array $roles
@@ -43,7 +43,7 @@ class OAuth2Token extends AbstractToken
         parent::__construct($roles);
         $this->setAuthenticated(count($roles) > 0);
     }
-    
+
     /**
      * 
      * @return type
@@ -132,7 +132,7 @@ class OAuth2Token extends AbstractToken
         $this->expires = $expires;
         return $this;
     }
-    
+
     /**
      * 
      * @return string
@@ -157,9 +157,22 @@ class OAuth2Token extends AbstractToken
         $difference = $interval->format('s');
         return ($difference < 0) ? 0 : $difference;
     }
-    
-    
- 
-   
+
+    /**
+     * {@inheritdoc}
+     */
+    public function serialize()
+    {
+        return serialize(array($this->accessToken, $this->refreshToken, $this->expires, parent::serialize()));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unserialize($serialized)
+    {
+        list($this->accessToken, $this->refreshToken, $this->expires, $parentStr) = unserialize($serialized);
+        parent::unserialize($parentStr);
+    }
 
 }

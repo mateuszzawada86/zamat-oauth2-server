@@ -34,13 +34,13 @@ class OAuth2User implements UserInterface, EquatableInterface
 
     /**
      * 
-     * @return string
+     * @return array
      */
     public function getRoles()
     {
         $roles = array();
         foreach ($this->scopes as $scope) {
-            $roles[] = 'ROLE_' . strtoupper('USER');
+            $roles[] = 'ROLE_' . strtoupper($scope);
         }
         return $roles;
     }

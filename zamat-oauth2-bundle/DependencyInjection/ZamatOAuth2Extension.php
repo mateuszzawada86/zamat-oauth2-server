@@ -22,7 +22,23 @@ class ZamatOAuth2Extension extends Extension
                 
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
+
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+        
+        $container->setParameter('zamat_oauth2_server.authorize_uri', $config['authorize_uri']);
+        $container->setParameter('zamat_oauth2_server.token_uri', $config['token_uri']);
+        $container->setParameter('zamat_oauth2_server.verify_uri', $config['verify_uri']);
+ 
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
+    {
+        return 'zamat_oauth2_server';
+    }  
+    
+    
 }

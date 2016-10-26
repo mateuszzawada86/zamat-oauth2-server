@@ -15,13 +15,11 @@ class OAuth2Listener extends AbstractAuthenticationListener
      *
      * @var type 
      */
-    protected $serverAuthorizeUri;
-    protected $serverTokenUri;
-    protected $clientId;
-    protected $clientSecret;
-    protected $scope;
-    protected $redirectUri;
-    protected $validateSSL;
+    private $clientId;
+    private $clientSecret;
+    private $scope;
+    private $redirectUri;
+    private $validateSSL;
     
     /**
      *
@@ -79,8 +77,6 @@ class OAuth2Listener extends AbstractAuthenticationListener
     public function setParameters(array $parameters = array())
     {
                 
-        $this->serverAuthorizeUri = $parameters['authorize_uri'];
-        $this->serverTokenUri = $parameters['token_uri'];
         $this->validateSSL = $parameters['validate_ssl'];
         $this->clientId = $parameters['client_id'];
         $this->clientSecret = $parameters['client_secret'];
@@ -119,12 +115,11 @@ class OAuth2Listener extends AbstractAuthenticationListener
         $token = $this->getClient()->getAccessToken(array(
             'client_id' => $this->clientId,
             'client_secret' => $this->clientSecret,
-            'token_url' => $this->serverTokenUri,
             'scope' => $this->scope,
             'redirect_uri' => $this->redirectUri,
             'code' => $request->query->get('code'),
         ));
-
+        
         if (!is_array($token) || empty($token)) {
             return null;
         }
@@ -135,7 +130,7 @@ class OAuth2Listener extends AbstractAuthenticationListener
         $oauth2Token->setRefreshToken($token['refresh_token']);
         $oauth2Token->setExpires($token['expires_in']);
         $oauth2Token->setRawToken(json_encode($token));
-
+        
         $authToken = $this->authenticationManager->authenticate($oauth2Token);
                 
         return $authToken;

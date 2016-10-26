@@ -12,6 +12,42 @@ use Zamat\OAuth2\Client\OAuthClientInterface;
 
 class OAuthClient implements OAuthClientInterface
 {
+    
+    /**
+     *
+     * @var array 
+     */
+    protected $clientParameters;
+    
+    /**
+     * 
+     * @param array $clientParameters
+     */
+    public function __construct(array $clientParameters)
+    {
+        $this->clientParameters = $clientParameters;
+    } 
+       
+    /**
+     * 
+     * @param array $clientParameters
+     * @return \Zamat\OAuth2\Security\EntryPoint\OAuth2AuthorizationCodeEntryPoint
+     */
+    public function setClientParameters(array $clientParameters)
+    {
+        $this->clientParameters = $clientParameters;
+        return $this;
+    }
+       
+    /**
+     * 
+     * @return array
+     */
+    public function getClientParameters()
+    {
+        return $this->clientParameters;
+    }  
+    
 
     /**
      * 
@@ -20,7 +56,7 @@ class OAuthClient implements OAuthClientInterface
      */
     public function getAccessToken($parameters = array())
     {
-
+        
         $params = array(
             'client_id' => $parameters['client_id'],
             'client_secret' => $parameters['client_secret'],
@@ -30,7 +66,7 @@ class OAuthClient implements OAuthClientInterface
             'grant_type' => 'authorization_code',
         );
 
-        $request = new HttpRequest(Request::METHOD_POST, $parameters['token_url']);
+        $request = new HttpRequest(Request::METHOD_POST, $this->getClientParameters()['token_uri']);
         $request->setContent(http_build_query($params));
 
         $response = new HttpResponse();
@@ -45,16 +81,14 @@ class OAuthClient implements OAuthClientInterface
     
     /**
      * 
-     * @param type $parameters
+     * @param type $accessToken
      * @return type
      */
-    public function getUserInformation($verifyUrl,$accessToken)
+    public function getUserInformation($accessToken)
     {
-        $request = new HttpRequest(Request::METHOD_POST, $verifyUrl);
+        $request = new HttpRequest(Request::METHOD_POST, $this->getClientParameters()['verify_uri']);
         $request->setHeaders(array('Authorization' => 'Bearer '.$accessToken));
-
         $response = new HttpResponse();
-
         $client = new Curl();
         $client->send($request, $response);
                 
@@ -83,9 +117,7 @@ class OAuthClient implements OAuthClientInterface
         if (JSON_ERROR_NONE !== json_last_error()) {
             parse_str($content, $response);
         }
-        
-       // var_dump($response);die();
-
+       
         return $response;
     }
 

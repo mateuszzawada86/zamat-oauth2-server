@@ -17,8 +17,18 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('zamat_oauth2');
-        return $treeBuilder;
+        $builder = new TreeBuilder();
+        $builder->root('zamat_oauth2_server')
+            ->addDefaultsIfNotSet()             
+            ->children()
+                ->scalarNode('authorize_uri')->defaultValue('http://example.com')->end()
+                ->scalarNode('token_uri')->defaultValue('http://example.com')->end()
+                ->scalarNode('verify_uri')->defaultValue('http://example.com')->end()
+            ->end();
+        
+        
+        return $builder;     
+        
+        
     }
 }

@@ -1,8 +1,9 @@
 <?php
 
-namespace Zamat\OAuth2\Security\Factory;
+namespace Zamat\Bundle\OAuth2Bundle\DependencyInjection\Security\Factory;
 
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\AbstractFactory;
+
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
@@ -41,11 +42,8 @@ class OAuth2Factory extends AbstractFactory
             ->children()
                 ->scalarNode('client_id')->defaultValue('')->end()
                 ->scalarNode('client_secret')->defaultValue('')->end()
-                ->scalarNode('scope')->defaultValue('user')->end()
-          
+                ->scalarNode('scope')->defaultValue('user')->end()          
                 ->scalarNode('redirect_uri')->defaultValue('http://www.example.com')->end()
-                ->scalarNode('authorize_uri')->defaultValue('http://www.example.com')->end()
-                ->scalarNode('token_uri')->defaultValue('http://www.example.com')->end()
                 ->scalarNode('validate_ssl')->defaultValue('http://www.example.com')->end()          
             ->end();
     }
@@ -87,6 +85,7 @@ class OAuth2Factory extends AbstractFactory
      */
     protected function createListener($container, $id, $config, $userProvider)
     {
+                
         $listenerId = parent::createListener($container, $id, $config, $userProvider);
         $container
             ->getDefinition($listenerId)

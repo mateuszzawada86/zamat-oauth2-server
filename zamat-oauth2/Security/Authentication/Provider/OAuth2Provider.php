@@ -7,6 +7,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
+use Zamat\OAuth2\Client\OAuthClientInterface;
 use Zamat\OAuth2\Security\Authentication\Token\OAuth2Token;
 
 class OAuth2Provider implements AuthenticationProviderInterface
@@ -14,13 +15,14 @@ class OAuth2Provider implements AuthenticationProviderInterface
     
     /**
      *
-     * @var type 
+     * @var UserProviderInterface 
      */
     private $userProvider;
-
+    
     /**
      * 
      * @param UserProviderInterface $userProvider
+     * @param OAuthClientInterface $client
      */
     public function __construct(UserProviderInterface $userProvider)
     {
@@ -37,20 +39,15 @@ class OAuth2Provider implements AuthenticationProviderInterface
     {
         try {
             
-            # oauth /me page response
-            
-            
             $token->setAuthenticated(true);
             $token->setUser('admin');
             
-
             return $token;
         }
         catch (\Exception $e)
         {
             throw new AuthenticationException('The OAuth2 Access Token is invalid.');
         }
-        throw new AuthenticationException('OAuth2 authentication failed.');
     }
     
     /**

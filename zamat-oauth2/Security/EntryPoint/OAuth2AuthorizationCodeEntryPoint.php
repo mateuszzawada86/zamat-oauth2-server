@@ -26,14 +26,40 @@ class OAuth2AuthorizationCodeEntryPoint implements AuthenticationEntryPointInter
      *
      * @var type 
      */
-    protected $serverAuthorizeUri;
-    protected $serverTokenUri;
-    protected $clientId;
-    protected $clientSecret;
-    protected $authorizationRedirectUri;
-    protected $redirectUri;
-    protected $scope;
+    private $clientId;
+    private $clientSecret;
+    private $redirectUri;
+    private $scope;
     
+    /**
+     *
+     * @var array 
+     */
+    protected $clientParameters;
+       
+    /**
+     * 
+     * @param array $clientParameters
+     * @return \Zamat\OAuth2\Security\EntryPoint\OAuth2AuthorizationCodeEntryPoint
+     */
+    public function setClientParameters(array $clientParameters)
+    {
+        $this->clientParameters = $clientParameters;
+        return $this;
+    }
+
+        
+    /**
+     * 
+     * @return array
+     */
+    public function getClientParameters()
+    {
+        return $this->clientParameters;
+    }
+
+
+        
     /**
      * 
      * @param array $parameters
@@ -41,14 +67,22 @@ class OAuth2AuthorizationCodeEntryPoint implements AuthenticationEntryPointInter
      */
     public function setParameters(array $parameters = array())
     {
-        $this->serverAuthorizeUri = $parameters['authorize_uri'];
-        $this->serverTokenUri = $parameters['token_uri'];
         $this->clientId = $parameters['client_id'];
         $this->clientSecret = $parameters['client_secret'];
         $this->redirectUri = $parameters['redirect_uri'];
         $this->scope = $parameters['scope'];
 
         return $this;
+    }
+    
+    /**
+     * 
+     * client parameters[] : authorize_uri
+     * @param type $clientParameters
+     */
+    public function __construct($clientParameters = array())
+    {
+        $this->clientParameters = $clientParameters;
     }
 
     /**
@@ -61,18 +95,17 @@ class OAuth2AuthorizationCodeEntryPoint implements AuthenticationEntryPointInter
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
+
         $state = uniqid();
         $session = $request->getSession();
         $session->set('state', $state);
-        
-        $params = array(
-            'response_type' => 'code',
-            'client_id' => $this->clientId,
-            'redirect_uri' => $this->redirectUri,
-            'scope' => $this->scope,
-            'state' => $state,
-        );
-                
-        return new RedirectResponse($this->serverAuthorizeUri .'?' . http_build_query($params));
+                        
+        return new RedirectResponse($this->getClientParameters()['authorize_uri'] . '?' . http_build_query(array(
+                    'response_type' => 'code',
+                    'client_id' => $this->clientId,
+                    'redirect_uri' => $this->redirectUri,
+                    'scope' => $this->scope,
+                    'state' => $state,
+        )));
     }
 }
