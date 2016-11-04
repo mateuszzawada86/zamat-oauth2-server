@@ -54,12 +54,11 @@ class AuthorizeController extends Controller
                 
         $server   = $this->get('zamat_oauth2.server');
         $request  = $this->get('zamat_oauth2.request');
-        $response = $this->get('zamat_oauth2.response');
-                
+        $response = $this->get('zamat_oauth2.response');              
         
         $currentUser = $this->get('database_data_provider')->find($user->getId());
                
-        return $server->handleAuthorizeRequest($request,$response, true , $currentUser);
+        return $server->handleAuthorizeRequest($request,$response, (bool) $request->request->get('authorize') , $currentUser);
     } 
       
 

@@ -13,6 +13,8 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerI
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+
 use Zamat\OAuth2\Security\Authentication\Token\OAuth2Token;
 use Zamat\OAuth2\Client\OAuthClientInterface;
 
@@ -111,6 +113,8 @@ class OAuth2Listener extends AbstractAuthenticationListener
      */
     protected function attemptAuthentication(Request $request)
     {
+        
+        $this->handleOAuthError($request);
         if (!$request->query->has('code')) {
             return null;
         }
@@ -151,5 +155,22 @@ class OAuth2Listener extends AbstractAuthenticationListener
 
         return $this->authenticationManager->authenticate($oauth2Token);
     }
+    
+    /**
+     * Detects errors returned by resource owners and transform them into
+     * human readable messages
+     * @param Request $request
+     * @throws AuthenticationException
+     */
+    private function handleOAuthError(Request $request)
+    {
+        if ($request->query->has('error') || $request->query->has('error_code')) {
+            if ($request->query->has('error_description') || $request->query->has('error_message')) {
+                throw new AuthenticationException(rawurldecode($request->query->get('error_description', $request->query->get('error_message'))));
+            }
+        }
+        return $this;
+    }
+ 
 
 }

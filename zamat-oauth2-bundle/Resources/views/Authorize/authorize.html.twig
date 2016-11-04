@@ -4,9 +4,30 @@
 {% block javascripts %}
 {% endblock %}
 {% block content %}
-    <h1>{{'Authorize'|trans}}</h1>
-    <form method="post">   
-        <input type="hidden" name="authorize" value="1" />
-        <input type="submit" value="{{'Authorize'|trans}}" />
-    </form>
+    <div class="row">
+        <div class="col-lg-6 col-md-8">
+            <div class="panel panel-transparent">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h1>{{'Autoryzacja użytkownika'|trans}}</h1>
+                            <form method="post">   
+                                <p>{{'Aplikacja'|trans}} <strong>{{request.client_id}}</strong> {{'próbuje uzyskać dostęp do Twoich danych niezbędnych w procesie autoryzacji'|trans}}</p>
+                                <h4>{{'Obszary autoryzacji'|trans}}</h4>
+                                {% if scopes|length > 0 %}
+                                    <ul class="list-group">
+                                        {% for scope in scopes %}
+                                            <li class="list-group-item"><span>{{scope}}</span></li>
+                                            {% endfor %}
+                                    </ul>
+                                {% endif %}
+                                <button type="submit" name="authorize" value="1" class="btn btn-info ">{{'Akceptuję'|trans}}</button>
+                                <button type="submit" name="authorize" value="0" class="btn btn-info ">{{'Nie Akceptuję'|trans}}</button>
+                            </form>                                     
+                        </div>
+                    </div>                   
+                </div>
+            </div>       
+        </div>
+    </div>
 {% endblock%}
