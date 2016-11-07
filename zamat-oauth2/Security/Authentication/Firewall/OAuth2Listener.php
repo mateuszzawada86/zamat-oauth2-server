@@ -2,18 +2,19 @@
 
 namespace Zamat\OAuth2\Security\Authentication\Firewall;
 
-use Symfony\Component\Security\Http\Firewall\AbstractAuthenticationListener;
 use Symfony\Component\HttpFoundation\Request;
+
+use Symfony\Component\Security\Http\Firewall\AbstractAuthenticationListener;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
 use Symfony\Component\Security\Http\Session\SessionAuthenticationStrategyInterface;
 use Symfony\Component\Security\Http\HttpUtils;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerInterface;
-
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+use Psr\Log\LoggerInterface;
 
 use Zamat\OAuth2\Security\Authentication\Token\OAuth2Token;
 use Zamat\OAuth2\Client\OAuthClientInterface;
@@ -113,7 +114,6 @@ class OAuth2Listener extends AbstractAuthenticationListener
      */
     protected function attemptAuthentication(Request $request)
     {
-        
         $this->handleOAuthError($request);
         if (!$request->query->has('code')) {
             return null;

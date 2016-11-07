@@ -61,7 +61,7 @@ class OAuth2AuthorizationFactory extends AbstractFactory
         $providerId = 'oauth.security.authentication.provider.'.$id;
         $container
             ->setDefinition($providerId, new DefinitionDecorator('oauth.security.authentication.provider'))
-            ->replaceArgument(0, new Reference($userProviderId));
+            ->replaceArgument(0, new Reference('oauth.security.user.provider'));
         
         return $providerId;
     }
@@ -85,7 +85,6 @@ class OAuth2AuthorizationFactory extends AbstractFactory
      */
     protected function createListener($container, $id, $config, $userProvider)
     {
-                
         $listenerId = parent::createListener($container, $id, $config, $userProvider);
         $container
             ->getDefinition($listenerId)

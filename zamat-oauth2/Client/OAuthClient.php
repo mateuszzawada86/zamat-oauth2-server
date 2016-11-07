@@ -2,10 +2,12 @@
 
 namespace Zamat\OAuth2\Client;
 
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+
 use Buzz\Message\Request as HttpRequest;
 use Buzz\Message\Response as HttpResponse;
 use Buzz\Client\Curl;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
+
 use Zamat\OAuth2\HttpFoundation\Request;
 use Zamat\OAuth2\Client\OAuthClientInterface;
 
@@ -100,30 +102,24 @@ class OAuthClient implements OAuthClientInterface
 
     /**
      * Get the 'parsed' content based on the response headers.
-     *
      * @param HttpMessageInterface $rawResponse
-     *
      * @return array
      */
     protected function getResponseContent(HttpResponse $rawResponse)
     {
-        // First check that content in response exists, due too bug: https://bugs.php.net/bug.php?id=54484
         $content = $rawResponse->getContent();
         if (!$content) {
             return array();
         }
-
         $response = json_decode($content, true);
         if (JSON_ERROR_NONE !== json_last_error()) {
             parse_str($content, $response);
-        }
-       
+        }      
         return $response;
     }
 
     /**
      * @param mixed $response the 'parsed' content based on the response headers
-     *
      * @throws AuthenticationException If an OAuth error occurred or no access token is found
      */
     protected function validateResponseContent($response)

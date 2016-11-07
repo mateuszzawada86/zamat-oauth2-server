@@ -98,13 +98,13 @@ class AccessTokenStorage implements AccessTokenInterface
             return null;
         }
 
-        $client = $accessToken->getClient();
+        $client = $accessToken->getClient();      
 
         return array(
             'client_id' => $client->getClientId(),
-            'user_id' => $accessToken->getUserId(),
-            'expires' => $accessToken->getExpires()->getTimestamp(),
-            'scope' => $accessToken->getScope()
+            'user_id'   => $accessToken->getUserId()->getUsername(),
+            'expires'   => $accessToken->getExpires()->getTimestamp(),
+            'scope'    => $accessToken->getScope()
         );
     }
 

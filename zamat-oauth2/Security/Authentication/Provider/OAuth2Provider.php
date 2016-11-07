@@ -35,11 +35,25 @@ class OAuth2Provider implements AuthenticationProviderInterface
     public function authenticate(TokenInterface $token)
     {
         try {
-
-            $token->setAuthenticated(true);
-            $token->setUser('admin');
-
-            return $token;
+            
+            var_dump($token);die();
+         
+            if (!$this->supports($token) ) {
+                return;
+            }  
+            $user = $this->userProvider->loadUserByAccessToken($token->getAccessToken());
+            if(!$user) {
+              throw new AuthenticationException('User object is not valid');  
+            }
+         
+            $oauth2Token = new OAuth2Token($user->getRoles());
+            $oauth2Token->setAccessToken($user->getAccessToken());
+            $oauth2Token->setRefreshToken($token->getRefreshToken());
+            $oauth2Token->setRawToken(json_encode($token));            
+            $oauth2Token->setExpires($token->getExpires());
+            $oauth2Token->setUser($user);
+            
+            return $oauth2Token;
         }
         catch (\Exception $exception) {
             throw new AuthenticationException('The OAuth2 Access Token is invalid.');

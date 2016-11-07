@@ -66,7 +66,6 @@ class OAuth2UserProvider implements UserProviderInterface
      */
     public function loadUserByAccessToken($accessToken)
     {
-
         try {
 
             $userData = $this->getClient()->getUserInformation($accessToken);
