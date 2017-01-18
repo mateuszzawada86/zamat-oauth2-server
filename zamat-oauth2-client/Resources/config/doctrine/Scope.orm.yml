@@ -1,0 +1,13 @@
+Zamat\Bundle\OAuth2Bundle\Entity\Scope:
+    type: entity
+    repositoryClass: Zamat\Bundle\OAuth2Bundle\Entity\Repository\ScopeRepository   
+    table: zamat_oauth_scope
+    id:
+        scope:
+            type:       string
+            length:     255
+    fields:
+        description:
+            type:       string
+            length:     255
+    lifecycleCallbacks: {  }
