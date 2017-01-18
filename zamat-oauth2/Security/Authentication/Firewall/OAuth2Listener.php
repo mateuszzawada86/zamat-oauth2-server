@@ -88,11 +88,11 @@ class OAuth2Listener extends AbstractAuthenticationListener
     public function setParameters(array $parameters = array())
     {
                 
-        $this->validateSSL = $parameters['validate_ssl'];
-        $this->clientId = $parameters['client_id'];
+        $this->validateSSL  = $parameters['validate_ssl'];
+        $this->clientId     = $parameters['client_id'];
         $this->clientSecret = $parameters['client_secret'];
-        $this->redirectUri = $parameters['redirect_uri'];
-        $this->scope = $parameters['scope'];
+        $this->redirectUri  = $parameters['redirect_uri'];
+        $this->scope        = $parameters['scope'];
 
         return $this;
     }
@@ -125,11 +125,11 @@ class OAuth2Listener extends AbstractAuthenticationListener
         }
         
         $token = $this->getClient()->getAccessToken(array(
-            'client_id' => $this->clientId,
+            'client_id'     => $this->clientId,
             'client_secret' => $this->clientSecret,
-            'scope' => $this->scope,
-            'redirect_uri' => $this->redirectUri,
-            'code' => $request->query->get('code'),
+            'scope'         => $this->scope,
+            'redirect_uri'  => $this->redirectUri,
+            'code'          => $request->query->get('code'),
         ));
         
         if (!is_array($token) || empty($token)) {

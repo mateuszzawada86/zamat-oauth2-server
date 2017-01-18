@@ -25,7 +25,7 @@ class RefreshTokenRepository extends EntityRepository implements RefreshTokenPro
         $entity->setExpires($refreshToken->getExpires());
         $entity->setScope($refreshToken->getScope());
         $entity->setToken($refreshToken->getToken());
-        $entity->setUserId($refreshToken->getUserId());
+        $entity->setUser($refreshToken->getUser());
         
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();

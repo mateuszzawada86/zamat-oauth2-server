@@ -4,8 +4,9 @@ namespace Zamat\OAuth2\Storage;
 
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
-use OAuth2\Storage\UserCredentialsInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+
+use OAuth2\Storage\UserCredentialsInterface;
 
 class UserCredentialsStorage  implements UserCredentialsInterface
 {
@@ -15,12 +16,13 @@ class UserCredentialsStorage  implements UserCredentialsInterface
      * @var UserProviderInterface 
      */
     protected $userProvider;
+    
     /**
      *
      * @var EncoderFactoryInterface 
      */
     protected $encoderFactory;
-    
+        
     /**
      * 
      * @return type
@@ -98,27 +100,20 @@ class UserCredentialsStorage  implements UserCredentialsInterface
     public function checkUserCredentials($username, $password)
     {
         try {
-            $user = $this->userProvider->loadUserByUsername($username);
-                        
+            $user = $this->userProvider->loadUserByUsername($username);                        
         } catch (UsernameNotFoundException $e) {
             return false;
         }
-
+        
         if ($user instanceof AdvancedUserInterface) {
             if ($user->isAccountNonExpired() === false) {
                 return false;
             }
-            if ($user->isAccountNonLocked() === false) {
+            if ($user->isCredentialsNonExpired() === false || $user->isEnabled() === false || $user->isAccountNonLocked() === false) {
                 return false;
             }
-            if ($user->isCredentialsNonExpired() === false) {
-                return false;
-            }
-            if ($user->isEnabled() === false) {
-                return false;
-            }
-        }
-                
+        } 
+        
         if ($this->encoderFactory->getEncoder($user)->isPasswordValid($user->getPassword(), $password, $user->getSalt())) {
             return true;
         }
@@ -139,17 +134,11 @@ class UserCredentialsStorage  implements UserCredentialsInterface
      */
     public function getUserDetails($username)
     {
-        try {
-            $user = $this->userProvider->loadUserByUsername($username);
+        try {           
+            return $this->userProvider->loadUserWithScopes($username);             
         } catch (UsernameNotFoundException $e) {
             return false;
         }
-        
-        $scope = $user->getScope();
-
-        return array(
-            'user_id' => $user->getUsername(),
-            'scope' => $scope
-        );
+                
     }
 }

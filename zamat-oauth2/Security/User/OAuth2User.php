@@ -13,8 +13,20 @@ class OAuth2User implements UserInterface, EquatableInterface
      * @var type 
      */
     private $client_id;
+    /**
+     *
+     * @var type 
+     */
     private $user_id;
+    /**
+     *
+     * @var type 
+     */
     private $scopes;
+    /**
+     *
+     * @var type 
+     */
     private $access_token;
 
     /**

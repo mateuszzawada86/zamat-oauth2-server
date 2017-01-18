@@ -4,6 +4,7 @@ namespace Zamat\OAuth2\Storage;
 
 use OAuth2\Storage\AuthorizationCodeInterface;
 use Zamat\OAuth2\Provider\ClientProviderInterface;
+use Zamat\OAuth2\Provider\UserProviderInterface;
 use Zamat\OAuth2\Provider\AuthorizationCodeProviderInterface;
 use Zamat\OAuth2\AuthorizationCode;
 
@@ -15,6 +16,12 @@ class AuthorizationCodeStorage implements AuthorizationCodeInterface
      * @var ClientProviderInterface 
      */
     protected $clientProvider;
+      
+    /**
+     *
+     * @var UserProviderInterface 
+     */
+    protected $userProvider;      
 
     /**
      *
@@ -41,6 +48,26 @@ class AuthorizationCodeStorage implements AuthorizationCodeInterface
         $this->clientProvider = $clientProvider;
         return $this;
     }
+     
+    /**
+     * 
+     * @return type
+     */
+    public function getUserProvider()
+    {
+        return $this->userProvider;
+    }
+
+    /**
+     * 
+     * @param UserProviderInterface $userProvider
+     * @return \Zamat\OAuth2\Storage\AccessTokenStorage
+     */
+    public function setUserProvider(UserProviderInterface $userProvider)
+    {
+        $this->userProvider = $userProvider;
+        return $this;
+    } 
 
     /**
      * 
@@ -67,9 +94,10 @@ class AuthorizationCodeStorage implements AuthorizationCodeInterface
      * @param ClientProviderInterface $clientProvider
      * @param AuthorizationCodeProviderInterface $authCodeProvider
      */
-    public function __construct(ClientProviderInterface $clientProvider, AuthorizationCodeProviderInterface $authCodeProvider)
+    public function __construct(ClientProviderInterface $clientProvider,UserProviderInterface $userProvider, AuthorizationCodeProviderInterface $authCodeProvider)
     {
         $this->clientProvider = $clientProvider;
+        $this->userProvider = $userProvider;
         $this->authCodeProvider = $authCodeProvider;
     }
 
@@ -108,7 +136,7 @@ class AuthorizationCodeStorage implements AuthorizationCodeInterface
 
         return array(
             'client_id' => $authCode->getClient()->getClientId(),
-            'user_id' => $authCode->getUserId(),
+            'user_id' => $authCode->getUser(),
             'expires' => $authCode->getExpires()->getTimestamp(),
             'redirect_uri' => implode(' ', $authCode->getRedirectUri()),
             'scope' => $authCode->getScope()
@@ -144,6 +172,7 @@ class AuthorizationCodeStorage implements AuthorizationCodeInterface
     public function setAuthorizationCode($code, $client_id, $user_id, $redirect_uri, $expires, $scope = null)
     {
         $client = $this->getClientProvider()->find($client_id);
+        $userObject = $this->getUserProvider()->findOneByUsername($user_id);
 
         if (!$client) {
             throw new \Exception('Unknown client identifier');
@@ -152,7 +181,7 @@ class AuthorizationCodeStorage implements AuthorizationCodeInterface
         $authorizationCode = new AuthorizationCode();
         $authorizationCode->setCode($code);
         $authorizationCode->setClient($client);
-        $authorizationCode->setUserId($user_id);
+        $authorizationCode->setUser($userObject);
         $authorizationCode->setRedirectUri($redirect_uri);
         $authorizationCode->setExpires($expires);
         $authorizationCode->setScope($scope);
@@ -174,9 +203,9 @@ class AuthorizationCodeStorage implements AuthorizationCodeInterface
      */
     public function expireAuthorizationCode($code)
     {
-        $code = $this->getAuthCodeProvider()->find($code);
-        if ($code) {
-            $this->getAuthCodeProvider()->remove($code);
+        $authorizationCode = $this->getAuthCodeProvider()->find($code);
+        if ($authorizationCode) {
+            $this->getAuthCodeProvider()->remove($authorizationCode);
         }
     }
 

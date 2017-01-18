@@ -11,7 +11,6 @@ use Buzz\Client\Curl;
 use Zamat\OAuth2\HttpFoundation\Request;
 use Zamat\OAuth2\Client\OAuthClientInterface;
 
-
 class OAuthClient implements OAuthClientInterface
 {
     
@@ -99,7 +98,6 @@ class OAuthClient implements OAuthClientInterface
 
     } 
     
-
     /**
      * Get the 'parsed' content based on the response headers.
      * @param HttpMessageInterface $rawResponse

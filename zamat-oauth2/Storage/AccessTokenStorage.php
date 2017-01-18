@@ -5,7 +5,10 @@ namespace Zamat\OAuth2\Storage;
 use OAuth2\Storage\AccessTokenInterface;
 use Zamat\OAuth2\Provider\ClientProviderInterface;
 use Zamat\OAuth2\Provider\AccessTokenProviderInterface;
+use Zamat\OAuth2\Provider\UserProviderInterface;
 use Zamat\OAuth2\AccessToken;
+
+use Zamat\OAuth2\UserInterface;
 
 class AccessTokenStorage implements AccessTokenInterface
 {
@@ -15,7 +18,13 @@ class AccessTokenStorage implements AccessTokenInterface
      * @var ClientProviderInterface 
      */
     protected $clientProvider;
-
+    
+    /**
+     *
+     * @var UserProviderInterface 
+     */
+    protected $userProvider;   
+    
     /**
      *
      * @var AccessTokenProviderInterface 
@@ -61,15 +70,37 @@ class AccessTokenStorage implements AccessTokenInterface
         $this->accessTokenProvider = $accessTokenProvider;
         return $this;
     }
+    
+    /**
+     * 
+     * @return type
+     */
+    public function getUserProvider()
+    {
+        return $this->userProvider;
+    }
 
+    /**
+     * 
+     * @param UserProviderInterface $userProvider
+     * @return \Zamat\OAuth2\Storage\AccessTokenStorage
+     */
+    public function setUserProvider(UserProviderInterface $userProvider)
+    {
+        $this->userProvider = $userProvider;
+        return $this;
+    }
+
+    
     /**
      * 
      * @param ClientProviderInterface $clientProvider
      * @param AccessTokenProviderInterface $accessTokenProvider
      */
-    public function __construct(ClientProviderInterface $clientProvider, AccessTokenProviderInterface $accessTokenProvider)
+    public function __construct(ClientProviderInterface $clientProvider,UserProviderInterface $userProvider, AccessTokenProviderInterface $accessTokenProvider)
     {
         $this->clientProvider = $clientProvider;
+        $this->userProvider = $userProvider;
         $this->accessTokenProvider = $accessTokenProvider;
     }
 
@@ -102,9 +133,9 @@ class AccessTokenStorage implements AccessTokenInterface
 
         return array(
             'client_id' => $client->getClientId(),
-            'user_id'   => $accessToken->getUserId()->getUsername(),
+            'user_id'   => $accessToken->getUser()->getUsername(),
             'expires'   => $accessToken->getExpires()->getTimestamp(),
-            'scope'    => $accessToken->getScope()
+            'scope'     => $accessToken->getScope()
         );
     }
 
@@ -128,21 +159,29 @@ class AccessTokenStorage implements AccessTokenInterface
      */
     public function setAccessToken($oauth_token, $client_id, $user_id, $expires, $scope = null)
     {
+                     
         // Get Client Entity
         $client = $this->getClientProvider()->find($client_id);
-
+        
+        if($user_id instanceof UserInterface) {
+           $userObject = $this->getUserProvider()->findOneByUsername($user_id->getUsername()); 
+        } else {
+          $userObject = $this->getUserProvider()->findOneByUsername($user_id);   
+        }
+         
         if (!$client) {
             return null;
         }
-
+            
         // Create Access Token
         $accessToken = new AccessToken();
         $accessToken->setToken($oauth_token);
         $accessToken->setClient($client);
-        $accessToken->setUserId($user_id);
+        $accessToken->setUser($userObject ? $userObject : null);
         $accessToken->setExpires($expires);
         $accessToken->setScope($scope);
-
+        
+        
         $this->getAccessTokenProvider()->save($accessToken);
     }
     

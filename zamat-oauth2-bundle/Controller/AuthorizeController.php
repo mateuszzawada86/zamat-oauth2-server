@@ -54,16 +54,13 @@ class AuthorizeController extends Controller
                 
         $server   = $this->get('zamat_oauth2.server');
         $request  = $this->get('zamat_oauth2.request');
-        $response = $this->get('zamat_oauth2.response');              
-        
-        $currentUser = $this->get('database_data_provider')->find($user->getId());
-               
-        return $server->handleAuthorizeRequest($request,$response, (bool) $request->request->get('authorize') , $currentUser);
+        $response = $this->get('zamat_oauth2.response');                   
+        return $server->handleAuthorizeRequest($request,$response, (bool) $request->request->get('authorize') , $user->getUsername());
     } 
       
 
     /**
-     * @Route("/oauth/v2/auth_login", name="_oauth_authorize_login")
+     * @Route("/oauth/v2/login", name="_oauth_authorize_login")
      */
     public function loginAction()
     {
@@ -87,10 +84,18 @@ class AuthorizeController extends Controller
     }      
 
     /**
-     * @Route("/oauth/v2/auth_login_check", name="_oauth_authorize_login_check")
+     * @Route("/oauth/v2/login_check", name="_oauth_authorize_login_check")
      */
     public function loginCheckAction()
     {
     } 
+    
+    /**
+     * @Route("/oauth/v2/logout", name="_oauth_authorize_logout")
+     */
+    public function logoutAction()
+    {
+    }   
+    
 
 }

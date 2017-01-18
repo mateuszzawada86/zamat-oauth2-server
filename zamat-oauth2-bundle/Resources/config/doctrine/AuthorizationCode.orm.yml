@@ -23,7 +23,7 @@ Zamat\Bundle\OAuth2Bundle\Entity\AuthorizationCode:
           referencedColumnName: client_id
           onDelete: CASCADE
           onUpdate: CASCADE
-      user_id:
+      user:
         targetEntity: \Zamat\Bundle\SecurityBundle\Entity\EntityUser
         joinColumn:
           name: user_id

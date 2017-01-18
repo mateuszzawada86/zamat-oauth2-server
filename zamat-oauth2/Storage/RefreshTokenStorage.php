@@ -6,6 +6,7 @@ use OAuth2\Storage\RefreshTokenInterface;
 
 use Zamat\OAuth2\Provider\RefreshTokenProviderInterface;
 use Zamat\OAuth2\Provider\ClientProviderInterface;
+use Zamat\OAuth2\Provider\UserProviderInterface;
 use Zamat\OAuth2\RefreshToken;
 
 
@@ -22,6 +23,12 @@ class RefreshTokenStorage implements RefreshTokenInterface
      * @var ClientProviderInterface 
      */
     protected $clientProvider;
+    
+    /**
+     *
+     * @var UserProviderInterface 
+     */
+    protected $userProvider;     
     
     /**
      * 
@@ -62,15 +69,38 @@ class RefreshTokenStorage implements RefreshTokenInterface
         $this->clientProvider = $clientProvider;
         return $this;
     }  
+        
+    /**
+     * 
+     * @return type
+     */
+    public function getUserProvider()
+    {
+        return $this->userProvider;
+    }
+
+    /**
+     * 
+     * @param UserProviderInterface $userProvider
+     * @return \Zamat\OAuth2\Storage\AccessTokenStorage
+     */
+    public function setUserProvider(UserProviderInterface $userProvider)
+    {
+        $this->userProvider = $userProvider;
+        return $this;
+    }  
 
     /**
      * 
      * @param RefreshTokenProviderInterface $refreshTokenProvider
+     * @param ClientProviderInterface $clientProvider
+     * @param UserProviderInterface $userProvider
      */
-    public function __construct(RefreshTokenProviderInterface $refreshTokenProvider,ClientProviderInterface $clientProvider)
+    public function __construct(RefreshTokenProviderInterface $refreshTokenProvider,ClientProviderInterface $clientProvider,UserProviderInterface $userProvider)
     {
         $this->refreshTokenProvider = $refreshTokenProvider;
         $this->clientProvider = $clientProvider;
+        $this->userProvider = $userProvider;
     }
 
     /**
@@ -99,7 +129,6 @@ class RefreshTokenStorage implements RefreshTokenInterface
     public function getRefreshToken($refresh_token)
     {
         $refreshToken = $this->getRefreshTokenProvider()->find($refresh_token);
-
         if (!$refreshToken) {
             return null;
         }
@@ -110,7 +139,7 @@ class RefreshTokenStorage implements RefreshTokenInterface
         return array(
             'refresh_token' => $refreshToken->getToken(),
             'client_id' => $client->getClientId(),
-            'user_id' => $refreshToken->getUserId(),
+            'user_id' => $refreshToken->getUser()->getUsername(),
             'expires' => $refreshToken->getExpires()->getTimestamp(),
             'scope' => $refreshToken->getScope()
         );
@@ -147,12 +176,14 @@ class RefreshTokenStorage implements RefreshTokenInterface
         if (!$client) {
             return null;
         }
+        $userObject = $this->getUserProvider()->findOneByUsername($user_id);
+    
 
         // Create Refresh Token
         $refreshToken = new RefreshToken();
         $refreshToken->setToken($refresh_token);
         $refreshToken->setClient($client);
-        $refreshToken->setUserId($user_id);
+        $refreshToken->setUser($userObject ? $userObject : null);
         $refreshToken->setExpires($expires);
         $refreshToken->setScope($scope);
 

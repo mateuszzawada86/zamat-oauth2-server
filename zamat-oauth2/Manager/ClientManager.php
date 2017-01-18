@@ -110,6 +110,16 @@ class ClientManager implements ClientManagerInterface
         $this->clientProvider->save($client);
         return $client;
     }
+    
+    /**
+     * 
+     * @param type $id
+     * @return type
+     */
+    public function getClient($id)
+    {
+        return $this->clientProvider->find($id);
+    }
 
     /**
      * Creates a secret for a client

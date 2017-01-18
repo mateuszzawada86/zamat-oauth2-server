@@ -21,13 +21,12 @@ class AccessTokenRepository extends EntityRepository implements AccessTokenProvi
      */
     public function save(AccessToken $accessToken)
     {
-        
         $entity = new Entity();
         $entity->setClient($accessToken->getClient());
         $entity->setExpires($accessToken->getExpires());
         $entity->setScope($accessToken->getScope());
         $entity->setToken($accessToken->getToken());
-        $entity->setUserId($accessToken->getUserId());
+        $entity->setUser($accessToken->getUser());
         
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();

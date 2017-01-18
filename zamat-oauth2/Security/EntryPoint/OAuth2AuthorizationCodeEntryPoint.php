@@ -64,10 +64,10 @@ class OAuth2AuthorizationCodeEntryPoint implements AuthenticationEntryPointInter
      */
     public function setParameters(array $parameters = array())
     {
-        $this->clientId = $parameters['client_id'];
+        $this->clientId     = $parameters['client_id'];
         $this->clientSecret = $parameters['client_secret'];
-        $this->redirectUri = $parameters['redirect_uri'];
-        $this->scope = $parameters['scope'];
+        $this->redirectUri  = $parameters['redirect_uri'];
+        $this->scope        = $parameters['scope'];
 
         return $this;
     }
@@ -96,6 +96,7 @@ class OAuth2AuthorizationCodeEntryPoint implements AuthenticationEntryPointInter
         $state = uniqid(rand());
         $session = $request->getSession();
         $session->set('state', $state);
+        
                         
         return new RedirectResponse($this->getClientParameters()['authorize_uri'] . '?' . http_build_query(array(
                     'response_type' => 'code',

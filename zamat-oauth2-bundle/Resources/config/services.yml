@@ -38,7 +38,7 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zamat\Bundle\OAuth2Bundle\Entity\Client
-
+            
     zamat_oauth.scope.provider:
         class: Doctrine\ORM\EntityRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
@@ -54,11 +54,11 @@ services:
     # storage         
     zamat_oauth.access.token.storage:
         class: Zamat\OAuth2\Storage\AccessTokenStorage
-        arguments: ["@zamat_oauth.client.provider","@zamat_oauth.access.token.provider"]
+        arguments: ["@zamat_oauth.client.provider","@zamat_oauth.user.provider","@zamat_oauth.access.token.provider"]
 
     zamat_oauth.authorization.code.storage:
         class: Zamat\OAuth2\Storage\AuthorizationCodeStorage
-        arguments: ["@zamat_oauth.client.provider","@zamat_oauth.authorization.code.provider"]
+        arguments: ["@zamat_oauth.client.provider","@zamat_oauth.user.provider","@zamat_oauth.authorization.code.provider"]
 
     zamat_oauth.client.credentials.storage:
         class: Zamat\OAuth2\Storage\ClientCredentialsStorage
@@ -66,7 +66,7 @@ services:
 
     zamat_oauth.refresh.token.storage:
         class: Zamat\OAuth2\Storage\RefreshTokenStorage
-        arguments: ["@zamat_oauth.refresh.token.provider","@zamat_oauth.client.provider"]
+        arguments: ["@zamat_oauth.refresh.token.provider","@zamat_oauth.client.provider","@zamat_oauth.user.provider"]
 
     zamat_oauth.scope.storage:
         class: Zamat\OAuth2\Storage\ScopeStorage
@@ -123,7 +123,8 @@ services:
         class: Zamat\OAuth2\Security\Authentication\Provider\OAuth2Provider
         arguments: ["@oauth.security.user.provider"]
         public: false
-
+        abstract : true
+       
     oauth.security.authentication.listener:
         class: Zamat\OAuth2\Security\Authentication\Firewall\OAuth2Listener
         parent: security.authentication.listener.abstract

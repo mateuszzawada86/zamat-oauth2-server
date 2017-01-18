@@ -1,7 +1,6 @@
 <?php
 
 namespace Zamat\OAuth2;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * AuthorizationCode
@@ -21,7 +20,7 @@ class AuthorizationCode
     /**
      * @var UserInterface
      */
-    protected $user_id;
+    protected $user;
 
     /**
      * @var array
@@ -91,24 +90,23 @@ class AuthorizationCode
     }
 
     /**
-     * Set user_id
-     * @param  UserInterface $userId
+     * Set user
+     * @param  UserInterface $user
      * @return AuthorizationCode
      */
-    public function setUserId(UserInterface $userId = null)
+    public function setUser(UserInterface $user = null)
     {
-        $this->user_id = $userId;
+        $this->user = $user;
         return $this;
     }
 
     /**
-     * Get user_id
-     *
-     * @return UserInterface
+     * Get user
+     * @return User
      */
-    public function getUserId()
+    public function getUser()
     {
-        return $this->user_id;
+        return $this->user;
     }
 
     /**

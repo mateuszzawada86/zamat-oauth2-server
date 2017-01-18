@@ -66,18 +66,14 @@ class OAuth2UserProvider implements UserProviderInterface
      */
     public function loadUserByAccessToken($accessToken)
     {
-        try {
+        
+        $userData = $this->getClient()->getUserInformation($accessToken);
+        if ($userData) {
+            $userObject = new OAuth2User($accessToken, $userData['client_id'], $userData['user_id'], explode(' ', $userData['scope']));
+            return $userObject;
+        }
+        throw new UsernameNotFoundException(sprintf('User for Access Token "%s" does not exist or is invalid.', $accessToken));
 
-            $userData = $this->getClient()->getUserInformation($accessToken);
-            if ($userData) {
-                $userObject = new OAuth2User($accessToken, $userData['client_id'], $userData['user_id'], explode(' ', $userData['scope']));
-                return $userObject;
-            }
-            throw new UsernameNotFoundException(sprintf('User for Access Token "%s" does not exist or is invalid.', $accessToken));
-        }
-        catch (\Exception $exception) {
-            throw new UsernameNotFoundException(sprintf('User for Access Token "%s" does not exist or is invalid.', $accessToken));
-        }
     }
 
     /**

@@ -16,27 +16,27 @@ class AuthorizationCodeRepository extends EntityRepository implements Authorizat
     
     /**
      * 
-     * @param AuthorizationCode $accessToken
+     * @param AuthorizationCode $authorizationCode
      * @return AuthorizationCode
      */
-    public function save(AuthorizationCode $accessToken)
+    public function save(AuthorizationCode $authorizationCode)
     {
-                      
+                                   
         $entity = new Entity();
-        
-        $entity->setClient($accessToken->getClient());
-        $entity->setCode($accessToken->getCode());
-        $entity->setExpires($accessToken->getExpires());
-        $entity->setRedirectUri($accessToken->getRedirectUri());
-        $entity->setScope($accessToken->getScope());
-        $entity->setUserId($accessToken->getUserId());
+
+        $entity->setClient($authorizationCode->getClient());
+        $entity->setCode($authorizationCode->getCode());
+        $entity->setExpires($authorizationCode->getExpires());
+        $entity->setRedirectUri($authorizationCode->getRedirectUri());
+        $entity->setScope($authorizationCode->getScope());
+        $entity->setUser($authorizationCode->getUser());
         
         
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
         
         
-        return $accessToken;
+        return $authorizationCode;
     }
     
     /**

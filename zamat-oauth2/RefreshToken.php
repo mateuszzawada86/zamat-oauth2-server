@@ -1,7 +1,6 @@
 <?php
 
 namespace Zamat\OAuth2;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * RefreshToken
@@ -16,7 +15,7 @@ class RefreshToken
     /**
      * @var UserInterface
      */
-    protected $user_id;
+    protected $user;
 
     /**
      * @var \DateTime
@@ -57,26 +56,24 @@ class RefreshToken
     }
 
     /**
-     * Set user_id
+     * Set user
      *
-     * @param  UserInterface $userId
+     * @param  UserInterface $user
      * @return RefreshToken
      */
-    public function setUserId(UserInterface $userId = null)
+    public function setUser(UserInterface $user = null)
     {
-        $this->user_id = $userId;
-
+        $this->user = $user;
         return $this;
     }
 
     /**
-     * Get user_id
-     *
+     * Get user
      * @return UserInterface
      */
-    public function getUserId()
+    public function getUser()
     {
-        return $this->user_id;
+        return $this->user;
     }
 
     /**
@@ -141,7 +138,6 @@ class RefreshToken
     public function setClient(Client $client = null)
     {
         $this->client = $client;
-
         return $this;
     }
 

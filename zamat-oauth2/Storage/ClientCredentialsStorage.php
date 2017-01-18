@@ -129,11 +129,9 @@ class ClientCredentialsStorage implements ClientCredentialsInterface
         if (!$client) {
             return false;
         }
-
         if (empty($client['grant_types'])) {
             return true;
         }
-
         if (in_array($grant_type, $client['grant_types'])) {
             return true;
         }
@@ -178,7 +176,6 @@ class ClientCredentialsStorage implements ClientCredentialsInterface
         if (!$client) {
             return false;
         }
-
         return implode(' ', $client->getScopes());
     }
 }
