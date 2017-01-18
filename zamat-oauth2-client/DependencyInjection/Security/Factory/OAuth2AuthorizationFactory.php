@@ -105,6 +105,7 @@ class OAuth2AuthorizationFactory implements SecurityFactoryInterface
      */
     protected function createListener($container, $id, $config, $userProvider)
     {
+        
         $listenerId = $this->getListenerId();
         $listener = new DefinitionDecorator($listenerId);
         $listener->replaceArgument(4, $id);
@@ -139,6 +140,13 @@ class OAuth2AuthorizationFactory implements SecurityFactoryInterface
         return $successHandlerId;
     }
 
+    /**
+     * 
+     * @param type $container
+     * @param type $id
+     * @param type $config
+     * @return type
+     */
     protected function createAuthenticationFailureHandler($container, $id, $config)
     {
         $id = $this->getFailureHandlerId($id);
@@ -147,11 +155,21 @@ class OAuth2AuthorizationFactory implements SecurityFactoryInterface
         return $id;
     }  
     
+    /**
+     * 
+     * @param type $id
+     * @return type
+     */
     protected function getSuccessHandlerId($id)
     {
         return 'security.authentication.success_handler.'.$id.'.'.str_replace('-', '_', $this->getKey());
     }
 
+    /**
+     * 
+     * @param type $id
+     * @return type
+     */
     protected function getFailureHandlerId($id)
     {
         return 'security.authentication.failure_handler.'.$id.'.'.str_replace('-', '_', $this->getKey());
@@ -167,7 +185,6 @@ class OAuth2AuthorizationFactory implements SecurityFactoryInterface
      */
     protected function createEntryPoint($container, $id, $config, $defaultEntryPoint)
     {
-        
         $entryPointId = 'oauth.client.security.entry_point.'.$id;
         $container
             ->setDefinition($entryPointId, new DefinitionDecorator('oauth.client.security.entry_point'))
