@@ -4,7 +4,6 @@ namespace Zamat\Bundle\OAuth2Bundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Zamat\Bundle\OAuth2Bundle\DependencyInjection\Security\Factory\OAuth2AuthorizationFactory;
 use Zamat\Bundle\OAuth2Bundle\DependencyInjection\ZamatOAuth2Extension;
 
 class ZamatOAuth2Bundle extends Bundle
@@ -17,8 +16,6 @@ class ZamatOAuth2Bundle extends Bundle
     public function build(ContainerBuilder $container)
     {      
         parent::build($container);
-        $extension = $container->getExtension('security');       
-        $extension->addSecurityListenerFactory(new OAuth2AuthorizationFactory());
     }
     
     /**
