@@ -2,7 +2,6 @@
 
 namespace Zamat\OAuth2;
 
-
 class AccessToken
 {
 
