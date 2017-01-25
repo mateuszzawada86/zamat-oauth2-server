@@ -2,8 +2,7 @@
 
 namespace Zamat\Bundle\OAuth2Bundle\Controller;
 
-use Zamat\Mvc\Controller\BaseController as Controller;
-
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -64,7 +63,7 @@ class AuthorizeController extends Controller
      */
     public function loginAction()
     {
-        $request = $this->getRequest();
+        $request = $this->container->get('request_stack')->getCurrentRequest();
         $session = $request->getSession();    
         $authenticationUtils = $this->get('security.authentication_utils');
         $error = $authenticationUtils->getLastAuthenticationError();

@@ -1,7 +1,7 @@
 parameters:
     zamat_oauth2.server.class: OAuth2\Server
     zamat_server_parameters:
-        enforce_state: false 
+      enforce_state: false 
 services:
     zamat_oauth2.request:
         class:   Zamat\OAuth2\HttpFoundation\Request
@@ -46,6 +46,13 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
             - Zamat\Bundle\OAuth2Bundle\Entity\ClientPublicKey
+            
+    zamat_oauth.user.provider:
+        class: Doctrine\ORM\EntityRepository
+        factory: ['@doctrine.orm.default_entity_manager', getRepository]
+        arguments:
+            - Zamat\Bundle\OAuth2Bundle\Entity\User           
+            
     
     # storage         
     zamat_oauth.access.token.storage:
@@ -70,14 +77,14 @@ services:
 
     zamat_oauth.user.credentials.storage:
         class: Zamat\OAuth2\Storage\UserCredentialsStorage
-        arguments: ["@database_application_user_provider","@security.encoder_factory"]
+        arguments: ["@zamat_oauth2.user_manager","@security.encoder_factory"]
 
     # server
     zamat_oauth2.server:
         class: Zamat\OAuth2\Server\OAuth2
         arguments: ["@zamat_oauth.client.credentials.storage","@zamat_oauth.access.token.storage","@zamat_oauth.authorization.code.storage","@zamat_oauth.user.credentials.storage","@zamat_oauth.refresh.token.storage","@zamat_oauth.scope.storage",null,"%zamat_server_parameters%"]       
     
-    # grant type
+    # grant types
     zamat_oauth2.oauth2.grant_type.authorization_code:    
         class: OAuth2\GrantType\AuthorizationCode
         arguments: ["@zamat_oauth.authorization.code.storage"]
@@ -94,11 +101,13 @@ services:
         class: OAuth2\GrantType\ClientCredentials
         arguments: ["@zamat_oauth.client.credentials.storage"]
     
-    # manager        
+    # oauth2 managers       
     zamat_oauth2.client_manager:    
         class: Zamat\OAuth2\Manager\ClientManager
         arguments: ["@zamat_oauth.client.provider","@zamat_oauth.scope.provider"]
-
+    zamat_oauth2.user_manager:    
+        class: Zamat\OAuth2\Manager\UserManager
+        arguments: ["@zamat_oauth.user.provider"]
     zamat_oauth2.scope_manager: 
         class: Zamat\OAuth2\Manager\ScopeManager
         arguments: ['@zamat_oauth.scope.provider']

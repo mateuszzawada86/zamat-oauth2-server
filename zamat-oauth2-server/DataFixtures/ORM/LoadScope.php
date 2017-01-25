@@ -9,9 +9,9 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Zamat\Bundle\OAuth2Bundle\Entity\Client;
+use Zamat\Bundle\OAuth2Bundle\Entity\Scope;
 
-class LoadClient extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
+class LoadScope extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
     
     /**
@@ -35,14 +35,11 @@ class LoadClient extends AbstractFixture implements OrderedFixtureInterface, Con
     public function load(ObjectManager $manager)
     {
          
-        $client = new Client();
-        $client->setClientId("api");
-        $client->setClientSecret("api");
-        $client->setScopes(array("profile"));
-        $client->setGrantTypes(array("password","authorization_code","client_credentials"));
-        $client->setRedirectUri(array("http://example.com"));
-           
-        $manager->persist($client);       
+        $scope = new Scope();
+        $scope->setScope("profile");
+        $scope->setDescription("profile");          
+        
+        $manager->persist($scope);       
                 
         $manager->flush();
     }

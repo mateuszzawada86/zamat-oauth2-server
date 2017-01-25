@@ -2,7 +2,7 @@
 
 namespace Zamat\Bundle\OAuth2Bundle\Controller;
 
-use Zamat\Mvc\Controller\BaseController as Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
