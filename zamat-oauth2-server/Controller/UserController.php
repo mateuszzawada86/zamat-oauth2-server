@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class UserController extends Controller
 {
     /**
-     * Used for verification purposes.
      * @Route("/oauth/v2/me", name="_verify_token")
      */
     public function meAction()

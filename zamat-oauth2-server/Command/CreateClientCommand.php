@@ -3,10 +3,11 @@
 namespace Zamat\Bundle\OAuth2Bundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+
+use Doctrine\DBAL\DBALException;
 use Zamat\OAuth2\Exception\ScopeNotFoundException;
 
 class CreateClientCommand extends ContainerAwareCommand
@@ -46,7 +47,7 @@ class CreateClientCommand extends ContainerAwareCommand
                 explode(',', $input->getArgument('grant_types')),
                 explode(',', $input->getArgument('scopes'))
             );
-        } catch (\Doctrine\DBAL\DBALException $e) {
+        } catch (DBALException $e) {
             $output->writeln('<fg=red>Unable to create client ' . $input->getArgument('identifier') . '</fg=red>');
             $output->writeln('<fg=red>' . $e->getMessage() . '</fg=red>');
             return 1;

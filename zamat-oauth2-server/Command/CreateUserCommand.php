@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Doctrine\DBAL\DBALException;
 
 class CreateUserCommand extends ContainerAwareCommand
 {
@@ -37,7 +38,7 @@ class CreateUserCommand extends ContainerAwareCommand
 
         try {
             $userProvider->createUser($input->getArgument('username'), $input->getArgument('password'));
-        } catch (\Doctrine\DBAL\DBALException $e) {
+        } catch (DBALException $e) {
             $output->writeln('<fg=red>Unable to create user ' . $input->getArgument('username') . '</fg=red>');
 
             return;

@@ -6,11 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Doctrine\DBAL\DBALException;
 
 class CreateScopeCommand extends ContainerAwareCommand
 {
     
-
     /**
      * 
      * @return \Zamat\OAuth2\Command\CreateScopeCommand
@@ -39,7 +39,7 @@ class CreateScopeCommand extends ContainerAwareCommand
 
         try {
             $scopeManager->createScope($input->getArgument('scope'), $input->getArgument('description'));
-        } catch (\Doctrine\DBAL\DBALException $e) {
+        } catch (DBALException $e) {
             $output->writeln('<fg=red>Unable to create scope ' . $input->getArgument('scope') . '</fg=red>');
             return;
         }
