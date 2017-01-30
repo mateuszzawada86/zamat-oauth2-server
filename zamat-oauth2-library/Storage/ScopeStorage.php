@@ -3,6 +3,7 @@
 namespace Zamat\OAuth2\Storage;
 
 use OAuth2\Storage\ScopeInterface;
+
 use Zamat\OAuth2\Provider\ClientProviderInterface;
 use Zamat\OAuth2\Provider\ScopeProviderInterface;
 
@@ -14,8 +15,7 @@ class ScopeStorage implements ScopeInterface
      * @var ClientProviderInterface 
      */
     protected $clientProvider;
-    
-    
+      
     /**
      *
      * @var ScopeProviderInterface 

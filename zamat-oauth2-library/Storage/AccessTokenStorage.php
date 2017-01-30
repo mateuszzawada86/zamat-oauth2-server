@@ -3,11 +3,11 @@
 namespace Zamat\OAuth2\Storage;
 
 use OAuth2\Storage\AccessTokenInterface;
+
 use Zamat\OAuth2\Provider\ClientProviderInterface;
 use Zamat\OAuth2\Provider\AccessTokenProviderInterface;
 use Zamat\OAuth2\Provider\UserProviderInterface;
 use Zamat\OAuth2\AccessToken;
-
 use Zamat\OAuth2\UserInterface;
 
 class AccessTokenStorage implements AccessTokenInterface

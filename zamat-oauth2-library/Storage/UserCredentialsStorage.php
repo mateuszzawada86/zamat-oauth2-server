@@ -2,11 +2,12 @@
 
 namespace Zamat\OAuth2\Storage;
 
+use OAuth2\Storage\UserCredentialsInterface;
+
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-use OAuth2\Storage\UserCredentialsInterface;
 
 class UserCredentialsStorage  implements UserCredentialsInterface
 {

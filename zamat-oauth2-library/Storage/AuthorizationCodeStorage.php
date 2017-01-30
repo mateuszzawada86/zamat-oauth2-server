@@ -3,6 +3,7 @@
 namespace Zamat\OAuth2\Storage;
 
 use OAuth2\Storage\AuthorizationCodeInterface;
+
 use Zamat\OAuth2\Provider\ClientProviderInterface;
 use Zamat\OAuth2\Provider\UserProviderInterface;
 use Zamat\OAuth2\Provider\AuthorizationCodeProviderInterface;

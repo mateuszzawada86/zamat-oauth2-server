@@ -12,6 +12,8 @@ use OAuth2\Storage\RefreshTokenInterface;
 use OAuth2\Storage\ScopeInterface;
 use OAuth2\Storage\PublicKeyInterface;
 
+use OAuth2\TokenType\TokenTypeInterface;
+
 class OAuth2 extends Server
 {
     /**
@@ -39,7 +41,7 @@ class OAuth2 extends Server
             RefreshTokenInterface $refreshToken = null, 
             ScopeInterface $scope = null, 
             PublicKeyInterface $publicKey = null, 
-            array $config = array(), array $grantTypes = array(), array $responseTypes = array(), \OAuth2\TokenType\TokenTypeInterface $tokenType = null, \OAuth2\ScopeInterface $scopeUtil = null, \OAuth2\ClientAssertionType\ClientAssertionTypeInterface $clientAssertionType = null)
+            array $config = array(), array $grantTypes = array(), array $responseTypes = array(), TokenTypeInterface $tokenType = null, \OAuth2\ScopeInterface $scopeUtil = null, \OAuth2\ClientAssertionType\ClientAssertionTypeInterface $clientAssertionType = null)
     {
                 
         parent::__construct(array_filter(array($credentials, $accessToken, $authorizationCode, $userCredential, $refreshToken,$scope,$publicKey)), $config, $grantTypes, $responseTypes, $tokenType, $scopeUtil, $clientAssertionType);

@@ -3,6 +3,7 @@
 namespace Zamat\OAuth2\Storage;
 
 use OAuth2\Storage\ClientCredentialsInterface;
+
 use Zamat\OAuth2\Provider\ClientProviderInterface;
 
 class ClientCredentialsStorage implements ClientCredentialsInterface
