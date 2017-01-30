@@ -4,7 +4,6 @@ namespace Zamat\Bundle\OAuth2Bundle\Model;
 
 /**
  * Description of Authorization
- * @author mateusz.zawada
  */
 class Authorization
 {

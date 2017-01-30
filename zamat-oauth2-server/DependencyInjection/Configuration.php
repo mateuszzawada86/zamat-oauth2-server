@@ -20,7 +20,6 @@ class Configuration implements ConfigurationInterface
         $builder = new TreeBuilder();
         $builder->root('zamat_oauth2_server');            
         return $builder;     
-        
-        
+           
     }
 }

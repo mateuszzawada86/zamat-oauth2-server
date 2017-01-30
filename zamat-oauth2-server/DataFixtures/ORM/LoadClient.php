@@ -40,7 +40,7 @@ class LoadClient extends AbstractFixture implements OrderedFixtureInterface, Con
         $client->setClientSecret("api");
         $client->setScopes(array("profile"));
         $client->setGrantTypes(array("password","authorization_code","client_credentials"));
-        $client->setRedirectUri(array("http://example.com"));
+        $client->setRedirectUri(array("http://example.com","http://prezentacja.pl/app_dev.php/o/secured"));
            
         $manager->persist($client);       
                 

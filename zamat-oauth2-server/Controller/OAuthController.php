@@ -18,14 +18,5 @@ class OAuthController extends Controller
     public function oAuthAction()
     {
     }
-    
-    /**
-     * @Route("/oauth", name="_oauth_secured")
-     * @Method({"GET"})
-     * @Template("ZamatOAuth2Bundle:OAuth:oauth.html.twig")
-     */
-    public function oAuthSecuredAction()
-    {
-    }   
-    
+       
 }

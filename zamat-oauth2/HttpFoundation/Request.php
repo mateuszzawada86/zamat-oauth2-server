@@ -8,7 +8,6 @@ use OAuth2\RequestInterface;
 
 /**
  * Symfony Request Bridge
- * Override symfony request
  */
 class Request extends BaseRequest implements RequestInterface
 {

@@ -14,6 +14,7 @@ class UserController extends Controller
      */
     public function meAction()
     {
+
         $server = $this->get('zamat_oauth2.server');
         if (!$server->verifyResourceRequest($this->get('zamat_oauth2.request'), $this->get('zamat_oauth2.response'))) {
             return $server->getResponse();

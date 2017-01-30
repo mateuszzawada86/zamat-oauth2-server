@@ -11,6 +11,7 @@ services:
     zamat_oauth2.response:
         class: Zamat\OAuth2\HttpFoundation\Response
 
+    # entity providers
     zamat_oauth.access.token.provider:
         class: Doctrine\ORM\EntityRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
@@ -53,7 +54,6 @@ services:
         arguments:
             - Zamat\Bundle\OAuth2Bundle\Entity\User           
             
-    
     # storage         
     zamat_oauth.access.token.storage:
         class: Zamat\OAuth2\Storage\AccessTokenStorage
@@ -105,13 +105,14 @@ services:
     zamat_oauth2.client_manager:    
         class: Zamat\OAuth2\Manager\ClientManager
         arguments: ["@zamat_oauth.client.provider","@zamat_oauth.scope.provider"]
+        
     zamat_oauth2.user_manager:    
         class: Zamat\OAuth2\Manager\UserManager
         arguments: ["@zamat_oauth.user.provider"]
+        
     zamat_oauth2.scope_manager: 
         class: Zamat\OAuth2\Manager\ScopeManager
         arguments: ['@zamat_oauth.scope.provider']
-
 
     # form  #       
     oauth.form.authorization:

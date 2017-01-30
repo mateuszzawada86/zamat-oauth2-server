@@ -10,10 +10,10 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <h1>{{'Autoryzacja użytkownika'|trans}}</h1>
+                            <h1>Authorization</h1>
                             <form method="post">   
-                                <p>{{'Aplikacja'|trans}} <strong>{{request.client_id}}</strong> {{'próbuje uzyskać dostęp do Twoich danych niezbędnych w procesie autoryzacji'|trans}}</p>
-                                <h4>{{'Obszary autoryzacji'|trans}}</h4>
+                                <p>Client <strong>{{request.client_id}}</strong> authorization request</p>
+                                <h4>with scopes</h4>
                                 {% if scopes|length > 0 %}
                                     <ul class="list-group">
                                         {% for scope in scopes %}
@@ -21,8 +21,8 @@
                                             {% endfor %}
                                     </ul>
                                 {% endif %}
-                                <button type="submit" name="authorize" value="1" class="btn btn-info ">{{'Akceptuję'|trans}}</button>
-                                <button type="submit" name="authorize" value="0" class="btn btn-info ">{{'Nie Akceptuję'|trans}}</button>
+                                <button type="submit" name="authorize" value="1" class="btn btn-info ">Accept</button>
+                                <button type="submit" name="authorize" value="0" class="btn btn-info ">Reject</button>
                             </form>                                     
                         </div>
                     </div>                   

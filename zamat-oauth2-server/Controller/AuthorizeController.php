@@ -13,7 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class AuthorizeController extends Controller
 {
     /**
-     * @Route("/oauth/v2/auth", name="_oauth_authorize_validate")
+     * @Route("/oauth/v2/authorize", name="_oauth_authorize_validate")
      * @Method({"GET"})
      * @Template("ZamatOAuth2Bundle:Authorize:authorize.html.twig")
      */
@@ -41,7 +41,7 @@ class AuthorizeController extends Controller
     }
     
     /**
-     * @Route("/oauth/v2/auth", name="_oauth_authorize_handle")
+     * @Route("/oauth/v2/authorize", name="_oauth_authorize_handle")
      * @Method({"POST"})
      */
     public function handleAuthorizeAction()
@@ -49,11 +49,11 @@ class AuthorizeController extends Controller
         $user = $this->getUser();
         if (!$user instanceof UserInterface) {
             throw new AccessDeniedException('This user does not have access to this section.');
-        } 
-                
+        }                
         $server   = $this->get('zamat_oauth2.server');
         $request  = $this->get('zamat_oauth2.request');
-        $response = $this->get('zamat_oauth2.response');                   
+        $response = $this->get('zamat_oauth2.response');     
+        
         return $server->handleAuthorizeRequest($request,$response, (bool) $request->request->get('authorize') , $user->getUsername());
     } 
       
@@ -64,7 +64,8 @@ class AuthorizeController extends Controller
     public function loginAction()
     {
         $request = $this->container->get('request_stack')->getCurrentRequest();
-        $session = $request->getSession();    
+        $session = $request->getSession();  
+        
         $authenticationUtils = $this->get('security.authentication_utils');
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();       
