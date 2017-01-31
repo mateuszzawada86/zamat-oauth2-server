@@ -10,10 +10,6 @@
             "email": "kontakt@zamat.pl"
         }
     ],
-    "require": {
-        "bshaffer/oauth2-server-php": ">=1.0",
-        "bshaffer/oauth2-server-httpfoundation-bridge": ">=1.0"
-    },
     "autoload": {
         "psr-4": { 
             "Zamat\\Bundle\\OAuth2Bundle\\": "zamat-oauth2-server/",       
