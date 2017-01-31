@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "php": ">=5.5.2",
+        "php": ">=5.5",
         "bshaffer/oauth2-server-php": ">=1.0",
         "bshaffer/oauth2-server-httpfoundation-bridge": ">=1.0"
     },
