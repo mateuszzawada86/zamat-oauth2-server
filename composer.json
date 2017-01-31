@@ -11,7 +11,11 @@
         }
     ],
     "require": {
-        "php": ">=5.5.2",
+        "php": ">=5.5",
+        "doctrine/orm": "^2.5",
+        "doctrine/doctrine-bundle": "^1.6",
+        "doctrine/doctrine-cache-bundle": "^1.2",
+        "doctrine/doctrine-fixtures-bundle": "^2.3",   
         "bshaffer/oauth2-server-php": ">=1.0",
         "bshaffer/oauth2-server-httpfoundation-bridge": ">=1.0"
     },
