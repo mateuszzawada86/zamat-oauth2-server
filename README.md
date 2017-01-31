@@ -1,2 +1,2 @@
-# zamat-oauth2
-Zamat OAuth2 
+# zamat-oauth2-server
+Zamat OAuth2 Server

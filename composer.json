@@ -1,8 +1,8 @@
 {
-    "name": "zamat/zamat-oauth2",
-    "description": "Zamt OAuth2",
+    "name": "zamat/zamat-oauth2-server",
+    "description": "Zamat OAuth server",
     "keywords": ["oauth2"],
-    "homepage": "https://github.com/zamat/zamat-oauth2",
+    "homepage": "https://github.com/zamat/zamat-oauth2-server",
     "license": "MIT",
     "authors": [
         {
@@ -17,8 +17,8 @@
     },
     "autoload": {
         "psr-4": { 
-            "Zamat\\Bundle\\OAuth2Bundle\\": "zamat-oauth2-bundle/",       
-            "Zamat\\OAuth2\\": "zamat-oauth2/" 
+            "Zamat\\Bundle\\OAuth2Bundle\\": "zamat-oauth2-server/",       
+            "Zamat\\OAuth2\\": "zamat-oauth2-library/" 
          }
     }
 }
