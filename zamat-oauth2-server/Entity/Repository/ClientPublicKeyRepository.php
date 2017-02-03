@@ -1,6 +1,6 @@
 <?php
 
-namespace Zamat\Bundle\OAuth2Bundle\Entity\Repository;
+namespace Zamat\Bundle\OAuth2ServerBundle\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 use Zamat\OAuth2\Provider\ClientPublicKeyProviderInterface;
 

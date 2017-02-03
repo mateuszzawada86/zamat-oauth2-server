@@ -1,6 +1,6 @@
-Zamat\Bundle\OAuth2Bundle\Entity\RefreshToken:
+Zamat\Bundle\OAuth2ServerBundle\Entity\RefreshToken:
     type: entity
-    repositoryClass: Zamat\Bundle\OAuth2Bundle\Entity\Repository\RefreshTokenRepository  
+    repositoryClass: Zamat\Bundle\OAuth2ServerBundle\Entity\Repository\RefreshTokenRepository  
     table: zamat_oauth_refresh_token
     id:
         token:
@@ -15,14 +15,14 @@ Zamat\Bundle\OAuth2Bundle\Entity\RefreshToken:
             nullable:   true
     manyToOne:
       client:
-        targetEntity: \Zamat\Bundle\OAuth2Bundle\Entity\Client
+        targetEntity: \Zamat\Bundle\OAuth2ServerBundle\Entity\Client
         joinColumn:
           name: client_id
           referencedColumnName: client_id
           onDelete: CASCADE
           onUpdate: CASCADE
       user:
-        targetEntity: \Zamat\Bundle\OAuth2Bundle\Entity\User
+        targetEntity: \Zamat\Bundle\OAuth2ServerBundle\Entity\User
         joinColumn:
           name: user_id
           referencedColumnName: id

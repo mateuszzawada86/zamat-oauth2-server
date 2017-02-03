@@ -1,6 +1,6 @@
 <?php
 
-namespace Zamat\Bundle\OAuth2Bundle\Entity;
+namespace Zamat\Bundle\OAuth2ServerBundle\Entity;
 use Zamat\OAuth2\User as BaseUser;
 
 /**

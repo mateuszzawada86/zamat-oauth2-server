@@ -16,43 +16,43 @@ services:
         class: Doctrine\ORM\EntityRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
-            - Zamat\Bundle\OAuth2Bundle\Entity\AccessToken
+            - Zamat\Bundle\OAuth2ServerBundle\Entity\AccessToken
 
     zamat_oauth.refresh.token.provider:
         class: Doctrine\ORM\EntityRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
-            - Zamat\Bundle\OAuth2Bundle\Entity\RefreshToken
+            - Zamat\Bundle\OAuth2ServerBundle\Entity\RefreshToken
 
     zamat_oauth.authorization.code.provider:
         class: Doctrine\ORM\EntityRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
-            - Zamat\Bundle\OAuth2Bundle\Entity\AuthorizationCode
+            - Zamat\Bundle\OAuth2ServerBundle\Entity\AuthorizationCode
 
     zamat_oauth.client.provider:
         class: Doctrine\ORM\EntityRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
-            - Zamat\Bundle\OAuth2Bundle\Entity\Client
+            - Zamat\Bundle\OAuth2ServerBundle\Entity\Client
             
     zamat_oauth.scope.provider:
         class: Doctrine\ORM\EntityRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
-            - Zamat\Bundle\OAuth2Bundle\Entity\Scope
+            - Zamat\Bundle\OAuth2ServerBundle\Entity\Scope
 
     zamat_oauth.client.publickey.provider:
         class: Doctrine\ORM\EntityRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
-            - Zamat\Bundle\OAuth2Bundle\Entity\ClientPublicKey
+            - Zamat\Bundle\OAuth2ServerBundle\Entity\ClientPublicKey
             
     zamat_oauth.user.provider:
         class: Doctrine\ORM\EntityRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
-            - Zamat\Bundle\OAuth2Bundle\Entity\User           
+            - Zamat\Bundle\OAuth2ServerBundle\Entity\User           
             
     # storage         
     zamat_oauth.access.token.storage:
@@ -116,7 +116,7 @@ services:
 
     # form  #       
     oauth.form.authorization:
-        class: Zamat\Bundle\OAuth2Bundle\Entity\Form\AuthorizationForm
+        class: Zamat\Bundle\OAuth2ServerBundle\Entity\Form\AuthorizationForm
         arguments: []
         tags:
             - { name: form.type } 

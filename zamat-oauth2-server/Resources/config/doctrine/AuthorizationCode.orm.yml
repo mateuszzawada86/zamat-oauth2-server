@@ -1,6 +1,6 @@
-Zamat\Bundle\OAuth2Bundle\Entity\AuthorizationCode:
+Zamat\Bundle\OAuth2ServerBundle\Entity\AuthorizationCode:
     type: entity
-    repositoryClass: Zamat\Bundle\OAuth2Bundle\Entity\Repository\AuthorizationCodeRepository  
+    repositoryClass: Zamat\Bundle\OAuth2ServerBundle\Entity\Repository\AuthorizationCodeRepository  
     table: zamat_oauth_authorization_code
     id:
         code:
@@ -17,14 +17,14 @@ Zamat\Bundle\OAuth2Bundle\Entity\AuthorizationCode:
             nullable:   true
     manyToOne:
       client:
-        targetEntity: \Zamat\Bundle\OAuth2Bundle\Entity\Client
+        targetEntity: \Zamat\Bundle\OAuth2ServerBundle\Entity\Client
         joinColumn:
           name: client_id
           referencedColumnName: client_id
           onDelete: CASCADE
           onUpdate: CASCADE
       user:
-        targetEntity: \Zamat\Bundle\OAuth2Bundle\Entity\User
+        targetEntity: \Zamat\Bundle\OAuth2ServerBundle\Entity\User
         joinColumn:
           name: user_id
           referencedColumnName: id

@@ -1,10 +1,10 @@
 <?php
 
-namespace Zamat\Bundle\OAuth2Bundle\Entity\Repository;
+namespace Zamat\Bundle\OAuth2ServerBundle\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 use Zamat\OAuth2\Provider\ScopeProviderInterface;
 use Zamat\OAuth2\Scope;
-use Zamat\Bundle\OAuth2Bundle\Entity\Scope as ScopeEntity;
+use Zamat\Bundle\OAuth2ServerBundle\Entity\Scope as ScopeEntity;
 
 /**
  * Description of ScopeRepository

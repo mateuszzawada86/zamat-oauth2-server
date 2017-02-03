@@ -1,6 +1,6 @@
 <?php
 
-namespace Zamat\Bundle\OAuth2Bundle\Command;
+namespace Zamat\Bundle\OAuth2ServerBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;

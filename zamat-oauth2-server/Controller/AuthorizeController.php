@@ -1,6 +1,6 @@
 <?php
 
-namespace Zamat\Bundle\OAuth2Bundle\Controller;
+namespace Zamat\Bundle\OAuth2ServerBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -15,7 +15,7 @@ class AuthorizeController extends Controller
     /**
      * @Route("/oauth/v2/authorize", name="_oauth_authorize_validate")
      * @Method({"GET"})
-     * @Template("ZamatOAuth2Bundle:Authorize:authorize.html.twig")
+     * @Template("ZamatOAuth2ServerBundle:Authorize:authorize.html.twig")
      */
     public function validateAuthorizeAction()
     {
@@ -75,7 +75,7 @@ class AuthorizeController extends Controller
                 $session->set('_zamat_oauth_server.ensure_logout', true);
             }
         }              
-        return $this->render('ZamatOAuth2Bundle:Secure:login.html.twig',array(
+        return $this->render('ZamatOAuth2ServerBundle:Secure:login.html.twig',array(
                 'last_username' => $lastUsername,
                 'error'         => $error,
             )

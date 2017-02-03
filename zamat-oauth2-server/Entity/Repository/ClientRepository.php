@@ -1,13 +1,13 @@
 <?php
 
-namespace Zamat\Bundle\OAuth2Bundle\Entity\Repository;
+namespace Zamat\Bundle\OAuth2ServerBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
 use Zamat\OAuth2\Provider\ClientProviderInterface;
 use Zamat\OAuth2\Client;
 
-use Zamat\Bundle\OAuth2Bundle\Entity\Client as ClientEntity;
+use Zamat\Bundle\OAuth2ServerBundle\Entity\Client as ClientEntity;
 
 /**
  * Description of ClientRepository

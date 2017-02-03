@@ -1,11 +1,11 @@
 <?php
 
-namespace Zamat\Bundle\OAuth2Bundle\Entity\Repository;
+namespace Zamat\Bundle\OAuth2ServerBundle\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 
 use Zamat\OAuth2\Provider\AuthorizationCodeProviderInterface;
 use Zamat\OAuth2\AuthorizationCode;
-use Zamat\Bundle\OAuth2Bundle\Entity\AuthorizationCode as Entity;
+use Zamat\Bundle\OAuth2ServerBundle\Entity\AuthorizationCode as Entity;
 
 /**
  * Description of AuthorizationCodeRepository

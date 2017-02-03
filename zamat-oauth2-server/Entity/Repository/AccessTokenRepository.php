@@ -1,9 +1,9 @@
 <?php
 
-namespace Zamat\Bundle\OAuth2Bundle\Entity\Repository;
+namespace Zamat\Bundle\OAuth2ServerBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Zamat\Bundle\OAuth2Bundle\Entity\AccessToken as Entity;
+use Zamat\Bundle\OAuth2ServerBundle\Entity\AccessToken as Entity;
 use Zamat\OAuth2\Provider\AccessTokenProviderInterface;
 use Zamat\OAuth2\AccessToken;
 
@@ -16,7 +16,7 @@ class AccessTokenRepository extends EntityRepository implements AccessTokenProvi
     /**
      * 
      * @param AccessToken $accessToken
-     * @return \Zamat\Bundle\OAuth2Bundle\Entity\Repository\AccessTokenRepository
+     * @return \Zamat\Bundle\OAuth2ServerBundle\Entity\Repository\AccessTokenRepository
      */
     public function save(AccessToken $accessToken)
     {

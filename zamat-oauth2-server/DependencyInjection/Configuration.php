@@ -1,6 +1,6 @@
 <?php
 
-namespace Zamat\Bundle\OAuth2Bundle\DependencyInjection;
+namespace Zamat\Bundle\OAuth2ServerBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

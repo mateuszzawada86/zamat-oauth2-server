@@ -1,6 +1,6 @@
 <?php
 
-namespace Zamat\Bundle\OAuth2Bundle\Controller;
+namespace Zamat\Bundle\OAuth2ServerBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -13,7 +13,7 @@ class OAuthController extends Controller
     /**
      * @Route("/", name="_oauth")
      * @Method({"GET"})
-     * @Template("ZamatOAuth2Bundle:OAuth:oauth.html.twig")
+     * @Template("ZamatOAuth2ServerBundle:OAuth:oauth.html.twig")
      */
     public function oAuthAction()
     {

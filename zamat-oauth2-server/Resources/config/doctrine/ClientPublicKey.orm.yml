@@ -1,6 +1,6 @@
-Zamat\Bundle\OAuth2Bundle\Entity\ClientPublicKey:
+Zamat\Bundle\OAuth2ServerBundle\Entity\ClientPublicKey:
     type: entity
-    repositoryClass: Zamat\Bundle\OAuth2Bundle\Entity\Repository\ClientPublicKeyRepository  
+    repositoryClass: Zamat\Bundle\OAuth2ServerBundle\Entity\Repository\ClientPublicKeyRepository  
     table: zamat_oauth_client_public_key
     id:
         client_id:
@@ -11,7 +11,7 @@ Zamat\Bundle\OAuth2Bundle\Entity\ClientPublicKey:
             type:       text
     oneToOne:
       client:
-        targetEntity: \Zamat\Bundle\OAuth2Bundle\Entity\Client
+        targetEntity: \Zamat\Bundle\OAuth2ServerBundle\Entity\Client
         joinColumn:
           name: client_id
           referencedColumnName: client_id

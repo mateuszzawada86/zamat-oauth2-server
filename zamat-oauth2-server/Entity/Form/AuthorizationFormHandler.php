@@ -1,10 +1,10 @@
 <?php
 
-namespace Zamat\Bundle\OAuth2Bundle\Entity\Form;
+namespace Zamat\Bundle\OAuth2ServerBundle\Entity\Form;
 
 use Symfony\Component\Form\FormInterface;
 use OAuth2\RequestInterface;
-use Zamat\Bundle\OAuth2Bundle\Model\Authorization;
+use Zamat\Bundle\OAuth2ServerBundle\Model\Authorization;
 use Symfony\Component\HttpFoundation\Request;
 
 class AuthorizationFormHandler
@@ -53,7 +53,7 @@ class AuthorizationFormHandler
     /**
      * 
      * @param FormInterface $form
-     * @return \Zamat\Bundle\OAuth2Bundle\Entity\Form\AuthorizeFormHandler
+     * @return \Zamat\Bundle\OAuth2ServerBundle\Entity\Form\AuthorizeFormHandler
      */
     public function setForm(FormInterface $form)
     {
@@ -64,7 +64,7 @@ class AuthorizationFormHandler
     /**
      * 
      * @param RequestInterface $requestStack
-     * @return \Zamat\Bundle\OAuth2Bundle\Entity\Form\AuthorizeFormHandler
+     * @return \Zamat\Bundle\OAuth2ServerBundle\Entity\Form\AuthorizeFormHandler
      */
     public function setRequest(RequestInterface $requestStack)
     {

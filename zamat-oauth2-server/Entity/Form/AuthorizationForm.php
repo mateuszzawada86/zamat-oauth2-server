@@ -1,6 +1,6 @@
 <?php
 
-namespace Zamat\Bundle\OAuth2Bundle\Entity\Form;
+namespace Zamat\Bundle\OAuth2ServerBundle\Entity\Form;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
-use Zamat\Bundle\OAuth2Bundle\Model\Authorization;
+use Zamat\Bundle\OAuth2ServerBundle\Model\Authorization;
 
 
 class AuthorizationForm extends AbstractType

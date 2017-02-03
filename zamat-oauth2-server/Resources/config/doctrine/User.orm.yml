@@ -1,6 +1,6 @@
-Zamat\Bundle\OAuth2Bundle\Entity\User:
+Zamat\Bundle\OAuth2ServerBundle\Entity\User:
     type: entity
-    repositoryClass: Zamat\Bundle\OAuth2Bundle\Entity\Repository\UserRepository 
+    repositoryClass: Zamat\Bundle\OAuth2ServerBundle\Entity\Repository\UserRepository 
     table: zamat_oauth_user
     id:
         id:

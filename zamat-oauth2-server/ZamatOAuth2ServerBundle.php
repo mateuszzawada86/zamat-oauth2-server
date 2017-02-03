@@ -1,12 +1,12 @@
 <?php
 
-namespace Zamat\Bundle\OAuth2Bundle;
+namespace Zamat\Bundle\OAuth2ServerBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Zamat\Bundle\OAuth2Bundle\DependencyInjection\ZamatOAuth2Extension;
+use Zamat\Bundle\OAuth2ServerBundle\DependencyInjection\ZamatOAuth2ServerExtension;
 
-class ZamatOAuth2Bundle extends Bundle
+class ZamatOAuth2ServerBundle extends Bundle
 {
 
     /**
@@ -24,7 +24,7 @@ class ZamatOAuth2Bundle extends Bundle
     public function getContainerExtension()
     {
         if (null === $this->extension) {
-            return new ZamatOAuth2Extension();
+            return new ZamatOAuth2ServerExtension();
         }
         return $this->extension;
     } 

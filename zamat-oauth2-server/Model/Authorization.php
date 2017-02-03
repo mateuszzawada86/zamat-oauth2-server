@@ -1,6 +1,6 @@
 <?php
 
-namespace Zamat\Bundle\OAuth2Bundle\Model;
+namespace Zamat\Bundle\OAuth2ServerBundle\Model;
 
 /**
  * Description of Authorization
@@ -105,7 +105,7 @@ class Authorization
     /**
      * 
      * @param type $client_id
-     * @return \Zamat\Bundle\OAuth2Bundle\Model\Authorization
+     * @return \Zamat\Bundle\OAuth2ServerBundle\Model\Authorization
      */
     public function setClientId($client_id)
     {
@@ -116,7 +116,7 @@ class Authorization
     /**
      * 
      * @param type $response_type
-     * @return \Zamat\Bundle\OAuth2Bundle\Model\Authorization
+     * @return \Zamat\Bundle\OAuth2ServerBundle\Model\Authorization
      */
     public function setResponseType($response_type)
     {
@@ -127,7 +127,7 @@ class Authorization
     /**
      * 
      * @param type $redirect_uri
-     * @return \Zamat\Bundle\OAuth2Bundle\Model\Authorization
+     * @return \Zamat\Bundle\OAuth2ServerBundle\Model\Authorization
      */
     public function setRedirectUri($redirect_uri)
     {
@@ -138,7 +138,7 @@ class Authorization
     /**
      * 
      * @param type $state
-     * @return \Zamat\Bundle\OAuth2Bundle\Model\Authorization
+     * @return \Zamat\Bundle\OAuth2ServerBundle\Model\Authorization
      */
     public function setState($state)
     {
@@ -149,7 +149,7 @@ class Authorization
     /**
      * 
      * @param type $scope
-     * @return \Zamat\Bundle\OAuth2Bundle\Model\Authorization
+     * @return \Zamat\Bundle\OAuth2ServerBundle\Model\Authorization
      */
     public function setScope($scope)
     {
@@ -160,7 +160,7 @@ class Authorization
     /**
      * 
      * @param array $query
-     * @return \Zamat\Bundle\OAuth2Bundle\Model\Authorization
+     * @return \Zamat\Bundle\OAuth2ServerBundle\Model\Authorization
      */
     public function bind(array $query = array())
     {
