@@ -1,13 +1,10 @@
 # Zamat OAuth2 Server Bundle
-
 OAuth2 Server Bundle for Symfony 2, built on the [oauth2-server-php](https://github.com/bshaffer/oauth2-server-php) library.
 
 ## Getting Started
-
 For documentation specific to this bundle, continue reading below.
 
 ## Bundle Overview
-
 The following grant types are supported out the box:
 
 - Client Credentials
@@ -15,43 +12,57 @@ The following grant types are supported out the box:
 - Refresh Token
 - User Credentials (see below)
 
-1)
-Password Grant Type ( Get access token for given user )
-
+1) User Credentials Grant Type ( Get access token for given user )
+```ini
 POST /oauth/v2/token
 Content-Type : application/x-www-form-urlencoded
 grant_type=password&client_id=api&client_secret=api&username=admin&password=admin&scope=profile
-
-2)
-Client Credentials( Get access token for given client with scope )
+```
+2) Client Credentials( Get access token for given client with scope )
+```ini
 POST /oauth/v2/token
 Content-Type : application/x-www-form-urlencoded
 grant_type=client_credentials&client_id=api&client_secret=api&scope=profile
-
-3) 
-AuthorizationCode ( get access token by autorization code)
+```
+3) AuthorizationCode ( get access token by autorization code)
+```ini
 POST /oauth/v2/token
 Content-Type : application/x-www-form-urlencoded
 grant_type=authorization_code&client_id=api&client_secret=api&code=f6808b9b6c4db1ddf89ffd1b6e425cd9c44effc1
+```
 
 4) Authorization Flow : 
+```ini
 GET /oauth/v2/auth?client_id={api}&response_type={code}&scope=profile&state={state}&redirect_url={http://google.pl}
+```
 
 ## Installation
 
 ### Step 1: Install Standard Symfony Application
+``` bash
 composer create-project symfony/framework-standard-edition my_project_name 
+```
 
 ### Step 2: Install Packages
 Use composer to add the requirement and download it by running the command:
-composer require zamat/zamat-oauth2-server dev-master;  
 ``` bash
-$ php composer.phar require zamat/zamat-oauth2-server dev-master; 
+$ composer require zamat/zamat-oauth2-server dev-master; 
 ```
 
 ### Step 3: Register Bundles
-   new Zamat\Bundle\OAuth2ServerBundle\ZamatOAuth2ServerBundle(), 
-   new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle()
+
+``` php
+<?php
+// app/AppKernel.php
+public function registerBundles()
+{
+    $bundles = array(
+        // ...
+         new Zamat\Bundle\OAuth2ServerBundle\ZamatOAuth2ServerBundle(), 
+         new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle()
+    );
+}
+```
 
 ### Step 4: Add routes
 
@@ -102,8 +113,8 @@ security:
         - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
 ```
 ### Step 6: Run Command
-
-   - php bin/console doctrine:database:create
-   - php bin/console doctrine:schema:update --force
-   - php bin/console doctrine:fixtures:load
-
+``` bash
+   php bin/console doctrine:database:create
+   php bin/console doctrine:schema:update --force
+   php bin/console doctrine:fixtures:load
+```
