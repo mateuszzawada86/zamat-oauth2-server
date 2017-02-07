@@ -117,7 +117,8 @@ or
    php bin/console doctrine:schema:update --force
 ```
 
-### Step 6: Use Doctrine Fixture Bundle
+
+### Step 7: Use Doctrine Fixture Bundle
 You can use Doctrine Fixture Bundle to load some entity into database
 
 ``` php
