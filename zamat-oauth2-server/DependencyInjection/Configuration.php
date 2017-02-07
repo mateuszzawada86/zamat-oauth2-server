@@ -18,8 +18,17 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $builder = new TreeBuilder();
-        $builder->root('zamat_oauth2_server');            
-        return $builder;     
-           
+        $builder->root('zamat_oauth2_server')
+            ->children()
+                ->scalarNode('zamat_oauth_user_provider')->end()
+                ->scalarNode('zamat_oauth_client_provider')->end()
+                ->scalarNode('zamat_oauth_scope_provider')->end()
+                ->scalarNode('zamat_oauth_authorization_code_provider')->end()
+                ->scalarNode('zamat_oauth_access_token_provider')->end()
+                ->scalarNode('zamat_oauth_refresh_token_provider')->end()
+                ->scalarNode('zamat_oauth_client_publickey_provider')->end()                
+            ->end(); 
+        
+        return $builder;              
     }
 }

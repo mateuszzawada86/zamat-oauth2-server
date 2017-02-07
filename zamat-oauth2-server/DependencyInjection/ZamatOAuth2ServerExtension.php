@@ -7,6 +7,8 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
+use Zamat\Bundle\OAuth2ServerBundle\DependencyInjection\Compiler\OverrideServiceCompilerPass;
+
 /**
  * This is the class that loads and manages your bundle configuration
  *
@@ -21,9 +23,12 @@ class ZamatOAuth2ServerExtension extends Extension
     {
                 
         $configuration = new Configuration();
-        $this->processConfiguration($configuration, $configs);
+        $config = $this->processConfiguration($configuration, $configs);    
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+        
+        $compilePass = new OverrideServiceCompilerPass($config);
+        $compilePass->process($container);
 
     }
     

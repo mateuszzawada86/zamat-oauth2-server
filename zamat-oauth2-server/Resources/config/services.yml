@@ -52,8 +52,8 @@ services:
         class: Doctrine\ORM\EntityRepository
         factory: ['@doctrine.orm.default_entity_manager', getRepository]
         arguments:
-            - Zamat\Bundle\OAuth2ServerBundle\Entity\User           
-            
+            - Zamat\Bundle\OAuth2ServerBundle\Entity\User    
+                             
     # storage         
     zamat_oauth.access.token.storage:
         class: Zamat\OAuth2\Storage\AccessTokenStorage
