@@ -14,21 +14,21 @@ Content-Type : application/x-www-form-urlencoded
 grant_type=password&client_id={api}&client_secret={api}&username={admin}&password={admin}&scope={profile}
 ```
 
-2) Client Credentials( Get access token for given client with scope )
+2) Client Credentials ( Get access token for given client with scope )
 ```ini
 POST /oauth/v2/token
 Content-Type : application/x-www-form-urlencoded
 grant_type=client_credentials&client_id={api}&client_secret={api}&scope={profile}
 ```
 
-3) AuthorizationCode ( get access token by autorization code)
+3) AuthorizationCode ( Get access token by authorization code)
 ```ini
 POST /oauth/v2/token
 Content-Type : application/x-www-form-urlencoded
 grant_type=authorization_code&client_id={api}&client_secret={api}&code={code}
 ```
 
-4) Authorization Flow 3part application : 
+4) Authorization Flow for 3part application : 
 ```ini
 GET /oauth/v2/auth?client_id={api}&response_type={code}&scope={profile}&state={state}&redirect_url={uri}
 ```
