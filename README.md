@@ -111,7 +111,6 @@ security:
         - { path: ^/, roles: IS_AUTHENTICATED_FULLY }
 ```
 
-
 ### Step 6: Run Command
 
 Create or update database Schema.
