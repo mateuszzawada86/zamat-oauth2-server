@@ -40,10 +40,6 @@ GET /oauth/v2/me
 -h Authorization: Bearer {token}
 ```
 
-
-
-
-
 ## Installation
 
 ### Step 1: Install Standard Symfony Application 
