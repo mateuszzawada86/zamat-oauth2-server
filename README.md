@@ -156,3 +156,4 @@ zamat_oauth2_server:
     zamat_oauth_refresh_token_provider: custom.zamat_oauth.refresh.token.provider    
     zamat_oauth_client_publickey_provider: custom.zamat_oauth.client.publickey.provider
 ```
+
