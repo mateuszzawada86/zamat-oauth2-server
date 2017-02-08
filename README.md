@@ -25,7 +25,7 @@ grant_type=client_credentials&client_id={api}&client_secret={api}&scope={profile
 ```ini
 POST /oauth/v2/token
 Content-Type : application/x-www-form-urlencoded
-grant_type=authorization_code&client_id={api}&client_secret={api}&code={code}
+grant_type=authorization_code&client_id={api}&client_secret={api}&code={code}&redirect_uri={uri}
 ```
 
 4) Authorization Flow for 3part application : 
