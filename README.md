@@ -142,7 +142,7 @@ public function registerBundles()
    php bin/console doctrine:fixtures:load
 ```
 
-### Step 8: Override service configuration
+### Step 8: Override service configuration for oauth server
 You can override service providers by adding service name into configuration params:
 ``` yaml
 
