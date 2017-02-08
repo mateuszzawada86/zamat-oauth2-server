@@ -145,7 +145,6 @@ public function registerBundles()
 ### Step 8: Override service configuration for oauth server
 You can override service providers by adding service name into configuration params:
 ``` yaml
-
 # app/config/config.yml
 zamat_oauth2_server:
     zamat_oauth_user_provider: custom.zamat_oauth.user.provider
