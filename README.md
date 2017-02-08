@@ -135,3 +135,17 @@ public function registerBundles()
 ``` bash
    php bin/console doctrine:fixtures:load
 ```
+
+### Step 8: Override service configuration
+You can override service providers by adding service name into configuration params:
+``` yaml
+# app/config/config.yml
+zamat_oauth2_server:
+    zamat_oauth_user_provider: custom.zamat_oauth.user.provider
+    zamat_oauth_client_provider: custom.zamat_oauth.client.provider
+    zamat_oauth_scope_provider: custom.zamat_oauth.scope.provider
+    zamat_oauth_authorization_code_provider: custom.zamat_oauth.authorization.code.provider
+    zamat_oauth_access_token_provider: custom.zamat_oauth.access.token.provider
+    zamat_oauth_refresh_token_provider: custom.zamat_oauth.refresh.token.provider    
+    zamat_oauth_client_publickey_provider: custom.zamat_oauth.client.publickey.provider
+```
