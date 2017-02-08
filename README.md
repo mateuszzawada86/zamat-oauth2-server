@@ -30,7 +30,7 @@ grant_type=authorization_code&client_id={api}&client_secret={api}&code={code}
 
 4) Authorization Flow for 3part application : 
 ```ini
-GET /oauth/v2/auth?client_id={api}&response_type={code}&scope={profile}&state={state}&redirect_url={uri}
+GET /oauth/v2/authorize?client_id={api}&response_type={code}&scope={profile}&state={state}&redirect_uri={uri}
 ```
 
 ## Installation
