@@ -33,6 +33,17 @@ grant_type=authorization_code&client_id={api}&client_secret={api}&code={code}&re
 GET /oauth/v2/authorize?client_id={api}&response_type={code}&scope={profile}&state={state}&redirect_uri={uri}
 ```
 
+5) UserInfo endpoint
+You can get userinfo for given access token. 
+```ini
+GET /oauth/v2/me
+-h Authorization: Bearer {token}
+```
+
+
+
+
+
 ## Installation
 
 ### Step 1: Install Standard Symfony Application 
